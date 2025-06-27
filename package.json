@@ -14,12 +14,185 @@
   ],
   "main": "./dist/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "qcqx-project-manage-panel",
+          "title": "项目管理",
+          "icon": "assets/folder.svg"
+        }
+      ]
+    },
+    "views": {
+      "qcqx-project-manage-panel": [
+        {
+          "id": "project-list",
+          "name": "项目列表"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "qcqx-project-manage.project-list.add-current-project",
+          "when": "view == project-list && !config.qcqx-project-manage.project-list-lock",
+          "group": "navigation@1"
+        },
+        {
+          "command": "qcqx-project-manage.project-list.add-project",
+          "when": "view == project-list && !config.qcqx-project-manage.project-list-lock",
+          "group": "navigation@2"
+        },
+        {
+          "command": "qcqx-project-manage.project-list.add-group",
+          "when": "view == project-list && !config.qcqx-project-manage.project-list-lock",
+          "group": "navigation@3"
+        },
+        {
+          "command": "qcqx-project-manage.project-list.lock",
+          "when": "view == project-list && !config.qcqx-project-manage.project-list-lock",
+          "group": "navigation@4"
+        },
+        {
+          "command": "qcqx-project-manage.project-list.unlock",
+          "when": "view == project-list && config.qcqx-project-manage.project-list-lock",
+          "group": "navigation@5"
+        },
+        {
+          "command": "qcqx-project-manage.project-list.open-local-config",
+          "when": "view == project-list",
+          "group": "navigation@6"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "qcqx-project-manage.project-list.open-project-in-current-window",
+          "when": "view == project-list && viewItem == project",
+          "group": "inline"
+        },
+        {
+          "command": "qcqx-project-manage.project-list.open-project-in-new-window",
+          "when": "view == project-list && viewItem == project",
+          "group": "inline"
+        },
+        {
+          "submenu": "qcqx-project-manage.project-list-more-actions",
+          "when": "view == project-list",
+          "group": "inline"
+        }
+      ],
+      "qcqx-project-manage.project-list-more-actions": [
+        {
+          "command": "qcqx-project-manage.project-list.add-group",
+          "when": "view == project-list && viewItem == group && !config.qcqx-project-manage.project-list-lock",
+          "group": "modification"
+        },
+        {
+          "command": "qcqx-project-manage.project-list.add-project",
+          "when": "view == project-list && viewItem == group && !config.qcqx-project-manage.project-list-lock",
+          "group": "modification"
+        },
+        {
+          "command": "qcqx-project-manage.project-list.rename-node",
+          "when": "view == project-list && !config.qcqx-project-manage.project-list-lock",
+          "group": "modification"
+        },
+        {
+          "command": "qcqx-project-manage.project-list.remove-node",
+          "when": "view == project-list && !config.qcqx-project-manage.project-list-lock",
+          "group": "modification"
+        },
+        {
+          "command": "qcqx-project-manage.project-list.open-project-in-file-explorer",
+          "when": "view == project-list && viewItem == project && !config.qcqx-project-manage.project-list-lock",
+          "group": "modification"
+        },
+        {
+          "command": "qcqx-project-manage.project-list.open-project-in-terminal",
+          "when": "view == project-list && viewItem == project && !config.qcqx-project-manage.project-list-lock",
+          "group": "modification"
+        }
+      ]
+    },
+    "submenus": [
+      {
+        "id": "qcqx-project-manage.project-list-more-actions",
+        "label": "更多操作",
+        "icon": "$(ellipsis)"
+      }
+    ],
     "commands": [
       {
-        "command": "qcqx-project-manage.helloWorld",
-        "title": "你好"
+        "command": "qcqx-project-manage.project-list.add-group",
+        "title": "添加分组",
+        "icon": "$(new-folder)"
+      },
+      {
+        "command": "qcqx-project-manage.project-list.add-project",
+        "title": "添加项目",
+        "icon": "$(new-file)"
+      },
+      {
+        "command": "qcqx-project-manage.project-list.add-current-project",
+        "title": "添加当前项目",
+        "icon": "$(save)"
+      },
+      {
+        "command": "qcqx-project-manage.project-list.remove-node",
+        "title": "删除",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "qcqx-project-manage.project-list.rename-node",
+        "title": "重命名",
+        "icon": "$(pencil)"
+      },
+      {
+        "command": "qcqx-project-manage.project-list.open-project-in-current-window",
+        "title": "在当前窗口打开项目",
+        "icon": "$(window)"
+      },
+      {
+        "command": "qcqx-project-manage.project-list.open-project-in-new-window",
+        "title": "在新窗口打开项目",
+        "icon": "$(multiple-windows)"
+      },
+      {
+        "command": "qcqx-project-manage.project-list.open-project-in-file-explorer",
+        "title": "在文件管理器中打开项目",
+        "icon": "$(explorer-view-icon)"
+      },
+      {
+        "command": "qcqx-project-manage.project-list.open-project-in-terminal",
+        "title": "在终端打开项目",
+        "icon": "$(terminal-view-icon)"
+      },
+      {
+        "command": "qcqx-project-manage.project-list.lock",
+        "title": "锁定项目列表",
+        "icon": "$(lock)"
+      },
+      {
+        "command": "qcqx-project-manage.project-list.unlock",
+        "title": "解锁项目列表",
+        "icon": "$(unlock)"
+      },
+      {
+        "command": "qcqx-project-manage.project-list.open-local-config",
+        "title": "打开本地配置",
+        "icon": "$(settings-gear)"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "qcqx-project-manage",
+      "properties": {
+        "qcqx-project-manage.project-list-lock": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否锁定项目列表"
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
