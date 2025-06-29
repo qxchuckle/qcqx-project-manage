@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { TreeViewController } from '../treeView/treeViewController';
 import { createAddNode } from './addNode';
-import { createRemoveNode } from './removeNode';
+import { createDeleteNode } from './deleteNode';
 import { createRenameNode } from './renameNode';
 import { createLockList } from './lockList';
 import { createOpenProject } from './openProject';
@@ -11,7 +11,7 @@ export function initCommands(treeViewController: TreeViewController) {
   const { context } = treeViewController;
   const commands: vscode.Disposable[] = [
     ...createAddNode(treeViewController),
-    createRemoveNode(treeViewController),
+    createDeleteNode(treeViewController),
     ...createLockList(treeViewController),
     createRenameNode(treeViewController),
     ...createOpenProject(treeViewController),

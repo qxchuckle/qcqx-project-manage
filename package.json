@@ -98,7 +98,7 @@
           "group": "modification"
         },
         {
-          "command": "qcqx-project-manage.project-list.remove-node",
+          "command": "qcqx-project-manage.project-list.delete-node",
           "when": "view == project-list && !config.qcqx-project-manage.project-list-lock",
           "group": "modification"
         },
@@ -138,7 +138,7 @@
         "icon": "$(save)"
       },
       {
-        "command": "qcqx-project-manage.project-list.remove-node",
+        "command": "qcqx-project-manage.project-list.delete-node",
         "title": "删除",
         "icon": "$(trash)"
       },

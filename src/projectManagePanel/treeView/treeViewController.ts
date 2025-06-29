@@ -57,13 +57,13 @@ export class TreeViewController {
       e.element.changeCollapsibleState(
         vscode.TreeItemCollapsibleState.Collapsed,
       );
-      this.tree.refresh(e.element);
+      this.tree.syncToLocalConfig();
     });
     this.view.onDidExpandElement((e) => {
       e.element.changeCollapsibleState(
         vscode.TreeItemCollapsibleState.Expanded,
       );
-      this.tree.refresh(e.element);
+      this.tree.syncToLocalConfig();
     });
     this.tree.refresh();
     return this.view;

@@ -42,6 +42,7 @@ export abstract class TreeDragAndDropController
     // 获取拖拽节点
     const dragData = transferItem.value as DragData;
     const { dragNodeIds, dragNodes } = this.getDragNodes(dragData);
+    console.log('dragNodes', dragNodeIds, dragNodes);
 
     // 放置前的安全检查
     if (!this.checkSafeToDrop(target, dragNodeIds)) {
@@ -109,11 +110,8 @@ export abstract class TreeDragAndDropController
       target.collapsibleState === vscode.TreeItemCollapsibleState.Expanded
     ) {
       const groupNode = target as GroupTreeItem;
-      const index = groupNode.children.findIndex(
-        (node) => node.id === dragNodes[0].id,
-      );
       for (const node of dragNodes) {
-        groupNode.addChild(node, index);
+        groupNode.addChild(node);
       }
       return;
     }

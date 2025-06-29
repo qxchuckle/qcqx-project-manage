@@ -40,12 +40,12 @@ export class Tree
   constructor(props: TreeProps) {
     super();
     this.context = props.context;
-    this.root = new GroupTreeItem({
+    this.root = this.createNodeByType(TreeNodeType.Group, {
       id: 'root',
       title: '虚拟根节点',
       collapsibleState: vscode.TreeItemCollapsibleState.Expanded,
       type: TreeNodeType.Root,
-    });
+    })!;
     this.refreshTreeNodesMap(this.root);
     this.localCache = LocalCache.getInstance(this.context);
     this.init();
@@ -74,7 +74,7 @@ export class Tree
   }
 
   getChildren(element?: BaseTreeItem): vscode.ProviderResult<BaseTreeItem[]> {
-    const children = element ? element.children : this.root.children;
+    const children = (element ? element.children : this.root.children) || [];
     // group 节点排在前面
     return (
       children.sort((a, b) => {
@@ -124,20 +124,26 @@ export class Tree
    */
   private _executeRefresh(needSyncLocalConfig = true) {
     // 如果有收集到的节点，刷新这些节点
-    if (this._refreshNodes.has(this.root)) {
-      this._onDidChangeTreeData.fire(undefined);
-    } else if (this._refreshNodes.size > 0) {
-      for (const node of this._refreshNodes) {
-        this._onDidChangeTreeData.fire(node);
-        this.refreshTreeNodesMap(node);
+    try {
+      if (this._refreshNodes.has(this.root)) {
+        this._onDidChangeTreeData.fire(undefined);
+      } else if (this._refreshNodes.size > 0) {
+        for (const node of this._refreshNodes) {
+          this._onDidChangeTreeData.fire(node);
+          this.refreshTreeNodesMap(node);
+        }
+      } else {
+        // 没有特定节点，刷新整个树
+        this._onDidChangeTreeData.fire(undefined);
+        this.refreshTreeNodesMap(this.root);
       }
-    } else {
-      // 没有特定节点，刷新整个树
-      this._onDidChangeTreeData.fire(undefined);
+    } catch (error) {
+      console.error('refresh error', error);
     }
 
     // 同步到本地配置
     if (needSyncLocalConfig) {
+      console.log('syncToLocalConfig');
       this.syncToLocalConfig();
     }
 
@@ -149,13 +155,13 @@ export class Tree
   /**
    * 同步到本地配置文件
    */
-  syncToLocalConfig() {
+  async syncToLocalConfig() {
+    this._isSyncLocalConfigChange = true;
     const json = this.parseToJson();
-    this.localCache.updateCacheFile(
+    return this.localCache.updateCacheFile(
       projectListCacheId,
       JSON.stringify(json, null, 2),
     );
-    this._isSyncLocalConfigChange = true;
   }
 
   /**
@@ -163,6 +169,7 @@ export class Tree
    */
   watchLocalConfig() {
     this.localCache.watchCacheFile(projectListCacheId, async (uri) => {
+      console.log('watchLocalConfig', this._isSyncLocalConfigChange);
       if (this._isSyncLocalConfigChange) {
         this._isSyncLocalConfigChange = false;
         return;
@@ -175,16 +182,16 @@ export class Tree
    * 打开本地配置
    */
   openLocalConfig() {
-    vscode.commands.executeCommand(
-      'vscode.open',
-      this.localCache.getCacheFile(projectListCacheId),
-    );
+    console.log('openLocalConfig');
+    const uri = this.localCache.getCacheFile(projectListCacheId);
+    vscode.commands.executeCommand('vscode.open', uri);
   }
 
   /**
    * 解析json对象为树
    */
   async parseJsonNodeToTree() {
+    console.log('parseJsonNodeToTree');
     const json = await this.localCache.readCacheFile(projectListCacheId);
     const jsonObj = JSON.parse(json || '[]');
     const _parse = (parent: BaseTreeItem, children?: JsonTreeNodeType[]) => {
@@ -234,8 +241,8 @@ export class Tree
   /**
    * 删除节点
    */
-  removeNode(node: BaseTreeItem) {
-    node.parent?.removeChild(node);
+  deleteNode(node: BaseTreeItem) {
+    node.deleteSelf();
     this.refresh(node.parent);
   }
 

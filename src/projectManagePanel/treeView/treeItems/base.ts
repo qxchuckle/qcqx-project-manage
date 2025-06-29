@@ -43,7 +43,7 @@ export abstract class BaseTreeItem extends vscode.TreeItem implements TreeItem {
    */
   exportJsonNode(): JsonTreeNodeType {
     return {
-      // id: this.id,
+      id: this.id,
       type: this.type,
       title: this.title || '',
       description: this.description,
@@ -58,7 +58,7 @@ export abstract class BaseTreeItem extends vscode.TreeItem implements TreeItem {
    */
   addChild(child: BaseTreeItem, index?: number) {
     // 从原来的父节点移除
-    child.parent?.removeChild(child);
+    child.parent?.deleteChild(child);
     // 指向新的父节点
     child.parent = this;
     // 添加新节点
@@ -72,9 +72,16 @@ export abstract class BaseTreeItem extends vscode.TreeItem implements TreeItem {
   /**
    * 删除子节点
    */
-  removeChild(child: BaseTreeItem | string) {
+  deleteChild(child: BaseTreeItem | string) {
     const childId = typeof child === 'string' ? child : child.id;
     this.children = this.children.filter((c) => c.id !== childId);
+  }
+
+  /**
+   * 删除自己
+   */
+  deleteSelf() {
+    this.parent?.deleteChild(this);
   }
 
   /**
@@ -83,7 +90,7 @@ export abstract class BaseTreeItem extends vscode.TreeItem implements TreeItem {
   public static jsonNodeToTreeItemProps(node: JsonTreeNodeType): TreeItemProps {
     return {
       ...node,
-      // id: node.id,
+      id: node.id,
       type: node.type,
       title: node.title,
       description: node.description,
