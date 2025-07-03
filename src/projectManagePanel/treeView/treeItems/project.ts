@@ -7,6 +7,8 @@ import { isWorkspaceFile } from '../../../utils';
  * 项目节点
  */
 export class ProjectTreeItem extends BaseTreeItem {
+  type = TreeNodeType.Project;
+
   constructor(props: TreeItemProps) {
     props.contextValue = TreeNodeType.Project;
     super(props);

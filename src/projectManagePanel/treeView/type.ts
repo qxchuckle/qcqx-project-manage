@@ -7,12 +7,15 @@ export const enum TreeNodeType {
   Project = 'project',
   Group = 'group',
   Root = 'root',
+  // 特殊的节点，用于提示，以及操作
+  Tip = 'tip',
 }
 
 export const TreeNodeTypeNameMap: Record<TreeNodeType, string> = {
   [TreeNodeType.Group]: '组',
   [TreeNodeType.Project]: '项目',
   [TreeNodeType.Root]: '根节点',
+  [TreeNodeType.Tip]: '提示',
 };
 
 export interface TreeItem extends vscode.TreeItem {
@@ -20,7 +23,7 @@ export interface TreeItem extends vscode.TreeItem {
   title: string;
   type: TreeNodeType;
 }
-export type TreeItemProps = Partial<TreeItem> & Pick<TreeItem, 'type'>;
+export type TreeItemProps = Omit<Partial<TreeItem>, 'type'>;
 
 /**
  * json树节点

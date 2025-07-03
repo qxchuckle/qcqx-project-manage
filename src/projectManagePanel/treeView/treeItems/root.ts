@@ -8,13 +8,13 @@ import {
 import { BaseTreeItem } from './base';
 
 /**
- * 分组节点
+ * 虚拟根节点
  */
-export class GroupTreeItem extends BaseTreeItem {
-  type = TreeNodeType.Group;
+export class RootTreeItem extends BaseTreeItem {
+  type = TreeNodeType.Root;
 
   constructor(props: TreeItemProps) {
-    props.contextValue = TreeNodeType.Group;
+    props.contextValue = TreeNodeType.Root;
     props.iconPath = undefined;
     super(props);
     Object.assign(this, {});

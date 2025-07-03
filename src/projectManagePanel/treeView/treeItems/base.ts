@@ -12,7 +12,7 @@ import { generateId } from '../../../utils';
  * 抽象树节点，拥有一些操作和功能
  */
 export abstract class BaseTreeItem extends vscode.TreeItem implements TreeItem {
-  type: TreeNodeType;
+  abstract type: TreeNodeType;
   title: string;
   id: string;
   children: BaseTreeItem[] = [];
@@ -28,7 +28,6 @@ export abstract class BaseTreeItem extends vscode.TreeItem implements TreeItem {
   constructor(props: TreeItemProps) {
     const label = props.label ?? props.title ?? `【未命名-${props.id}】`;
     super(label, props.collapsibleState);
-    this.type = props.type;
     this.title = props.title || '';
     this.id = props.id || generateId();
     Object.assign(this, {
@@ -91,7 +90,6 @@ export abstract class BaseTreeItem extends vscode.TreeItem implements TreeItem {
     return {
       ...node,
       id: node.id,
-      type: node.type,
       title: node.title,
       description: node.description,
       collapsibleState:

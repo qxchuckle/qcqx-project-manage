@@ -8,14 +8,14 @@ import {
 import { BaseTreeItem } from './base';
 
 /**
- * 分组节点
+ * 提示节点
  */
-export class GroupTreeItem extends BaseTreeItem {
-  type = TreeNodeType.Group;
+export class TipTreeItem extends BaseTreeItem {
+  type = TreeNodeType.Tip;
 
   constructor(props: TreeItemProps) {
-    props.contextValue = TreeNodeType.Group;
-    props.iconPath = undefined;
+    props.contextValue = TreeNodeType.Tip;
+    props.iconPath = new vscode.ThemeIcon('info');
     super(props);
     Object.assign(this, {});
   }

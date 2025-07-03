@@ -93,13 +93,13 @@ export abstract class TreeDragAndDropController
     sources: vscode.DataTransfer;
     _token: vscode.CancellationToken;
   }): void {
-    const { target, dragNodes, sources, _token } = props;
+    const { dragNodes, sources, _token } = props;
+    let target = props.target || this.root;
 
-    // 没有目标节点，则将拖拽节点添加到根节点
-    if (!target) {
-      const rootNode = this.root;
+    // 如果目标节点是tip节点或根节点，则添加到根节点
+    if (target.type === TreeNodeType.Tip || target.type === TreeNodeType.Root) {
       for (const node of dragNodes) {
-        rootNode.addChild(node);
+        this.root.addChild(node);
       }
       return;
     }

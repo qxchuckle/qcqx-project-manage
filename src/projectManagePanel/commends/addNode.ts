@@ -3,16 +3,17 @@ import { TreeViewController } from '../treeView/treeViewController';
 import { BaseTreeItem } from '../treeView/treeItems/base';
 import { TreeNodeType } from '../treeView/type';
 import { isWorkspaceFile, getProjectTitle, generateId } from '../../utils';
+import { Tree } from '../treeView/tree';
 
 export function createAddNode(treeViewController: TreeViewController) {
-  const { tree, context } = treeViewController;
+  const { tree, view, context } = treeViewController;
 
   // 添加项目
   const addProject = vscode.commands.registerCommand(
     'qcqx-project-manage.project-list.add-project',
-    async (target: BaseTreeItem | undefined = tree.root) => {
-      if (!target) {
-        return;
+    async (target: BaseTreeItem = tree.root) => {
+      if (target.type === TreeNodeType.Tip) {
+        target = tree.root;
       }
       const uri = await vscode.window.showOpenDialog({
         canSelectFiles: true,
@@ -27,19 +28,18 @@ export function createAddNode(treeViewController: TreeViewController) {
         const newNodes = uri
           .map((item) => {
             const title = getProjectTitle(item.fsPath);
-            return tree.createNodeByType(TreeNodeType.Project, {
-              type: TreeNodeType.Project,
+            return Tree.createNodeByType(TreeNodeType.Project, {
               title: title,
               description: item.fsPath,
               resourceUri: item,
             });
           })
           .filter((item) => !!item);
-        treeViewController.tree.addNodes(target, newNodes);
-        // treeViewController.view?.reveal(newNodes[0], {
-        //   select: true,
-        //   focus: true,
-        // });
+        tree.addNodes(target, newNodes);
+        view?.reveal(newNodes[0], {
+          select: true,
+          focus: true,
+        });
       }
     },
   );
@@ -47,20 +47,19 @@ export function createAddNode(treeViewController: TreeViewController) {
   // 添加分组
   const addGroup = vscode.commands.registerCommand(
     'qcqx-project-manage.project-list.add-group',
-    async (target: BaseTreeItem | undefined = tree.root) => {
-      if (!target) {
-        return;
+    async (target: BaseTreeItem = tree.root) => {
+      if (target.type === TreeNodeType.Tip) {
+        target = tree.root;
       }
-      const newNode = tree.createNodeByType(TreeNodeType.Group, {
-        type: TreeNodeType.Group,
+      const newNode = Tree.createNodeByType(TreeNodeType.Group, {
         title: '新分组',
-        collapsibleState: vscode.TreeItemCollapsibleState.Expanded,
+        collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
       });
-      if (!newNode) {
-        return;
-      }
-      treeViewController.tree.addNodes(target, [newNode]);
-      treeViewController.view?.reveal(newNode);
+      tree.addNodes(target, [newNode]);
+      view?.reveal(newNode, {
+        select: true,
+        focus: true,
+      });
     },
   );
 
@@ -69,24 +68,26 @@ export function createAddNode(treeViewController: TreeViewController) {
    */
   const addCurrentProject = vscode.commands.registerCommand(
     'qcqx-project-manage.project-list.add-current-project',
-    async (target: BaseTreeItem | undefined = tree.root) => {
-      if (!target) {
-        return;
+    async (target: BaseTreeItem = tree.root) => {
+      if (target.type === TreeNodeType.Tip) {
+        target = tree.root;
       }
       // 优先检查是否有工作区文件
       if (vscode.workspace.workspaceFile) {
         // 当前打开的是工作区文件 (.code-workspace)
         const workspaceUri = vscode.workspace.workspaceFile;
         const title = getProjectTitle(workspaceUri.fsPath);
-        const newNode = tree.createNodeByType(TreeNodeType.Project, {
-          type: TreeNodeType.Project,
+        const newNode = Tree.createNodeByType(TreeNodeType.Project, {
           title: title,
           description: workspaceUri.fsPath,
           resourceUri: workspaceUri,
         });
         if (newNode) {
-          treeViewController.tree.addNodes(target, [newNode]);
-          treeViewController.view?.reveal(newNode);
+          tree.addNodes(target, [newNode]);
+          view?.reveal(newNode, {
+            select: true,
+            focus: true,
+          });
         }
       } else if (
         vscode.workspace.workspaceFolders &&
@@ -96,8 +97,7 @@ export function createAddNode(treeViewController: TreeViewController) {
         const newNodes = vscode.workspace.workspaceFolders
           .map((folder) => {
             const title = getProjectTitle(folder.uri.fsPath);
-            return tree.createNodeByType(TreeNodeType.Project, {
-              type: TreeNodeType.Project,
+            return Tree.createNodeByType(TreeNodeType.Project, {
               title: title,
               description: folder.uri.fsPath,
               resourceUri: folder.uri,
@@ -105,8 +105,11 @@ export function createAddNode(treeViewController: TreeViewController) {
           })
           .filter((item) => !!item);
         if (newNodes.length > 0) {
-          treeViewController.tree.addNodes(target, newNodes);
-          treeViewController.view?.reveal(newNodes[0]);
+          tree.addNodes(target, newNodes);
+          view?.reveal(newNodes[0], {
+            select: true,
+            focus: true,
+          });
         }
       } else {
         vscode.window.showInformationMessage('当前没有打开任何项目或文件夹');

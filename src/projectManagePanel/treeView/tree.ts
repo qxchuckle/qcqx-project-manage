@@ -6,6 +6,8 @@ import { GroupTreeItem } from './treeItems/group';
 import { JsonTreeNodeType, TreeItemProps, TreeNodeType } from './type';
 import { ProjectTreeItem } from './treeItems/project';
 import { LocalCache } from '../../utils';
+import { TipTreeItem } from './treeItems/tip';
+import { RootTreeItem } from './treeItems/root';
 
 export const projectListCacheId = 'project-list';
 
@@ -27,7 +29,7 @@ export class Tree
     this._onDidChangeTreeData.event;
   context: vscode.ExtensionContext;
   /** 虚拟根节点 */
-  root: GroupTreeItem;
+  root: RootTreeItem;
   allTreeNodesMap: { [id: string]: BaseTreeItem } = {};
   /** refresh缓存相关 */
   private _refreshPending = false;
@@ -40,12 +42,11 @@ export class Tree
   constructor(props: TreeProps) {
     super();
     this.context = props.context;
-    this.root = this.createNodeByType(TreeNodeType.Group, {
+    this.root = Tree.createNodeByType(TreeNodeType.Root, {
       id: 'root',
       title: '虚拟根节点',
       collapsibleState: vscode.TreeItemCollapsibleState.Expanded,
-      type: TreeNodeType.Root,
-    })!;
+    });
     this.refreshTreeNodesMap(this.root);
     this.localCache = LocalCache.getInstance(this.context);
     this.init();
@@ -74,10 +75,11 @@ export class Tree
   }
 
   getChildren(element?: BaseTreeItem): vscode.ProviderResult<BaseTreeItem[]> {
-    const children = (element ? element.children : this.root.children) || [];
+    let result = [...(element ? element.children : this.root.children)];
+
     // group 节点排在前面
-    return (
-      children.sort((a, b) => {
+    result =
+      result.sort((a, b) => {
         if (a.type === TreeNodeType.Group && b.type !== TreeNodeType.Group) {
           return -1;
         }
@@ -85,8 +87,18 @@ export class Tree
           return 1;
         }
         return 0;
-      }) || []
-    );
+      }) || [];
+
+    if (!element) {
+      // 增加tip节点
+      const tipNode = Tree.createNodeByType(TreeNodeType.Tip, {
+        id: 'root-operate-tip',
+        title: '在根目录下操作',
+      });
+      result.unshift(tipNode);
+    }
+
+    return result;
   }
 
   getParent(element: BaseTreeItem): BaseTreeItem | undefined {
@@ -202,14 +214,9 @@ export class Tree
       }
       for (const node of children) {
         const treeItemProps = BaseTreeItem.jsonNodeToTreeItemProps(node);
-        const treeItem = this.createNodeByType(
-          treeItemProps.type,
-          treeItemProps,
-        );
-        if (treeItem) {
-          parent.addChild(treeItem);
-          _parse(treeItem, node.children);
-        }
+        const treeItem = Tree.createNodeByType(node.type, treeItemProps);
+        parent.addChild(treeItem);
+        _parse(treeItem, node.children);
       }
     };
     _parse(this.root, jsonObj);
@@ -257,17 +264,21 @@ export class Tree
   /**
    * 根据type创建节点
    */
-  createNodeByType(
+  static createNodeByType(
     type: TreeNodeType,
     props: TreeItemProps,
-  ): BaseTreeItem | undefined {
+  ): BaseTreeItem {
     switch (type) {
       case TreeNodeType.Group:
         return new GroupTreeItem(props);
       case TreeNodeType.Project:
         return new ProjectTreeItem(props);
+      case TreeNodeType.Root:
+        return new RootTreeItem(props);
+      case TreeNodeType.Tip:
+        return new TipTreeItem(props);
       default:
-        return undefined;
+        throw new Error(`没有处理的节点类型: ${type}`);
     }
   }
 }
