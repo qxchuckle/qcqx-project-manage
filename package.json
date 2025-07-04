@@ -1,7 +1,8 @@
 {
   "name": "qcqx-project-manage",
-  "displayName": "qcqx-project-manage",
-  "description": "",
+  "displayName": "项目管理(Project Manage)",
+  "description": "项目管理",
+  "publisher": "qcqx",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.70.0"
@@ -9,17 +10,42 @@
   "categories": [
     "Other"
   ],
+  "keywords": [
+    "项目",
+    "管理",
+    "project",
+    "folder",
+    "workspace",
+    "switch",
+    "manage",
+    "mercurial"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qxchuckle/qcqx-project-manage.git"
+  },
   "activationEvents": [
     "onStartupFinished"
   ],
   "main": "./dist/extension.js",
+  "icon": "assets/logo.png",
+  "extensionKind": [
+    "ui",
+    "workspace"
+  ],
+  "capabilities": {
+    "virtualWorkspaces": true,
+    "untrustedWorkspaces": {
+      "supported": true
+    }
+  },
   "contributes": {
     "viewsContainers": {
       "activitybar": [
         {
           "id": "qcqx-project-manage-panel",
           "title": "项目管理",
-          "icon": "assets/folder.svg"
+          "icon": "assets/manage.svg"
         }
       ]
     },
