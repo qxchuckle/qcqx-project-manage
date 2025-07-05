@@ -1,71 +1,34 @@
-# qcqx-project-manage README
+# VSCode插件-项目管理
 
-This is the README for your extension "qcqx-project-manage". After writing up a brief description, we recommend including the following sections.
+> 之前在用 [Project Manager](https://github.com/alefragnani/vscode-project-manager) 管理项目，但只能用标签进行分类，也不能拖拽移动，司内项目很多，分各种业务域、层级，树形结构才符合需求。
+> 在插件市场并没有找到合适的，那就自己写个吧，聚焦实际开发痛点，解决项目管理难题
 
-## Features
+这是一个VSCode插件，用于管理项目
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+功能：
+1. 树结构管理项目，支持拖拽移动
+2. 支持单个或批量保存文件夹、工作区，并快速打开
+3. 支持打开 project-list.json 配置文件快速编辑
+4. 多窗口同步状态，配置文件改动后自动更新面板
 
-For example if there is an image subfolder under your extension project workspace:
+未来的功能：
+2. 支持标签分类，可切换平铺、树状、标签
+3. 每个项目可以关联一些链接，以快速打开，比如发布页、git仓库、项目测试环境页面等等
+4. 支持保存项目组，点击后快速打开多个窗口（可选择的）。开发往往得打开多个工程，这些工程项目是有关联的，但我并不想用工作区，只在一个窗口打开多个项目并不方便。
+5. 和 Project Manager 一样支持自动扫描文件夹识别Git项目
+6. 还有更多
 
-\!\[feature X\]\(images/feature-x.png\)
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
 
-## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
 
-## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
 
-For example:
 
-This extension contributes the following settings:
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
 
-## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
 
-## Release Notes
 
-Users appreciate release notes as you update your extension.
 
-### 1.0.0
 
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
