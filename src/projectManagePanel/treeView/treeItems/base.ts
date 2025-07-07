@@ -45,8 +45,7 @@ ${this.projectPath || '无路径'}`);
     Object.assign(this, {
       ...props,
       propsDescription: props.description || '',
-      // 没有描述则显示项目路径
-      description: props.description || props.resourceUri?.fsPath,
+      description: props.description,
       iconPath: props.iconPath,
       contextValue: props.contextValue || 'none',
       tooltip,
