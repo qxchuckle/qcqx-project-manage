@@ -16,7 +16,13 @@ export class GroupTreeItem extends BaseTreeItem {
   constructor(props: TreeItemProps) {
     props.contextValue = TreeNodeType.Group;
     props.iconPath = undefined;
+    props.collapsibleState =
+      props.collapsibleState || vscode.TreeItemCollapsibleState.Collapsed;
     super(props);
-    Object.assign(this, {});
+    const tooltip = new vscode.MarkdownString(`${this.label}  
+${props.description || '无描述'}`);
+    Object.assign(this, {
+      tooltip,
+    });
   }
 }

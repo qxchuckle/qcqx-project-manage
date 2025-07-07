@@ -39,7 +39,7 @@ export class TreeViewController {
   updateConfig(key: string, value: any) {
     const config = vscode.workspace.getConfiguration(vscodeConfigName);
     config
-      .update(key, value, vscode.ConfigurationTarget.Workspace)
+      .update(key, value, vscode.ConfigurationTarget.Global)
       .then(undefined, () => {
         config.update(key, value, vscode.ConfigurationTarget.Global);
       });

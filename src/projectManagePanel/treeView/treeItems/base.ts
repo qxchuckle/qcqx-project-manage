@@ -17,6 +17,8 @@ export abstract class BaseTreeItem extends vscode.TreeItem implements TreeItem {
   id: string;
   children: BaseTreeItem[] = [];
   parent?: BaseTreeItem;
+  /** 从props中获取的描述 */
+  propsDescription?: vscode.TreeItem['description'];
 
   /**
    * 项目路径
@@ -27,13 +29,27 @@ export abstract class BaseTreeItem extends vscode.TreeItem implements TreeItem {
 
   constructor(props: TreeItemProps) {
     const label = props.label ?? props.title ?? `【未命名-${props.id}】`;
-    super(label, props.collapsibleState);
+    super(
+      label,
+      props.collapsibleState ?? vscode.TreeItemCollapsibleState.None,
+    );
     this.title = props.title || '';
     this.id = props.id || generateId();
+
+    const tooltip =
+      props.tooltip ||
+      new vscode.MarkdownString(`${label}  
+${props.description || '无描述'}  
+${this.projectPath || '无路径'}`);
+
     Object.assign(this, {
       ...props,
+      propsDescription: props.description || '',
+      // 没有描述则显示项目路径
+      description: props.description || props.resourceUri?.fsPath,
       iconPath: props.iconPath,
       contextValue: props.contextValue || 'none',
+      tooltip,
     });
   }
 
@@ -45,10 +61,10 @@ export abstract class BaseTreeItem extends vscode.TreeItem implements TreeItem {
       id: this.id,
       type: this.type,
       title: this.title || '',
-      description: this.description,
-      children: this.children.map((child) => child.exportJsonNode()),
-      collapsibleState: this.collapsibleState,
+      description: this.propsDescription || '',
+      collapsibleState: this.collapsibleState || undefined,
       fsPath: this.projectPath,
+      children: this.children.map((child) => child.exportJsonNode()),
     };
   }
 
@@ -92,8 +108,7 @@ export abstract class BaseTreeItem extends vscode.TreeItem implements TreeItem {
       id: node.id,
       title: node.title,
       description: node.description,
-      collapsibleState:
-        node.collapsibleState ?? vscode.TreeItemCollapsibleState.None,
+      collapsibleState: node.collapsibleState,
       resourceUri: node.fsPath ? vscode.Uri.file(node.fsPath) : undefined,
     };
   }

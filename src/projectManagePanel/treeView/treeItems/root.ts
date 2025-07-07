@@ -16,7 +16,10 @@ export class RootTreeItem extends BaseTreeItem {
   constructor(props: TreeItemProps) {
     props.contextValue = TreeNodeType.Root;
     props.iconPath = undefined;
+    props.collapsibleState = vscode.TreeItemCollapsibleState.None;
     super(props);
-    Object.assign(this, {});
+    Object.assign(this, {
+      tooltip: this.label,
+    });
   }
 }

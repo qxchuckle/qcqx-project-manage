@@ -11,20 +11,27 @@ export class ProjectTreeItem extends BaseTreeItem {
 
   constructor(props: TreeItemProps) {
     props.contextValue = TreeNodeType.Project;
+    props.collapsibleState = vscode.TreeItemCollapsibleState.None;
     super(props);
 
     const fsPath = props.resourceUri?.fsPath;
     const isWorkspace = fsPath && isWorkspaceFile(fsPath);
 
+    const tooltip = new vscode.MarkdownString(`[${
+      isWorkspace ? '工作区' : '文件夹'
+    }]${this.label}  
+${props.description || '无描述'}  
+${this.projectPath || '无路径'}`);
+
     Object.assign(this, {
-      command: {
-        command:
-          'qcqx-project-manage.project-list.open-project-in-current-window',
-        title: isWorkspace ? '打开工作区' : '打开项目',
-        arguments: [this],
-      },
+      // command: {
+      //   command:
+      //     'qcqx-project-manage.project-list.open-project-in-current-window',
+      //   title: isWorkspace ? '打开工作区' : '打开项目',
+      //   arguments: [this],
+      // },
       iconPath: vscode.ThemeIcon.Folder,
-      tooltip: (isWorkspace ? '工作区' : '文件夹') + ' ' + props.description,
+      tooltip,
     });
   }
 }

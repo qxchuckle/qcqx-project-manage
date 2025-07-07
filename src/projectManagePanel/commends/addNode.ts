@@ -30,7 +30,7 @@ export function createAddNode(treeViewController: TreeViewController) {
             const title = getProjectTitle(item.fsPath);
             return Tree.createNodeByType(TreeNodeType.Project, {
               title: title,
-              description: item.fsPath,
+              // description: item.fsPath,
               resourceUri: item,
             });
           })
@@ -79,7 +79,7 @@ export function createAddNode(treeViewController: TreeViewController) {
         const title = getProjectTitle(workspaceUri.fsPath);
         const newNode = Tree.createNodeByType(TreeNodeType.Project, {
           title: title,
-          description: workspaceUri.fsPath,
+          // description: workspaceUri.fsPath,
           resourceUri: workspaceUri,
         });
         if (newNode) {
@@ -99,7 +99,7 @@ export function createAddNode(treeViewController: TreeViewController) {
             const title = getProjectTitle(folder.uri.fsPath);
             return Tree.createNodeByType(TreeNodeType.Project, {
               title: title,
-              description: folder.uri.fsPath,
+              // description: folder.uri.fsPath,
               resourceUri: folder.uri,
             });
           })
