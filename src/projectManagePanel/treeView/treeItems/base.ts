@@ -28,7 +28,7 @@ export abstract class BaseTreeItem extends vscode.TreeItem implements TreeItem {
   }
 
   constructor(props: TreeItemProps) {
-    const label = props.label ?? props.title ?? `【未命名-${props.id}】`;
+    const label = props.label || props.title || `【未命名-${props.id}】`;
     super(
       label,
       props.collapsibleState ?? vscode.TreeItemCollapsibleState.None,
