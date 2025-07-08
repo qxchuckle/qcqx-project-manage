@@ -15,7 +15,7 @@ export class ProjectTreeItem extends BaseTreeItem {
     super(props);
 
     const fsPath = props.resourceUri?.fsPath;
-    const isWorkspace = fsPath && isWorkspaceFile(fsPath);
+    const isWorkspace = isWorkspaceFile(fsPath);
 
     const tooltip = new vscode.MarkdownString(`[${
       isWorkspace ? '工作区' : '文件夹'
@@ -33,5 +33,19 @@ ${this.projectPath || '无路径'}`);
       iconPath: vscode.ThemeIcon.Folder,
       tooltip,
     });
+  }
+
+  update(props: TreeItemProps) {
+    const treeProps = this.treePropsProcess({
+      ...this,
+      ...props,
+    });
+    const isWorkspace = isWorkspaceFile(props.resourceUri?.fsPath);
+    treeProps.tooltip = new vscode.MarkdownString(`[${
+      isWorkspace ? '工作区' : '文件夹'
+    }]${treeProps.label}  
+${props.description || '无描述'}  
+${this.projectPath || '无路径'}`);
+    Object.assign(this, treeProps);
   }
 }

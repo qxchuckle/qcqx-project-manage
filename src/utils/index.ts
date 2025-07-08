@@ -37,7 +37,10 @@ function containsNonAscii(str: string) {
 /**
  * 判断是否是工作区文件
  */
-export function isWorkspaceFile(filePath: string): boolean {
+export function isWorkspaceFile(filePath: string | undefined): boolean {
+  if (!filePath) {
+    return false;
+  }
   return path.extname(filePath).toLowerCase() === '.code-workspace';
 }
 

@@ -257,7 +257,19 @@ export class Tree
    * 重命名
    */
   renameNode(node: BaseTreeItem, newName: string | undefined) {
-    node.rename(newName);
+    node.update({
+      title: newName,
+    });
+    this.refresh(node.parent);
+  }
+
+  /**
+   * 编辑描述
+   */
+  editDescription(node: BaseTreeItem, newDescription: string | undefined) {
+    node.update({
+      description: newDescription,
+    });
     this.refresh(node.parent);
   }
 

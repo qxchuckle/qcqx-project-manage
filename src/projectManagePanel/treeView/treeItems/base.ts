@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import path from 'path';
 import {
   JsonTreeNodeType,
   TreeItem,
@@ -13,12 +12,12 @@ import { generateId } from '../../../utils';
  */
 export abstract class BaseTreeItem extends vscode.TreeItem implements TreeItem {
   abstract type: TreeNodeType;
-  title: string;
-  id: string;
+  title: string = '';
+  id: string = '';
   children: BaseTreeItem[] = [];
   parent?: BaseTreeItem;
-  /** 从props中获取的描述 */
-  propsDescription?: vscode.TreeItem['description'];
+
+  abstract update(props: TreeItemProps): void;
 
   /**
    * 项目路径
@@ -28,28 +27,12 @@ export abstract class BaseTreeItem extends vscode.TreeItem implements TreeItem {
   }
 
   constructor(props: TreeItemProps) {
-    const label = props.label || props.title || `【未命名-${props.id}】`;
+    const label = props.title || `【未命名-${props.id}】`;
     super(
       label,
       props.collapsibleState ?? vscode.TreeItemCollapsibleState.None,
     );
-    this.title = props.title || '';
-    this.id = props.id || generateId();
-
-    const tooltip =
-      props.tooltip ||
-      new vscode.MarkdownString(`${label}  
-${props.description || '无描述'}  
-${this.projectPath || '无路径'}`);
-
-    Object.assign(this, {
-      ...props,
-      propsDescription: props.description || '',
-      description: props.description,
-      iconPath: props.iconPath,
-      contextValue: props.contextValue || 'none',
-      tooltip,
-    });
+    this._init(props);
   }
 
   /**
@@ -60,7 +43,7 @@ ${this.projectPath || '无路径'}`);
       id: this.id,
       type: this.type,
       title: this.title || '',
-      description: this.propsDescription || '',
+      description: this.description || '',
       collapsibleState: this.collapsibleState || undefined,
       fsPath: this.projectPath,
       children: this.children.map((child) => child.exportJsonNode()),
@@ -143,10 +126,31 @@ ${this.projectPath || '无路径'}`);
   }
 
   /**
-   * 重命名
+   * 处理TreeItemProps
    */
-  rename(newName: string | undefined) {
-    this.title = newName || '';
-    this.label = this.title || `【未命名-${this.id}】`;
+  public treePropsProcess(props: TreeItemProps): TreeItemProps {
+    const label = props.title || `【未命名-${props.id}】`;
+    return {
+      ...props,
+      title: props.title || '',
+      id: props.id || generateId(),
+      label,
+      description: props.description,
+      iconPath: props.iconPath,
+      contextValue: props.contextValue || 'none',
+      tooltip:
+        props.tooltip ||
+        new vscode.MarkdownString(`${label}  
+${props.description || '无描述'}  
+${this.projectPath || '无路径'}`),
+    };
+  }
+
+  private _init(props: TreeItemProps) {
+    const treeProps = this.treePropsProcess(props);
+
+    Object.assign(this, {
+      ...treeProps,
+    });
   }
 }

@@ -18,6 +18,10 @@ export class TipTreeItem extends BaseTreeItem {
     props.iconPath = new vscode.ThemeIcon('info');
     props.collapsibleState = vscode.TreeItemCollapsibleState.None;
     super(props);
+    this.update(props);
+  }
+
+  update(props: TreeItemProps) {
     Object.assign(this, {
       tooltip: this.label,
     });

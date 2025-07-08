@@ -13,7 +13,7 @@ export function initCommands(treeViewController: TreeViewController) {
     ...createAddNode(treeViewController),
     createDeleteNode(treeViewController),
     ...createLockList(treeViewController),
-    createRenameNode(treeViewController),
+    ...createRenameNode(treeViewController),
     ...createOpenProject(treeViewController),
     createOpenLocalConfig(treeViewController),
   ];

@@ -5,7 +5,7 @@ import { BaseTreeItem } from '../treeView/treeItems/base';
 export function createRenameNode(treeViewController: TreeViewController) {
   const { tree, context } = treeViewController;
 
-  return vscode.commands.registerCommand(
+  const renameNode = vscode.commands.registerCommand(
     'qcqx-project-manage.project-list.rename-node',
     async (target: BaseTreeItem | undefined) => {
       if (!target) {
@@ -20,4 +20,24 @@ export function createRenameNode(treeViewController: TreeViewController) {
       }
     },
   );
+
+  const editDescription = vscode.commands.registerCommand(
+    'qcqx-project-manage.project-list.edit-description',
+    async (target: BaseTreeItem | undefined) => {
+      if (!target) {
+        return;
+      }
+      const description =
+        typeof target.description === 'string' ? target.description : '';
+      const newDescription = await vscode.window.showInputBox({
+        value: description,
+        prompt: '请输入新的描述',
+      });
+      if (typeof newDescription === 'string') {
+        tree.editDescription(target, newDescription);
+      }
+    },
+  );
+
+  return [renameNode, editDescription];
 }

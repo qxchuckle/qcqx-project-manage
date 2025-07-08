@@ -77,6 +77,31 @@
       ],
       "view/item/context": [
         {
+          "command": "qcqx-project-manage.project-list.rename-node",
+          "when": "view == project-list && (viewItem == group || viewItem == project) && !config.qcqx-project-manage.project-list-lock",
+          "group": "modification@1"
+        },
+        {
+          "command": "qcqx-project-manage.project-list.edit-description",
+          "when": "view == project-list && (viewItem == group || viewItem == project) &&!config.qcqx-project-manage.project-list-lock",
+          "group": "modification@2"
+        },
+        {
+          "command": "qcqx-project-manage.project-list.delete-node",
+          "when": "view == project-list && (viewItem == group || viewItem == project) && !config.qcqx-project-manage.project-list-lock",
+          "group": "modification@3"
+        },
+        {
+          "command": "qcqx-project-manage.project-list.open-project-in-file-explorer",
+          "when": "view == project-list &&  viewItem == project && !config.qcqx-project-manage.project-list-lock",
+          "group": "modification@4"
+        },
+        {
+          "command": "qcqx-project-manage.project-list.open-project-in-terminal",
+          "when": "view == project-list && viewItem == project && !config.qcqx-project-manage.project-list-lock",
+          "group": "modification@5"
+        },
+        {
           "command": "qcqx-project-manage.project-list.open-project-in-current-window",
           "when": "view == project-list && viewItem == project",
           "group": "inline@1"
@@ -111,22 +136,27 @@
         {
           "command": "qcqx-project-manage.project-list.rename-node",
           "when": "view == project-list && !config.qcqx-project-manage.project-list-lock",
-          "group": "modification"
+          "group": "modification@1"
+        },
+        {
+          "command": "qcqx-project-manage.project-list.edit-description",
+          "when": "view == project-list && !config.qcqx-project-manage.project-list-lock",
+          "group": "modification@2"
         },
         {
           "command": "qcqx-project-manage.project-list.delete-node",
           "when": "view == project-list && !config.qcqx-project-manage.project-list-lock",
-          "group": "modification"
+          "group": "modification@3"
         },
         {
           "command": "qcqx-project-manage.project-list.open-project-in-file-explorer",
           "when": "view == project-list && viewItem == project && !config.qcqx-project-manage.project-list-lock",
-          "group": "modification"
+          "group": "modification@4"
         },
         {
           "command": "qcqx-project-manage.project-list.open-project-in-terminal",
           "when": "view == project-list && viewItem == project && !config.qcqx-project-manage.project-list-lock",
-          "group": "modification"
+          "group": "modification@5"
         }
       ]
     },
@@ -162,6 +192,11 @@
         "command": "qcqx-project-manage.project-list.rename-node",
         "title": "重命名",
         "icon": "$(pencil)"
+      },
+      {
+        "command": "qcqx-project-manage.project-list.edit-description",
+        "title": "编辑描述",
+        "icon": "$(comments-view-icon)"
       },
       {
         "command": "qcqx-project-manage.project-list.open-project-in-current-window",
