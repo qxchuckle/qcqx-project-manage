@@ -3,7 +3,7 @@
   "displayName": "项目管理(Project Manage)",
   "description": "项目管理",
   "publisher": "qcqx",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "engines": {
     "vscode": "^1.70.0"
   },
