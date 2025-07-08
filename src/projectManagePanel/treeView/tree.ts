@@ -194,7 +194,6 @@ export class Tree
    * 打开本地配置
    */
   openLocalConfig() {
-    console.log('openLocalConfig');
     const uri = this.localCache.getCacheFile(projectListCacheId);
     vscode.commands.executeCommand('vscode.open', uri);
   }
@@ -209,6 +208,12 @@ export class Tree
       : JSON.parse(
           (await this.localCache.readCacheFile(projectListCacheId)) || '[]',
         );
+    // 如果和当前树相同，则不更新
+    const currentJson = this.parseToJson();
+    if (JSON.stringify(currentJson) === JSON.stringify(jsonObj)) {
+      console.log('parseJsonNodeToTree 相同，不更新');
+      return;
+    }
     const _parse = (parent: BaseTreeItem, children?: JsonTreeNodeType[]) => {
       // 先清空子节点
       parent.children = [];
