@@ -6,6 +6,7 @@ import { createRenameNode } from './renameNode';
 import { createLockList } from './lockList';
 import { createOpenProject } from './openProject';
 import { createOpenLocalConfig } from './openLocalConfig';
+import { createExpandAndCollapsed } from './expandAndCollapsed';
 
 export function initCommands(treeViewController: TreeViewController) {
   const { context } = treeViewController;
@@ -16,6 +17,7 @@ export function initCommands(treeViewController: TreeViewController) {
     ...createRenameNode(treeViewController),
     ...createOpenProject(treeViewController),
     createOpenLocalConfig(treeViewController),
+    ...createExpandAndCollapsed(treeViewController),
   ];
   context.subscriptions.push(...commands);
 }

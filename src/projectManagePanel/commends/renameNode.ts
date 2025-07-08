@@ -3,11 +3,10 @@ import { TreeViewController } from '../treeView/treeViewController';
 import { BaseTreeItem } from '../treeView/treeItems/base';
 
 export function createRenameNode(treeViewController: TreeViewController) {
-  const { tree, context } = treeViewController;
-
   const renameNode = vscode.commands.registerCommand(
     'qcqx-project-manage.project-list.rename-node',
     async (target: BaseTreeItem | undefined) => {
+      const { tree, context } = treeViewController;
       if (!target) {
         return;
       }
@@ -24,6 +23,7 @@ export function createRenameNode(treeViewController: TreeViewController) {
   const editDescription = vscode.commands.registerCommand(
     'qcqx-project-manage.project-list.edit-description',
     async (target: BaseTreeItem | undefined) => {
+      const { tree, context } = treeViewController;
       if (!target) {
         return;
       }

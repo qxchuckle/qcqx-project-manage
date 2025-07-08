@@ -232,6 +232,16 @@
         "command": "qcqx-project-manage.project-list.open-local-config",
         "title": "打开本地配置",
         "icon": "$(settings-gear)"
+      },
+      {
+        "command": "qcqx-project-manage.project-list.expand-all",
+        "title": "展开所有",
+        "icon": "$(expand-all)"
+      },
+      {
+        "command": "qcqx-project-manage.project-list.collapse-all",
+        "title": "折叠所有",
+        "icon": "$(collapse-all)"
       }
     ],
     "configuration": {

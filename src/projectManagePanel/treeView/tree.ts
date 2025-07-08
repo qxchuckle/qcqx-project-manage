@@ -138,7 +138,7 @@ export class Tree
     // 如果有收集到的节点，刷新这些节点
     try {
       if (this._refreshNodes.has(this.root)) {
-        this._onDidChangeTreeData.fire(undefined);
+        this._onDidChangeTreeData.fire();
       } else if (this._refreshNodes.size > 0) {
         for (const node of this._refreshNodes) {
           this._onDidChangeTreeData.fire(node);
@@ -146,7 +146,7 @@ export class Tree
         }
       } else {
         // 没有特定节点，刷新整个树
-        this._onDidChangeTreeData.fire(undefined);
+        this._onDidChangeTreeData.fire();
         this.refreshTreeNodesMap(this.root);
       }
     } catch (error) {
@@ -202,10 +202,13 @@ export class Tree
   /**
    * 解析json对象为树
    */
-  async parseJsonNodeToTree() {
+  async parseJsonNodeToTree(_jsonObj?: JsonTreeNodeType[]) {
     console.log('parseJsonNodeToTree');
-    const json = await this.localCache.readCacheFile(projectListCacheId);
-    const jsonObj = JSON.parse(json || '[]');
+    const jsonObj = _jsonObj
+      ? _jsonObj
+      : JSON.parse(
+          (await this.localCache.readCacheFile(projectListCacheId)) || '[]',
+        );
     const _parse = (parent: BaseTreeItem, children?: JsonTreeNodeType[]) => {
       // 先清空子节点
       parent.children = [];

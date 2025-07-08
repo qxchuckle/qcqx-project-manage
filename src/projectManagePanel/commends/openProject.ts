@@ -5,8 +5,6 @@ import { explorer, isWorkspaceFile } from '../../utils';
 import * as path from 'path';
 
 export function createOpenProject(treeViewController: TreeViewController) {
-  const { tree, context, view } = treeViewController;
-
   const openProjectInCurrentWindow = vscode.commands.registerCommand(
     'qcqx-project-manage.project-list.open-project-in-current-window',
     async (target: BaseTreeItem | undefined) => {

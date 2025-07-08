@@ -6,13 +6,12 @@ import { isWorkspaceFile, getProjectTitle, generateId } from '../../utils';
 import { Tree } from '../treeView/tree';
 
 export function createAddNode(treeViewController: TreeViewController) {
-  const { tree, view, context } = treeViewController;
-
   // 添加项目
   const addProject = vscode.commands.registerCommand(
     'qcqx-project-manage.project-list.add-project',
-    async (target: BaseTreeItem = tree.root) => {
-      if (target.type === TreeNodeType.Tip) {
+    async (target: BaseTreeItem | undefined) => {
+      const { tree, view, context } = treeViewController;
+      if (!target || target.type === TreeNodeType.Tip) {
         target = tree.root;
       }
       const uri = await vscode.window.showOpenDialog({
@@ -47,8 +46,9 @@ export function createAddNode(treeViewController: TreeViewController) {
   // 添加分组
   const addGroup = vscode.commands.registerCommand(
     'qcqx-project-manage.project-list.add-group',
-    async (target: BaseTreeItem = tree.root) => {
-      if (target.type === TreeNodeType.Tip) {
+    async (target: BaseTreeItem | undefined) => {
+      const { tree, view, context } = treeViewController;
+      if (!target || target.type === TreeNodeType.Tip) {
         target = tree.root;
       }
       const newNode = Tree.createNodeByType(TreeNodeType.Group, {
@@ -68,8 +68,9 @@ export function createAddNode(treeViewController: TreeViewController) {
    */
   const addCurrentProject = vscode.commands.registerCommand(
     'qcqx-project-manage.project-list.add-current-project',
-    async (target: BaseTreeItem = tree.root) => {
-      if (target.type === TreeNodeType.Tip) {
+    async (target: BaseTreeItem | undefined) => {
+      const { tree, view, context } = treeViewController;
+      if (!target || target.type === TreeNodeType.Tip) {
         target = tree.root;
       }
       // 优先检查是否有工作区文件

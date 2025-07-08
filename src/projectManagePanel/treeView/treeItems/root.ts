@@ -18,6 +18,7 @@ export class RootTreeItem extends BaseTreeItem {
     props.iconPath = undefined;
     props.collapsibleState = vscode.TreeItemCollapsibleState.None;
     super(props);
+    this.update(props);
   }
 
   update(props: TreeItemProps) {}
