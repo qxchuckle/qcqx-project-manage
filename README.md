@@ -19,9 +19,9 @@
 3. 和 Project Manager 一样支持自动扫描文件夹识别Git项目  
 4. 还有更多  
 
-![image](https://github.com/user-attachments/assets/579c8b98-d6ef-4013-8da2-55596683dfa6)
+![image](https://raw.githubusercontent.com/qxchuckle/qcqx-project-manage/refs/heads/master/assets/img/1.png)
 
-![image](https://github.com/user-attachments/assets/ac1409bc-80a1-41ba-a45f-b02a2268747e)
+![image](https://raw.githubusercontent.com/qxchuckle/qcqx-project-manage/refs/heads/master/assets/img/2.png)
 
 
 
