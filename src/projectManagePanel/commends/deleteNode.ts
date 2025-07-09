@@ -4,7 +4,7 @@ import { BaseTreeItem } from '../treeView/treeItems/base';
 import { TreeNodeTypeNameMap } from '../treeView/type';
 
 export function createDeleteNode(treeViewController: TreeViewController) {
-  return vscode.commands.registerCommand(
+  const deleteNode = vscode.commands.registerCommand(
     'qcqx-project-manage.project-list.delete-node',
     async (target: BaseTreeItem | undefined) => {
       if (!target) {
@@ -23,4 +23,6 @@ export function createDeleteNode(treeViewController: TreeViewController) {
       tree.deleteNode(target);
     },
   );
+
+  return [deleteNode];
 }

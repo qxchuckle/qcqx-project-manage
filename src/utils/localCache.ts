@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import * as path from 'path';
+import * as os from 'os';
 import * as fs from 'fs';
 
 const vscodeFs = vscode.workspace.fs;
@@ -19,7 +19,18 @@ export class LocalCache {
 
   private constructor(context: vscode.ExtensionContext) {
     this.context = context;
-    this.cacheUri = context.globalStorageUri;
+    const homeDir = os.homedir();
+    if (!homeDir) {
+      // 用这个的话，配置就没法在各种类vscode上同步了
+      this.cacheUri = context.globalStorageUri;
+    } else {
+      this.cacheUri = vscode.Uri.joinPath(
+        vscode.Uri.file(homeDir),
+        '.qcqx',
+        'qcqx-project-manage',
+      );
+    }
+    console.log('cacheUri', this.cacheUri);
   }
 
   /**

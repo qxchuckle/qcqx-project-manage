@@ -16,6 +16,7 @@ export abstract class BaseTreeItem extends vscode.TreeItem implements TreeItem {
   id: string = '';
   children: BaseTreeItem[] = [];
   parent?: BaseTreeItem;
+  links?: string[];
 
   abstract update(props: TreeItemProps): void;
 
@@ -46,6 +47,7 @@ export abstract class BaseTreeItem extends vscode.TreeItem implements TreeItem {
       description: this.description || '',
       collapsibleState: this.collapsibleState || undefined,
       fsPath: this.projectPath,
+      links: this.links,
       children: this.children.map((child) => child.exportJsonNode()),
     };
   }
@@ -92,6 +94,7 @@ export abstract class BaseTreeItem extends vscode.TreeItem implements TreeItem {
       description: node.description,
       collapsibleState: node.collapsibleState,
       resourceUri: node.fsPath ? vscode.Uri.file(node.fsPath) : undefined,
+      links: node.links,
     };
   }
 

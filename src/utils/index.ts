@@ -2,10 +2,17 @@ import * as vscode from 'vscode';
 import { spawn } from 'child_process';
 import * as path from 'path';
 export * from './localCache';
+export * from './workspace';
+export * from './doc';
 
-export function explorer(folderPath: string) {
+export async function explorer(folderPath: string) {
   if (!folderPath) {
     return;
+  }
+  // 判断是否是个文件夹
+  const isFolder = await vscode.workspace.fs.stat(vscode.Uri.file(folderPath));
+  if (isFolder.type !== vscode.FileType.Directory) {
+    folderPath = path.dirname(folderPath);
   }
   if (containsNonAscii(folderPath)) {
     // 存在非ascii字符则使用spawn打开

@@ -13,6 +13,8 @@ export function createRenameNode(treeViewController: TreeViewController) {
       const newName = await vscode.window.showInputBox({
         value: target.title,
         prompt: '请输入新的名称',
+        ignoreFocusOut: true,
+        title: '重命名',
       });
       if (typeof newName === 'string') {
         tree.renameNode(target, newName);
@@ -32,6 +34,8 @@ export function createRenameNode(treeViewController: TreeViewController) {
       const newDescription = await vscode.window.showInputBox({
         value: description,
         prompt: '请输入新的描述',
+        ignoreFocusOut: true,
+        title: '编辑描述',
       });
       if (typeof newDescription === 'string') {
         tree.editDescription(target, newDescription);

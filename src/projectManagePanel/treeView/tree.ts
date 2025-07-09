@@ -191,11 +191,10 @@ export class Tree
   }
 
   /**
-   * 打开本地配置
+   * 获取本地配置uri
    */
-  openLocalConfig() {
-    const uri = this.localCache.getCacheFile(projectListCacheId);
-    vscode.commands.executeCommand('vscode.open', uri);
+  getLocalConfigUri() {
+    return this.localCache.getCacheFile(projectListCacheId);
   }
 
   /**
@@ -277,6 +276,44 @@ export class Tree
   editDescription(node: BaseTreeItem, newDescription: string | undefined) {
     node.update({
       description: newDescription,
+    });
+    this.refresh(node.parent);
+  }
+
+  /**
+   * 添加关联链接
+   */
+  addLink(node: BaseTreeItem, link: string) {
+    const linkTrim = link?.trim();
+    if (!linkTrim) {
+      return;
+    }
+    try {
+      vscode.Uri.parse(linkTrim, true);
+    } catch (error) {
+      vscode.window.showErrorMessage('链接格式不正确');
+      return;
+    }
+    node.update({
+      // 去重
+      links: Array.from(new Set([...(node.links || []), linkTrim])),
+    });
+    this.refresh(node.parent);
+  }
+
+  /**
+   * 删除关联链接
+   */
+  deleteLinks(node: BaseTreeItem, links: string[]) {
+    if (!node.links?.length || !links?.length) {
+      return;
+    }
+    const _links = new Set(node.links);
+    for (const link of links) {
+      _links.delete(link);
+    }
+    node.update({
+      links: Array.from(_links),
     });
     this.refresh(node.parent);
   }

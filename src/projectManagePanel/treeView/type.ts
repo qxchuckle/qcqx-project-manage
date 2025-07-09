@@ -23,7 +23,8 @@ export interface TreeItem extends vscode.TreeItem {
   title: string;
   type: TreeNodeType;
 }
-export type TreeItemProps = Omit<Partial<TreeItem>, 'type'>;
+export type TreeItemProps = Omit<Partial<TreeItem>, 'type'> &
+  Pick<JsonTreeNodeType, 'links'>;
 
 /**
  * json树节点
@@ -37,4 +38,5 @@ export interface JsonTreeNodeType {
   /** 仅当type为group时有效 */
   collapsibleState?: vscode.TreeItemCollapsibleState;
   fsPath?: string;
+  links?: string[];
 }

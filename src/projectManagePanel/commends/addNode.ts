@@ -4,6 +4,7 @@ import { BaseTreeItem } from '../treeView/treeItems/base';
 import { TreeNodeType } from '../treeView/type';
 import { isWorkspaceFile, getProjectTitle, generateId } from '../../utils';
 import { Tree } from '../treeView/tree';
+import { getCurrentWorkspace } from '../../utils/workspace';
 
 export function createAddNode(treeViewController: TreeViewController) {
   // 添加项目
@@ -36,7 +37,6 @@ export function createAddNode(treeViewController: TreeViewController) {
           .filter((item) => !!item);
         tree.addNodes(target, newNodes);
         view?.reveal(newNodes[0], {
-          select: true,
           focus: true,
         });
       }
@@ -57,7 +57,6 @@ export function createAddNode(treeViewController: TreeViewController) {
       });
       tree.addNodes(target, [newNode]);
       view?.reveal(newNode, {
-        select: true,
         focus: true,
       });
     },
@@ -73,48 +72,25 @@ export function createAddNode(treeViewController: TreeViewController) {
       if (!target || target.type === TreeNodeType.Tip) {
         target = tree.root;
       }
-      // 优先检查是否有工作区文件
-      if (vscode.workspace.workspaceFile) {
-        // 当前打开的是工作区文件 (.code-workspace)
-        const workspaceUri = vscode.workspace.workspaceFile;
+      const currentWorkspace = getCurrentWorkspace();
+      if (currentWorkspace.length === 0) {
+        vscode.window.showInformationMessage('当前没有打开任何项目或文件夹');
+        return;
+      }
+      const newNodes: BaseTreeItem[] = [];
+      for (let i = 0; i < currentWorkspace.length; i++) {
+        const workspaceUri = currentWorkspace[i];
         const title = getProjectTitle(workspaceUri.fsPath);
         const newNode = Tree.createNodeByType(TreeNodeType.Project, {
           title: title,
-          // description: workspaceUri.fsPath,
           resourceUri: workspaceUri,
         });
-        if (newNode) {
-          tree.addNodes(target, [newNode]);
-          view?.reveal(newNode, {
-            select: true,
-            focus: true,
-          });
-        }
-      } else if (
-        vscode.workspace.workspaceFolders &&
-        vscode.workspace.workspaceFolders.length > 0
-      ) {
-        // 当前打开的是文件夹
-        const newNodes = vscode.workspace.workspaceFolders
-          .map((folder) => {
-            const title = getProjectTitle(folder.uri.fsPath);
-            return Tree.createNodeByType(TreeNodeType.Project, {
-              title: title,
-              // description: folder.uri.fsPath,
-              resourceUri: folder.uri,
-            });
-          })
-          .filter((item) => !!item);
-        if (newNodes.length > 0) {
-          tree.addNodes(target, newNodes);
-          view?.reveal(newNodes[0], {
-            select: true,
-            focus: true,
-          });
-        }
-      } else {
-        vscode.window.showInformationMessage('当前没有打开任何项目或文件夹');
+        newNodes.push(newNode);
       }
+      tree.addNodes(target, newNodes);
+      view?.reveal(newNodes[0], {
+        focus: true,
+      });
     },
   );
 

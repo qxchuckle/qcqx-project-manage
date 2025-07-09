@@ -28,7 +28,9 @@ export class GroupTreeItem extends BaseTreeItem {
       ...props,
     });
     const tooltip = new vscode.MarkdownString(`${treeProps.label}  
-${props.description || '无描述'}`);
+${props.description || '无描述'}  
+🔗关联链接:  
+${treeProps.links?.map((link) => `[${link}](${link})`).join('  ') || ' '}`);
     treeProps.tooltip = tooltip;
     Object.assign(this, treeProps);
   }

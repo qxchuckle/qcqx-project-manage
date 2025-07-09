@@ -23,11 +23,25 @@ export class ProjectTreeItem extends BaseTreeItem {
       ...props,
     });
     const isWorkspace = isWorkspaceFile(props.resourceUri?.fsPath);
-    treeProps.tooltip = new vscode.MarkdownString(`[${
+    let showPathInTooltip = '';
+    if (this.projectPath) {
+      const encodedArgs = encodeURIComponent(
+        JSON.stringify([this.projectPath]),
+      );
+      showPathInTooltip = `[${this.projectPath}](command:qcqx-project-manage.project-list.open-path-in-file-explorer?${encodedArgs})`;
+    } else {
+      showPathInTooltip = '无路径';
+    }
+
+    treeProps.tooltip = new vscode.MarkdownString(`${
       isWorkspace ? '工作区' : '文件夹'
-    }]${treeProps.label}  
+    }: ${treeProps.label}  
 ${props.description || '无描述'}  
-${this.projectPath || '无路径'}`);
+${showPathInTooltip}  
+🔗关联链接:  
+${treeProps.links?.map((link) => `[${link}](${link})`).join('  ') || ' '}`);
+    // 受信任才能识别command
+    treeProps.tooltip.isTrusted = true;
     Object.assign(this, treeProps);
   }
 }

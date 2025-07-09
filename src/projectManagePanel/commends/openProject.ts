@@ -47,13 +47,7 @@ export function createOpenProject(treeViewController: TreeViewController) {
       if (!projectPath) {
         return;
       }
-      if (isWorkspaceFile(projectPath)) {
-        // 对于工作区文件，打开其所在目录
-        explorer(path.dirname(projectPath));
-      } else {
-        // 对于文件夹，直接打开
-        explorer(projectPath);
-      }
+      explorer(projectPath);
     },
   );
 
@@ -76,10 +70,21 @@ export function createOpenProject(treeViewController: TreeViewController) {
     },
   );
 
+  const openPathInFileExplorer = vscode.commands.registerCommand(
+    'qcqx-project-manage.project-list.open-path-in-file-explorer',
+    async (projectPath: string) => {
+      if (!projectPath?.trim()) {
+        return;
+      }
+      explorer(decodeURIComponent(projectPath));
+    },
+  );
+
   return [
     openProjectInCurrentWindow,
     openProjectInNewWindow,
     openProjectInFileExplorer,
     openProjectInTerminal,
+    openPathInFileExplorer,
   ];
 }
