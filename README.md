@@ -1,9 +1,10 @@
 # VSCode插件-项目管理
+一个VSCode插件，用于管理项目
 
-> 之前在用 [Project Manager](https://github.com/alefragnani/vscode-project-manager) 管理项目，但只能用标签进行分类，也不能拖拽移动，司内项目很多，分各种业务域、层级，树形结构才符合需求。  
-> 在插件市场并没有找到合适的，那就自己写个吧，聚焦实际开发痛点，解决项目管理难题
+> 之前在用 [Project Manager](https://github.com/alefragnani/vscode-project-manager) 管理项目，但只能用标签进行分类，也不能拖拽移动，司内项目很多，分各种业务域、层级，树形结构才符合需求  
+> 在插件市场并没有找到合适的，那就自己写个吧，聚焦实际开发痛点，解决项目管理难题  
 
-这是一个VSCode插件，用于管理项目
+[市场](https://marketplace.visualstudio.com/items?itemName=qcqx.qcqx-project-manage) [open vsx](https://open-vsx.org/extension/qcqx/qcqx-project-manage)
 
 功能：
 1. 树结构管理项目，支持拖拽移动  
