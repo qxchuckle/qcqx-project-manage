@@ -3,7 +3,7 @@
   "displayName": "项目管理(Project Manage)",
   "description": "一个更可靠、方便的本地项目管理插件",
   "publisher": "qcqx",
-  "version": "0.0.6",
+  "version": "1.0.0",
   "engines": {
     "vscode": "^1.70.0"
   },
