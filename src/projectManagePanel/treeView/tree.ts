@@ -65,7 +65,14 @@ export class Tree
    * 更新节点的map
    */
   refreshTreeNodesMap(node?: BaseTreeItem) {
-    node?.traverse((node) => {
+    if (!node) {
+      node = this.root;
+    }
+    // 如果node是根节点，则清空map，等后续重新生成
+    if (node.type === TreeNodeType.Root || node === this.root) {
+      this.allTreeNodesMap = {};
+    }
+    node.traverse((node) => {
       this.allTreeNodesMap[node.id] = node;
     });
   }
