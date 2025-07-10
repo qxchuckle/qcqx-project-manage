@@ -39,7 +39,11 @@ export class ProjectTreeItem extends BaseTreeItem {
 ${props.description || '无描述'}  
 ${showPathInTooltip}  
 🔗关联链接:  
-${treeProps.links?.map((link) => `[${link}](${link})`).join('  ') || ' '}`);
+${
+  treeProps.links
+    ?.map((link, index) => `${index + 1}. [${link}](${link})`)
+    .join('\n') || ' '
+}`);
     // 受信任才能识别command
     treeProps.tooltip.isTrusted = true;
     Object.assign(this, treeProps);
