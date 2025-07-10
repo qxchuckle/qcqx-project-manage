@@ -75,9 +75,14 @@
           "group": "navigation@6"
         },
         {
-          "command": "qcqx-project-manage.project-list.open-local-config",
+          "command": "qcqx-project-manage.project-list.project-search",
           "when": "view == project-list",
           "group": "navigation@7"
+        },
+        {
+          "command": "qcqx-project-manage.project-list.open-local-config",
+          "when": "view == project-list",
+          "group": "navigation@8"
         }
       ],
       "view/item/context": [
@@ -316,6 +321,15 @@
       {
         "command": "qcqx-project-manage.project-list.open-path-in-file-explorer",
         "title": "在文件管理器中打开路径"
+      },
+      {
+        "command": "qcqx-project-manage.project-list.project-search",
+        "title": "项目搜索",
+        "icon": "$(search)"
+      },
+      {
+        "command": "qcqx-project-manage.project-list.locate-project-by-id",
+        "title": "定位指定id项目"
       }
     ],
     "configuration": {

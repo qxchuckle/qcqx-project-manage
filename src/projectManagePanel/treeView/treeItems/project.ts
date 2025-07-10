@@ -12,7 +12,6 @@ export class ProjectTreeItem extends BaseTreeItem {
   constructor(props: TreeItemProps) {
     props.contextValue = TreeNodeType.Project;
     props.collapsibleState = vscode.TreeItemCollapsibleState.None;
-    props.iconPath = vscode.ThemeIcon.Folder;
     super(props);
     this.update(props);
   }
@@ -46,6 +45,14 @@ ${
 }`);
     // 受信任才能识别command
     treeProps.tooltip.isTrusted = true;
+
+    // 如果是工作区
+    if (isWorkspace) {
+      treeProps.iconPath = new vscode.ThemeIcon('folder-library');
+    } else {
+      treeProps.iconPath = new vscode.ThemeIcon('folder');
+    }
+
     Object.assign(this, treeProps);
   }
 }

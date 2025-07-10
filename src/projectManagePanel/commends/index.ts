@@ -7,8 +7,9 @@ import { createLockList } from './lockList';
 import { createOpenProject } from './openProject';
 import { createLocalConfig } from './localConfig';
 import { createExpandAndCollapsed } from './expandAndCollapsed';
-import { createLocateCurrentProject } from './locateCurrentProject';
+import { createLocateProject } from './locateProject';
 import { createLink } from './link';
+import { createSearch } from './search';
 
 export function initCommands(treeViewController: TreeViewController) {
   const { context } = treeViewController;
@@ -20,8 +21,9 @@ export function initCommands(treeViewController: TreeViewController) {
     ...createOpenProject(treeViewController),
     ...createLocalConfig(treeViewController),
     ...createExpandAndCollapsed(treeViewController),
-    ...createLocateCurrentProject(treeViewController),
+    ...createLocateProject(treeViewController),
     ...createLink(treeViewController),
+    ...createSearch(treeViewController),
   ];
   context.subscriptions.push(...commands);
 }

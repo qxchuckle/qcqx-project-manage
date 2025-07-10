@@ -139,6 +139,7 @@ export class Tree
     try {
       if (this._refreshNodes.has(this.root)) {
         this._onDidChangeTreeData.fire();
+        this.refreshTreeNodesMap(this.root);
       } else if (this._refreshNodes.size > 0) {
         for (const node of this._refreshNodes) {
           this._onDidChangeTreeData.fire(node);
@@ -245,9 +246,11 @@ export class Tree
   addNodes(parent: BaseTreeItem, nodes: (BaseTreeItem | undefined)[]) {
     console.log('addNodes', parent, parent.children.length, nodes);
     for (const node of nodes) {
-      if (node) {
-        parent.addChild(node);
+      if (!node) {
+        continue;
       }
+      parent.addChild(node);
+      this.allTreeNodesMap[node.id] = node;
     }
     this.refresh(parent);
   }
@@ -257,6 +260,7 @@ export class Tree
    */
   deleteNode(node: BaseTreeItem) {
     node.deleteSelf();
+    delete this.allTreeNodesMap[node.id];
     this.refresh(node.parent);
   }
 

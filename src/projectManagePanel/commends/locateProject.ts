@@ -4,9 +4,7 @@ import { getCurrentWorkspace } from '../../utils/workspace';
 import { TreeNodeType } from '../treeView/type';
 import { BaseTreeItem } from '../treeView/treeItems/base';
 
-export function createLocateCurrentProject(
-  treeViewController: TreeViewController,
-) {
+export function createLocateProject(treeViewController: TreeViewController) {
   /**
    * 定位当前打开的文件夹/工作区
    */
@@ -39,5 +37,23 @@ export function createLocateCurrentProject(
     },
   );
 
-  return [locateCurrentProject];
+  /**
+   * 定位指定id的节点
+   */
+  const locateProjectById = vscode.commands.registerCommand(
+    'qcqx-project-manage.project-list.locate-project-by-id',
+    async (id: string) => {
+      const { tree, context, view } = treeViewController;
+      const node = tree.allTreeNodesMap[id];
+      if (!node) {
+        vscode.window.showInformationMessage(`${id} 节点不存在`);
+        return;
+      }
+      view?.reveal(node, {
+        focus: true,
+      });
+    },
+  );
+
+  return [locateCurrentProject, locateProjectById];
 }
