@@ -13,7 +13,10 @@ export function createLink(treeViewController: TreeViewController) {
       }
       const links = item.links;
       // 选择要打开的链接
-      const selectedLinks = await openLinkDialog(links);
+      const selectedLinks = await openLinkDialog(links, {
+        title: '打开链接',
+        placeHolder: '请选择要打开的链接',
+      });
       if (!selectedLinks?.length) {
         return;
       }
@@ -53,7 +56,10 @@ export function createLink(treeViewController: TreeViewController) {
         return;
       }
       const links = item.links;
-      const selectedLinks = await openLinkDialog(links);
+      const selectedLinks = await openLinkDialog(links, {
+        title: '删除链接',
+        placeHolder: '请选择要删除的链接',
+      });
       if (!selectedLinks?.length) {
         return;
       }
@@ -70,15 +76,17 @@ export function createLink(treeViewController: TreeViewController) {
 /**
  * 打开关联链接弹窗
  */
-function openLinkDialog(links: string[] | undefined) {
+function openLinkDialog(
+  links: string[] | undefined,
+  options: vscode.QuickPickOptions,
+) {
   if (!links?.length) {
     vscode.window.showInformationMessage('当前项目没有关联链接');
     return;
   }
   return vscode.window.showQuickPick(links, {
-    placeHolder: '选择要打开的链接',
     ignoreFocusOut: true,
-    title: '打开链接',
+    ...options,
     canPickMany: true,
   });
 }
