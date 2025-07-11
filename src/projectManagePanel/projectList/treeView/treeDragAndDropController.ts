@@ -59,11 +59,10 @@ export abstract class TreeDragAndDropController
       });
     } catch (error) {
       console.error(error);
-      return;
+    } finally {
+      // 刷新树视图
+      this.refresh(undefined);
     }
-
-    // 刷新树视图
-    this.refresh(undefined);
   }
 
   /** 获取拖拽节点 */
