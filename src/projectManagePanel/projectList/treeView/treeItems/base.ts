@@ -5,7 +5,7 @@ import {
   TreeItemProps,
   TreeNodeType,
 } from '../type';
-import { generateId } from '../../../utils';
+import { generateId } from '@/utils';
 
 /**
  * 抽象树节点，拥有一些操作和功能

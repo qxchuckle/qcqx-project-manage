@@ -5,7 +5,7 @@ import { BaseTreeItem } from './treeItems/base';
 import { GroupTreeItem } from './treeItems/group';
 import { JsonTreeNodeType, TreeItemProps, TreeNodeType } from './type';
 import { ProjectTreeItem } from './treeItems/project';
-import { LocalCache } from '../../utils';
+import { LocalCache } from '@/utils';
 import { TipTreeItem } from './treeItems/tip';
 import { RootTreeItem } from './treeItems/root';
 

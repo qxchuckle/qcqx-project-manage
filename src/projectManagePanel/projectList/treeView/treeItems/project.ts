@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { BaseTreeItem } from './base';
 import { TreeItem, TreeItemProps, TreeNodeType } from '../type';
-import { isWorkspaceFile } from '../../../utils';
+import { isWorkspaceFile } from '@/utils';
 
 /**
  * 项目节点

@@ -1,7 +1,7 @@
 {
   "name": "qcqx-project-manage",
   "displayName": "项目管理(Project Manage)",
-  "description": "一个更可靠、方便的本地项目管理插件",
+  "description": "一个更可靠、方便的项目管理插件",
   "publisher": "qcqx",
   "version": "1.0.2",
   "engines": {

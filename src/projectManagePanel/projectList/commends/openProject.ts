@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { TreeViewController } from '../treeView/treeViewController';
 import { BaseTreeItem } from '../treeView/treeItems/base';
-import { explorer, isWorkspaceFile } from '../../utils';
+import { explorer, isWorkspaceFile } from '@/utils';
 import * as path from 'path';
 
 export function createOpenProject(treeViewController: TreeViewController) {

@@ -2,9 +2,13 @@ import * as vscode from 'vscode';
 import { TreeViewController } from '../treeView/treeViewController';
 import { BaseTreeItem } from '../treeView/treeItems/base';
 import { TreeNodeType } from '../treeView/type';
-import { isWorkspaceFile, getProjectTitle, generateId } from '../../utils';
+import {
+  isWorkspaceFile,
+  getProjectTitle,
+  generateId,
+  getCurrentWorkspace,
+} from '@/utils';
 import { Tree } from '../treeView/tree';
-import { getCurrentWorkspace } from '../../utils/workspace';
 
 export function createAddNode(treeViewController: TreeViewController) {
   // 添加项目

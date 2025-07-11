@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { Tree } from './tree';
 import { BaseTreeItem } from './treeItems/base';
-import { vscodeConfigKeys, vscodeConfigName } from '../../config';
+import { vscodeConfigKeys, vscodeConfigName } from '../../../config';
 
 /**
  * 树视图控制器
