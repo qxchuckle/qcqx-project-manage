@@ -1,8 +1,13 @@
 import * as vscode from 'vscode';
 import { TreeViewController } from '../../treeView/treeViewController';
-import { getCurrentWorkspace } from '@/utils';
+import {
+  getCurrentWorkspace,
+  getProjectTitle,
+  saveProjectByUriQuickPick,
+} from '@/utils';
 import { TreeNodeType } from '../../treeView/type';
 import { BaseTreeItem } from '../../treeView/treeItems/base';
+import { Tree } from '../../treeView/tree';
 
 export function createFileCommand(treeViewController: TreeViewController) {
   /**
@@ -26,5 +31,36 @@ export function createFileCommand(treeViewController: TreeViewController) {
     },
   );
 
-  return [openFile];
+  /**
+   * 保存当前活跃的编辑器文件
+   */
+  const saveActiveEditorFile = vscode.commands.registerCommand(
+    'qcqx-project-manage.project-list.save-active-editor-file',
+    async (target: BaseTreeItem | undefined) => {
+      const { tree, context, view } = treeViewController;
+      let targetTitle = target?.title || '';
+      if (!target || target.type === TreeNodeType.Tip) {
+        target = tree.root;
+        targetTitle = '根目录';
+      }
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) {
+        return;
+      }
+      const uri = editor.document.uri;
+      if (!uri) {
+        return;
+      }
+      saveProjectByUriQuickPick({
+        tree,
+        target,
+        targetTitle,
+        uris: [uri],
+        view,
+        type: TreeNodeType.File,
+      });
+    },
+  );
+
+  return [openFile, saveActiveEditorFile];
 }

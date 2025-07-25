@@ -8,6 +8,7 @@ import {
   generateId,
   getCurrentWorkspace,
   getFileType,
+  saveProjectByUriQuickPick,
 } from '@/utils';
 import { Tree } from '../../treeView/tree';
 
@@ -102,74 +103,24 @@ export function createAddNode(treeViewController: TreeViewController) {
     'qcqx-project-manage.project-list.add-current-project',
     async (target: BaseTreeItem | undefined) => {
       const { tree, view, context } = treeViewController;
-      let targetTitle = ` ${target?.title || ''} `;
+      let targetTitle = target?.title || '';
       if (!target || target.type === TreeNodeType.Tip) {
         target = tree.root;
-        targetTitle = ' 根目录 ';
+        targetTitle = '根目录';
       }
       const currentWorkspace = getCurrentWorkspace();
       if (currentWorkspace.length === 0) {
         vscode.window.showInformationMessage('当前没有打开任何项目或文件夹');
         return;
       }
-      const currentWorkspacePathSet = new Set(
-        currentWorkspace.map((item) => item.fsPath),
-      );
-      // 请选择要添加的项目
-      const selectItems: ProjectSearchItem[] = [];
-      for (let i = 0; i < currentWorkspace.length; i++) {
-        const workspaceUri = currentWorkspace[i];
-        const isExit = currentWorkspacePathSet.has(workspaceUri.fsPath);
-        const title = getProjectTitle(workspaceUri.fsPath);
-        const label = `${isExit ? '【已存在】' : ''}` + title;
-        if (isExit) {
-          selectItems.push({
-            title,
-            label,
-            description: workspaceUri.fsPath,
-            uri: workspaceUri,
-            isExit,
-          });
-        } else {
-          selectItems.unshift({
-            title,
-            label,
-            description: workspaceUri.fsPath,
-            uri: workspaceUri,
-            isExit,
-          });
-        }
-      }
-      // 确认添加当前项目
-      const quickPick = vscode.window.createQuickPick<ProjectSearchItem>();
-      quickPick.items = selectItems;
-      quickPick.title = `请选择要添加到${targetTitle}的项目`;
-      quickPick.matchOnDescription = true;
-      quickPick.matchOnDetail = true;
-      // 默认选中不存在的项目
-      quickPick.activeItems = selectItems.filter((item) => !!item.isExit);
-      quickPick.canSelectMany = true;
-      quickPick.onDidAccept(() => {
-        quickPick.hide();
-        const selectedItems = quickPick.selectedItems;
-        if (selectedItems.length === 0) {
-          return;
-        }
-        const newNodes: BaseTreeItem[] = [];
-        for (let i = 0; i < selectedItems.length; i++) {
-          const selectedItem = selectedItems[i];
-          const newNode = Tree.createNodeByType(TreeNodeType.Project, {
-            title: selectedItem.title,
-            resourceUri: selectedItem.uri,
-          });
-          newNodes.push(newNode);
-        }
-        tree.addNodes(target, newNodes);
-        view?.reveal(newNodes[0], {
-          focus: true,
-        });
+      saveProjectByUriQuickPick({
+        tree,
+        target,
+        targetTitle,
+        uris: currentWorkspace,
+        view,
+        type: TreeNodeType.Project,
       });
-      quickPick.show();
     },
   );
 

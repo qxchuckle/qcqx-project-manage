@@ -10,6 +10,7 @@ import { createExpandAndCollapsed } from './config/expandAndCollapsed';
 import { createLocateProject } from './node/locateProject';
 import { createLink } from './node/link';
 import { createSearch } from './node/search';
+import { createFileCommand } from './node/file';
 
 export function initCommands(treeViewController: TreeViewController) {
   const { context } = treeViewController;
@@ -24,6 +25,7 @@ export function initCommands(treeViewController: TreeViewController) {
     ...createLocateProject(treeViewController),
     ...createLink(treeViewController),
     ...createSearch(treeViewController),
+    ...createFileCommand(treeViewController),
   ];
   context.subscriptions.push(...commands);
 }

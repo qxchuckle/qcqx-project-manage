@@ -112,6 +112,11 @@
           "group": "2_modification@5"
         },
         {
+          "command": "qcqx-project-manage.project-list.save-active-editor-file",
+          "when": "view == project-list && (viewItem == group)",
+          "group": "1_modification@4"
+        },
+        {
           "command": "qcqx-project-manage.project-list.delete-link",
           "when": "view == project-list && (viewItem == group || viewItem == project || viewItem == file)",
           "group": "2_modification@6"
@@ -177,6 +182,11 @@
           "command": "qcqx-project-manage.project-list.delete-node",
           "when": "view == project-list && (viewItem == group || viewItem == project || viewItem == file)",
           "group": "1_modification@3"
+        },
+        {
+          "command": "qcqx-project-manage.project-list.save-active-editor-file",
+          "when": "view == project-list && (viewItem == group)",
+          "group": "1_modification@4"
         },
         {
           "command": "qcqx-project-manage.project-list.open-link",
@@ -333,8 +343,11 @@
       },
       {
         "command": "qcqx-project-manage.project-list.open-file-in-current-editor",
-        "title": "在当前编辑器打开文件",
-        "icon": "$(file)"
+        "title": "在当前编辑器打开文件"
+      },
+      {
+        "command": "qcqx-project-manage.project-list.save-active-editor-file",
+        "title": "添加当前编辑文件"
       }
     ],
     "configuration": {
