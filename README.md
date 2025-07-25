@@ -8,7 +8,7 @@
 
 功能：
 1. 树结构管理项目，支持拖拽移动  
-2. 支持单个或批量保存文件夹、工作区，并快速打开  
+2. 支持单个或批量保存文件夹、工作区、文件，并快速打开  
 3. 支持打开 project-list.json 配置文件快速编辑  
 4. 多窗口、类VSCode应用同步状态，配置文件改动后自动更新面板  
 5. 项目可以关联链接，以快速打开，如发布页、git仓库、项目测试环境页面等等  
@@ -24,6 +24,9 @@
 ![image](https://raw.githubusercontent.com/qxchuckle/qcqx-project-manage/refs/heads/master/img/2.png)
 
 
+# QA
+1、为什么支持文件保存？
+有很多配置类的文件分散在各处，比如ssh、claude的配置，保存起来，快速打开。
 
 
 
