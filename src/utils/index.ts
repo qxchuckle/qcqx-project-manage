@@ -117,12 +117,13 @@ export function saveProjectByUriQuickPick(props: {
     const uri = uris[i];
     const isExit = allTreeNodesPathSet.has(uri.fsPath);
     const title = getProjectTitle(uri.fsPath);
-    const label = `${isExit ? '【已存在】' : ''}` + title;
+    const label = `${isExit ? '[已存在]' : ''}` + title;
     if (isExit) {
       allSelectItems.push({
         title,
         label,
-        description: uri.fsPath,
+        description: '',
+        detail: uri.fsPath,
         uri,
         isExit,
       });
@@ -130,7 +131,8 @@ export function saveProjectByUriQuickPick(props: {
       allSelectItems.unshift({
         title,
         label,
-        description: uri.fsPath,
+        description: '',
+        detail: uri.fsPath,
         uri,
         isExit,
       });
@@ -141,6 +143,7 @@ export function saveProjectByUriQuickPick(props: {
     type === TreeNodeType.Project ? '项目' : '文件'
   }`;
   quickPick.matchOnDescription = true;
+  quickPick.matchOnDetail = true;
   quickPick.canSelectMany = true;
   quickPick.selectedItems = allSelectItems.filter((item) => !item.isExit);
   Object.assign(quickPick, quickPickProps);
