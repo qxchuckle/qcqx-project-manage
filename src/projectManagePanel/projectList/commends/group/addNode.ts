@@ -11,6 +11,12 @@ import {
 } from '@/utils';
 import { Tree } from '../../treeView/tree';
 
+interface ProjectSearchItem extends vscode.QuickPickItem {
+  title: string;
+  uri?: vscode.Uri;
+  isExit: boolean;
+}
+
 export function createAddNode(treeViewController: TreeViewController) {
   // 添加项目
   const addProject = vscode.commands.registerCommand(
@@ -68,8 +74,18 @@ export function createAddNode(treeViewController: TreeViewController) {
       if (!target || target.type === TreeNodeType.Tip) {
         target = tree.root;
       }
+      const defaultValue = '新分组';
+      const input = await vscode.window.showInputBox({
+        value: defaultValue,
+        prompt: '新分组名称',
+        ignoreFocusOut: true,
+        title: '添加分组',
+      });
+      if (typeof input !== 'string' || input === defaultValue) {
+        return;
+      }
       const newNode = Tree.createNodeByType(TreeNodeType.Group, {
-        title: '新分组',
+        title: input,
         collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
       });
       tree.addNodes(target, [newNode]);
@@ -86,28 +102,74 @@ export function createAddNode(treeViewController: TreeViewController) {
     'qcqx-project-manage.project-list.add-current-project',
     async (target: BaseTreeItem | undefined) => {
       const { tree, view, context } = treeViewController;
+      let targetTitle = ` ${target?.title || ''} `;
       if (!target || target.type === TreeNodeType.Tip) {
         target = tree.root;
+        targetTitle = ' 根目录 ';
       }
       const currentWorkspace = getCurrentWorkspace();
       if (currentWorkspace.length === 0) {
         vscode.window.showInformationMessage('当前没有打开任何项目或文件夹');
         return;
       }
-      const newNodes: BaseTreeItem[] = [];
+      const currentWorkspacePathSet = new Set(
+        currentWorkspace.map((item) => item.fsPath),
+      );
+      // 请选择要添加的项目
+      const selectItems: ProjectSearchItem[] = [];
       for (let i = 0; i < currentWorkspace.length; i++) {
         const workspaceUri = currentWorkspace[i];
+        const isExit = currentWorkspacePathSet.has(workspaceUri.fsPath);
         const title = getProjectTitle(workspaceUri.fsPath);
-        const newNode = Tree.createNodeByType(TreeNodeType.Project, {
-          title: title,
-          resourceUri: workspaceUri,
-        });
-        newNodes.push(newNode);
+        const label = `${isExit ? '【已存在】' : ''}` + title;
+        if (isExit) {
+          selectItems.push({
+            title,
+            label,
+            description: workspaceUri.fsPath,
+            uri: workspaceUri,
+            isExit,
+          });
+        } else {
+          selectItems.unshift({
+            title,
+            label,
+            description: workspaceUri.fsPath,
+            uri: workspaceUri,
+            isExit,
+          });
+        }
       }
-      tree.addNodes(target, newNodes);
-      view?.reveal(newNodes[0], {
-        focus: true,
+      // 确认添加当前项目
+      const quickPick = vscode.window.createQuickPick<ProjectSearchItem>();
+      quickPick.items = selectItems;
+      quickPick.title = `请选择要添加到${targetTitle}的项目`;
+      quickPick.matchOnDescription = true;
+      quickPick.matchOnDetail = true;
+      // 默认选中不存在的项目
+      quickPick.activeItems = selectItems.filter((item) => !!item.isExit);
+      quickPick.canSelectMany = true;
+      quickPick.onDidAccept(() => {
+        quickPick.hide();
+        const selectedItems = quickPick.selectedItems;
+        if (selectedItems.length === 0) {
+          return;
+        }
+        const newNodes: BaseTreeItem[] = [];
+        for (let i = 0; i < selectedItems.length; i++) {
+          const selectedItem = selectedItems[i];
+          const newNode = Tree.createNodeByType(TreeNodeType.Project, {
+            title: selectedItem.title,
+            resourceUri: selectedItem.uri,
+          });
+          newNodes.push(newNode);
+        }
+        tree.addNodes(target, newNodes);
+        view?.reveal(newNodes[0], {
+          focus: true,
+        });
       });
+      quickPick.show();
     },
   );
 

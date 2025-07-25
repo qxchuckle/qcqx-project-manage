@@ -88,17 +88,17 @@
       "view/item/context": [
         {
           "command": "qcqx-project-manage.project-list.rename-node",
-          "when": "view == project-list && (viewItem == group || viewItem == project || viewItem == file) && !config.qcqx-project-manage.project-list-lock",
+          "when": "view == project-list && (viewItem == group || viewItem == project || viewItem == file)",
           "group": "1_modification@1"
         },
         {
           "command": "qcqx-project-manage.project-list.edit-description",
-          "when": "view == project-list && (viewItem == group || viewItem == project || viewItem == file) && !config.qcqx-project-manage.project-list-lock",
+          "when": "view == project-list && (viewItem == group || viewItem == project || viewItem == file)",
           "group": "1_modification@2"
         },
         {
           "command": "qcqx-project-manage.project-list.delete-node",
-          "when": "view == project-list && (viewItem == group || viewItem == project || viewItem == file) && !config.qcqx-project-manage.project-list-lock",
+          "when": "view == project-list && (viewItem == group || viewItem == project || viewItem == file)",
           "group": "1_modification@3"
         },
         {
@@ -108,12 +108,12 @@
         },
         {
           "command": "qcqx-project-manage.project-list.add-link",
-          "when": "view == project-list && (viewItem == group || viewItem == project || viewItem == file) && !config.qcqx-project-manage.project-list-lock",
+          "when": "view == project-list && (viewItem == group || viewItem == project || viewItem == file)",
           "group": "2_modification@5"
         },
         {
           "command": "qcqx-project-manage.project-list.delete-link",
-          "when": "view == project-list && (viewItem == group || viewItem == project || viewItem == file) && !config.qcqx-project-manage.project-list-lock",
+          "when": "view == project-list && (viewItem == group || viewItem == project || viewItem == file)",
           "group": "2_modification@6"
         },
         {
@@ -143,17 +143,17 @@
         },
         {
           "command": "qcqx-project-manage.project-list.add-group",
-          "when": "view == project-list && (viewItem == tip || viewItem == group) && !config.qcqx-project-manage.project-list-lock",
+          "when": "view == project-list && (viewItem == tip || viewItem == group)",
           "group": "inline@3"
         },
         {
           "command": "qcqx-project-manage.project-list.add-project",
-          "when": "view == project-list && (viewItem == tip || viewItem == group) && !config.qcqx-project-manage.project-list-lock",
+          "when": "view == project-list && (viewItem == tip || viewItem == group)",
           "group": "inline@4"
         },
         {
           "command": "qcqx-project-manage.project-list.add-current-project",
-          "when": "view == project-list && (viewItem == tip || viewItem == group) && !config.qcqx-project-manage.project-list-lock",
+          "when": "view == project-list && (viewItem == tip || viewItem == group)",
           "group": "inline@5"
         },
         {
@@ -165,17 +165,17 @@
       "qcqx-project-manage.project-list-more-actions": [
         {
           "command": "qcqx-project-manage.project-list.rename-node",
-          "when": "view == project-list && (viewItem == group || viewItem == project || viewItem == file) && !config.qcqx-project-manage.project-list-lock",
+          "when": "view == project-list && (viewItem == group || viewItem == project || viewItem == file)",
           "group": "1_modification@1"
         },
         {
           "command": "qcqx-project-manage.project-list.edit-description",
-          "when": "view == project-list && (viewItem == group || viewItem == project || viewItem == file) && !config.qcqx-project-manage.project-list-lock",
+          "when": "view == project-list && (viewItem == group || viewItem == project || viewItem == file)",
           "group": "1_modification@2"
         },
         {
           "command": "qcqx-project-manage.project-list.delete-node",
-          "when": "view == project-list && (viewItem == group || viewItem == project || viewItem == file) && !config.qcqx-project-manage.project-list-lock",
+          "when": "view == project-list && (viewItem == group || viewItem == project || viewItem == file)",
           "group": "1_modification@3"
         },
         {
@@ -185,12 +185,12 @@
         },
         {
           "command": "qcqx-project-manage.project-list.add-link",
-          "when": "view == project-list && (viewItem == group || viewItem == project || viewItem == file) && !config.qcqx-project-manage.project-list-lock",
+          "when": "view == project-list && (viewItem == group || viewItem == project || viewItem == file)",
           "group": "2_modification@5"
         },
         {
           "command": "qcqx-project-manage.project-list.delete-link",
-          "when": "view == project-list && (viewItem == group || viewItem == project || viewItem == file) && !config.qcqx-project-manage.project-list-lock",
+          "when": "view == project-list && (viewItem == group || viewItem == project || viewItem == file)",
           "group": "2_modification@6"
         },
         {
