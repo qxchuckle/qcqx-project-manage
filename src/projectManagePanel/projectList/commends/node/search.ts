@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import { TreeViewController } from '../treeView/treeViewController';
-import { TreeNodeType } from '../treeView/type';
+import { TreeViewController } from '../../treeView/treeViewController';
+import { TreeNodeType } from '../../treeView/type';
 
 interface ProjectSearchItem extends vscode.QuickPickItem {
   id: string;
@@ -15,7 +15,8 @@ export function createSearch(treeViewController: TreeViewController) {
     async () => {
       const { tree, context, view } = treeViewController;
       const allProjectNodes = Object.values(tree.allTreeNodesMap).filter(
-        (node) => node.type === TreeNodeType.Project,
+        (node) =>
+          node.type === TreeNodeType.Project || node.type === TreeNodeType.File,
       );
       const quickPick = vscode.window.createQuickPick<ProjectSearchItem>();
       quickPick.ignoreFocusOut = true;
@@ -30,7 +31,7 @@ export function createSearch(treeViewController: TreeViewController) {
           typeof node.iconPath === 'string'
             ? new vscode.ThemeIcon(node.iconPath)
             : node.iconPath;
-        const encodedArgs = encodeURIComponent(JSON.stringify([node.id]));
+        // const encodedArgs = encodeURIComponent(JSON.stringify([node.id]));
         return {
           label: node.title,
           description,

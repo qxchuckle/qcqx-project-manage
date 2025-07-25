@@ -1,8 +1,9 @@
 import * as vscode from 'vscode';
-import { TreeViewController } from '../treeView/treeViewController';
-import { BaseTreeItem } from '../treeView/treeItems/base';
+import { TreeViewController } from '../../treeView/treeViewController';
+import { BaseTreeItem } from '../../treeView/treeItems/base';
 import { explorer, isWorkspaceFile } from '@/utils';
 import * as path from 'path';
+import { TreeNodeType } from '../../treeView/type';
 
 export function createOpenProject(treeViewController: TreeViewController) {
   const openProjectInCurrentWindow = vscode.commands.registerCommand(
@@ -62,8 +63,8 @@ export function createOpenProject(treeViewController: TreeViewController) {
         return;
       }
       let terminalPath = projectPath;
-      if (isWorkspaceFile(projectPath)) {
-        // 对于工作区文件，在其所在目录打开终端
+      if (target.type === TreeNodeType.File || isWorkspaceFile(projectPath)) {
+        // 对于工作区、文件，在其所在目录打开终端
         terminalPath = path.dirname(projectPath);
       }
       vscode.window.createTerminal({ cwd: terminalPath }).show();

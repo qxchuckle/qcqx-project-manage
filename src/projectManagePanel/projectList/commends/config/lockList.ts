@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { TreeViewController } from '../treeView/treeViewController';
+import { TreeViewController } from '../../treeView/treeViewController';
 
 export function createLockList(treeViewController: TreeViewController) {
   const lock = vscode.commands.registerCommand(

@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import { TreeViewController } from '../treeView/treeViewController';
-import { BaseTreeItem } from '../treeView/treeItems/base';
+import { TreeViewController } from '../../treeView/treeViewController';
+import { BaseTreeItem } from '../../treeView/treeItems/base';
 
 export function createRenameNode(treeViewController: TreeViewController) {
   const renameNode = vscode.commands.registerCommand(

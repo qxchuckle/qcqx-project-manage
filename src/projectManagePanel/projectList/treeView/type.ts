@@ -9,6 +9,8 @@ export const enum TreeNodeType {
   Root = 'root',
   // 特殊的节点，用于提示，以及操作
   Tip = 'tip',
+  // 保存文件快捷打开
+  File = 'file',
 }
 
 export const TreeNodeTypeNameMap: Record<TreeNodeType, string> = {
@@ -16,6 +18,7 @@ export const TreeNodeTypeNameMap: Record<TreeNodeType, string> = {
   [TreeNodeType.Project]: '项目',
   [TreeNodeType.Root]: '根节点',
   [TreeNodeType.Tip]: '提示',
+  [TreeNodeType.File]: '文件',
 };
 
 export interface TreeItem extends vscode.TreeItem {

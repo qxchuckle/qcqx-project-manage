@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import { TreeViewController } from '../treeView/treeViewController';
-import { TreeNodeType } from '../treeView/type';
+import { TreeViewController } from '../../treeView/treeViewController';
+import { TreeNodeType } from '../../treeView/type';
 
 /**
  * fix: 无法成功更新视图

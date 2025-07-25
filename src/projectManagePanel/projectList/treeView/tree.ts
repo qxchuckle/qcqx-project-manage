@@ -8,6 +8,7 @@ import { ProjectTreeItem } from './treeItems/project';
 import { LocalCache } from '@/utils';
 import { TipTreeItem } from './treeItems/tip';
 import { RootTreeItem } from './treeItems/root';
+import { FileTreeItem } from './treeItems/file';
 
 export const projectListCacheId = 'project-list';
 
@@ -345,6 +346,8 @@ export class Tree
         return new RootTreeItem(props);
       case TreeNodeType.Tip:
         return new TipTreeItem(props);
+      case TreeNodeType.File:
+        return new FileTreeItem(props);
       default:
         throw new Error(`没有处理的节点类型: ${type}`);
     }

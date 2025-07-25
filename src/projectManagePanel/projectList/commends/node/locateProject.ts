@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
-import { TreeViewController } from '../treeView/treeViewController';
+import { TreeViewController } from '../../treeView/treeViewController';
 import { getCurrentWorkspace } from '@/utils';
-import { TreeNodeType } from '../treeView/type';
-import { BaseTreeItem } from '../treeView/treeItems/base';
+import { TreeNodeType } from '../../treeView/type';
+import { BaseTreeItem } from '../../treeView/treeItems/base';
 
 export function createLocateProject(treeViewController: TreeViewController) {
   /**

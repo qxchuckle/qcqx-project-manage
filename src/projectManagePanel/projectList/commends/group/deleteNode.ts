@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
-import { TreeViewController } from '../treeView/treeViewController';
-import { BaseTreeItem } from '../treeView/treeItems/base';
-import { TreeNodeTypeNameMap } from '../treeView/type';
+import { TreeViewController } from '../../treeView/treeViewController';
+import { BaseTreeItem } from '../../treeView/treeItems/base';
+import { TreeNodeTypeNameMap } from '../../treeView/type';
 
 export function createDeleteNode(treeViewController: TreeViewController) {
   const deleteNode = vscode.commands.registerCommand(

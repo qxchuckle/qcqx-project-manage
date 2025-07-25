@@ -1,15 +1,15 @@
 import * as vscode from 'vscode';
 import { TreeViewController } from '../treeView/treeViewController';
-import { createAddNode } from './addNode';
-import { createDeleteNode } from './deleteNode';
-import { createRenameNode } from './renameNode';
-import { createLockList } from './lockList';
-import { createOpenProject } from './openProject';
-import { createLocalConfig } from './localConfig';
-import { createExpandAndCollapsed } from './expandAndCollapsed';
-import { createLocateProject } from './locateProject';
-import { createLink } from './link';
-import { createSearch } from './search';
+import { createAddNode } from './group/addNode';
+import { createDeleteNode } from './group/deleteNode';
+import { createRenameNode } from './node/renameNode';
+import { createLockList } from './config/lockList';
+import { createOpenProject } from './node/openProject';
+import { createLocalConfig } from './config/localConfig';
+import { createExpandAndCollapsed } from './config/expandAndCollapsed';
+import { createLocateProject } from './node/locateProject';
+import { createLink } from './node/link';
+import { createSearch } from './node/search';
 
 export function initCommands(treeViewController: TreeViewController) {
   const { context } = treeViewController;

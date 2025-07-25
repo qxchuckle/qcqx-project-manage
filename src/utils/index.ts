@@ -52,6 +52,19 @@ export function isWorkspaceFile(filePath: string | undefined): boolean {
 }
 
 /**
+ * 获取文件类型
+ */
+export async function getFileType(
+  filePath: string | undefined,
+): Promise<vscode.FileType> {
+  if (!filePath) {
+    return vscode.FileType.Unknown;
+  }
+  const result = await vscode.workspace.fs.stat(vscode.Uri.file(filePath));
+  return result.type;
+}
+
+/**
  * 获取项目标题
  */
 export function getProjectTitle(projectPath: string): string {

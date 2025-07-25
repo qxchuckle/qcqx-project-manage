@@ -40,6 +40,7 @@ export abstract class BaseTreeItem extends vscode.TreeItem implements TreeItem {
    * 导出jsonNode
    */
   exportJsonNode(): JsonTreeNodeType {
+    const children = this.children.map((child) => child.exportJsonNode());
     return {
       id: this.id,
       type: this.type,
@@ -48,7 +49,7 @@ export abstract class BaseTreeItem extends vscode.TreeItem implements TreeItem {
       collapsibleState: this.collapsibleState || undefined,
       fsPath: this.projectPath,
       links: this.links,
-      children: this.children.map((child) => child.exportJsonNode()),
+      children: children.length > 0 ? children : undefined,
     };
   }
 

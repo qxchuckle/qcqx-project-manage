@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import { TreeViewController } from '../treeView/treeViewController';
-import { BaseTreeItem } from '../treeView/treeItems/base';
+import { TreeViewController } from '../../treeView/treeViewController';
+import { BaseTreeItem } from '../../treeView/treeItems/base';
 import { findLineInDoc } from '@/utils';
 
 export function createLocalConfig(treeViewController: TreeViewController) {

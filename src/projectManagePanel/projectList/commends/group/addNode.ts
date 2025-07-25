@@ -1,14 +1,15 @@
 import * as vscode from 'vscode';
-import { TreeViewController } from '../treeView/treeViewController';
-import { BaseTreeItem } from '../treeView/treeItems/base';
-import { TreeNodeType } from '../treeView/type';
+import { TreeViewController } from '../../treeView/treeViewController';
+import { BaseTreeItem } from '../../treeView/treeItems/base';
+import { TreeNodeType } from '../../treeView/type';
 import {
   isWorkspaceFile,
   getProjectTitle,
   generateId,
   getCurrentWorkspace,
+  getFileType,
 } from '@/utils';
-import { Tree } from '../treeView/tree';
+import { Tree } from '../../treeView/tree';
 
 export function createAddNode(treeViewController: TreeViewController) {
   // 添加项目
@@ -19,26 +20,38 @@ export function createAddNode(treeViewController: TreeViewController) {
       if (!target || target.type === TreeNodeType.Tip) {
         target = tree.root;
       }
-      const uri = await vscode.window.showOpenDialog({
+      const uris = await vscode.window.showOpenDialog({
         canSelectFiles: true,
         canSelectFolders: true,
         canSelectMany: true,
-        filters: {
-          workspace: ['code-workspace'],
-        },
         openLabel: '添加项目',
       });
-      if (uri) {
-        const newNodes = uri
-          .map((item) => {
-            const title = getProjectTitle(item.fsPath);
-            return Tree.createNodeByType(TreeNodeType.Project, {
-              title: title,
-              // description: item.fsPath,
-              resourceUri: item,
-            });
-          })
-          .filter((item) => !!item);
+      console.log(uris);
+      if (uris) {
+        const newNodes = (
+          await Promise.all(
+            uris.map(async (item) => {
+              const _isWorkspace = isWorkspaceFile(item.fsPath);
+              const _fileType = await getFileType(item.fsPath);
+              const title = getProjectTitle(item.fsPath);
+
+              if (_isWorkspace || _fileType === vscode.FileType.Directory) {
+                return Tree.createNodeByType(TreeNodeType.Project, {
+                  title: title,
+                  resourceUri: item,
+                });
+              }
+
+              if (_fileType === vscode.FileType.File) {
+                return Tree.createNodeByType(TreeNodeType.File, {
+                  title: title,
+                  resourceUri: item,
+                });
+              }
+              return undefined;
+            }),
+          )
+        ).filter((item) => !!item);
         tree.addNodes(target, newNodes);
         view?.reveal(newNodes[0], {
           focus: true,
