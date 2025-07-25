@@ -21,7 +21,7 @@ export class FileTreeItem extends BaseTreeItem {
       ...this,
       ...props,
     });
-    treeProps.iconPath = new vscode.ThemeIcon('file');
+    treeProps.iconPath = vscode.ThemeIcon.File;
     let showPathInTooltip = '';
     if (this.projectPath) {
       const encodedArgs = encodeURIComponent(

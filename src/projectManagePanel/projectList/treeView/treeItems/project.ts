@@ -50,7 +50,7 @@ ${
     if (isWorkspace) {
       treeProps.iconPath = new vscode.ThemeIcon('folder-library');
     } else {
-      treeProps.iconPath = new vscode.ThemeIcon('folder');
+      treeProps.iconPath = vscode.ThemeIcon.Folder;
     }
 
     Object.assign(this, treeProps);
