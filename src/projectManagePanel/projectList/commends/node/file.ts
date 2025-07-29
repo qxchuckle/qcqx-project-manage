@@ -57,7 +57,6 @@ export function createFileCommand(treeViewController: TreeViewController) {
         targetTitle,
         uris: [uri],
         view,
-        type: TreeNodeType.File,
       });
     },
   );

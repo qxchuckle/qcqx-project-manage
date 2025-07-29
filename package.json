@@ -163,7 +163,7 @@
         },
         {
           "submenu": "qcqx-project-manage.project-list-more-actions",
-          "when": "view == project-list && (viewItem == project || viewItem == file || viewItem == group)",
+          "when": "view == project-list && (viewItem == tip ||viewItem == project || viewItem == file || viewItem == group)",
           "group": "inline@6"
         }
       ],
@@ -185,7 +185,7 @@
         },
         {
           "command": "qcqx-project-manage.project-list.save-active-editor-file",
-          "when": "view == project-list && (viewItem == group)",
+          "when": "view == project-list && (viewItem == tip || viewItem == group)",
           "group": "1_modification@4"
         },
         {

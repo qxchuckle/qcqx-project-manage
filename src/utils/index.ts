@@ -91,21 +91,26 @@ interface QuickPickItem extends vscode.QuickPickItem {
   title: string;
   uri?: vscode.Uri;
   isExit: boolean;
+  type: TreeNodeType.File | TreeNodeType.Project;
 }
 
 /**
  * 通过uri保存项目弹窗
  */
-export function saveProjectByUriQuickPick(props: {
+export async function saveProjectByUriQuickPick(props: {
   tree: Tree;
   target: BaseTreeItem;
   targetTitle?: string;
-  uris: vscode.Uri[];
+  uris?: vscode.Uri[];
   view?: vscode.TreeView<BaseTreeItem>;
   quickPickProps?: vscode.QuickPickOptions;
-  type: TreeNodeType.File | TreeNodeType.Project;
 }) {
-  const { tree, target, uris, view, quickPickProps, type } = props;
+  const { tree, target, uris = [], view, quickPickProps } = props;
+
+  if (uris.length === 0) {
+    return;
+  }
+
   const targetTitle = props.targetTitle || target.title;
   const quickPick = vscode.window.createQuickPick<QuickPickItem>();
   const allTreeNodesPathSet = new Set(
@@ -115,9 +120,15 @@ export function saveProjectByUriQuickPick(props: {
   const allSelectItems: QuickPickItem[] = [];
   for (let i = 0; i < uris.length; i++) {
     const uri = uris[i];
+    const _isWorkspace = isWorkspaceFile(uri.fsPath);
+    const _fileType = await getFileType(uri.fsPath);
     const isExit = allTreeNodesPathSet.has(uri.fsPath);
     const title = getProjectTitle(uri.fsPath);
     const label = `${isExit ? '[已存在]' : ''}` + title;
+    let type = TreeNodeType.Project;
+    if (!_isWorkspace && _fileType === vscode.FileType.File) {
+      type = TreeNodeType.File;
+    }
     if (isExit) {
       allSelectItems.push({
         title,
@@ -126,6 +137,7 @@ export function saveProjectByUriQuickPick(props: {
         detail: uri.fsPath,
         uri,
         isExit,
+        type,
       });
     } else {
       allSelectItems.unshift({
@@ -135,13 +147,12 @@ export function saveProjectByUriQuickPick(props: {
         detail: uri.fsPath,
         uri,
         isExit,
+        type,
       });
     }
   }
   quickPick.items = allSelectItems;
-  quickPick.title = `请选择要添加到 ${targetTitle} 的${
-    type === TreeNodeType.Project ? '项目' : '文件'
-  }`;
+  quickPick.title = `请选择要添加到 ${targetTitle} 的项目`;
   quickPick.matchOnDescription = true;
   quickPick.matchOnDetail = true;
   quickPick.canSelectMany = true;
@@ -155,7 +166,7 @@ export function saveProjectByUriQuickPick(props: {
     }
     const newNodes: BaseTreeItem[] = [];
     selectedItems.forEach((item) => {
-      const newNode = Tree.createNodeByType(type, {
+      const newNode = Tree.createNodeByType(item.type, {
         title: item.title,
         resourceUri: item.uri,
       });
