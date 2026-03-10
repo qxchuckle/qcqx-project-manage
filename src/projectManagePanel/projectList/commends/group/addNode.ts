@@ -65,6 +65,26 @@ export function createAddNode(treeViewController: TreeViewController) {
   );
 
   /**
+   * 将指定 URI 添加到项目列表根目录（供最近文件夹等调用）
+   */
+  const addUriToRoot = vscode.commands.registerCommand(
+    'qcqx-project-manage.project-list.add-uri-to-root',
+    async (uri: vscode.Uri) => {
+      if (!uri) {
+        return;
+      }
+      const { tree, view } = treeViewController;
+      await saveProjectByUriQuickPick({
+        tree,
+        target: tree.root,
+        targetTitle: '根目录',
+        uris: [uri],
+        view,
+      });
+    },
+  );
+
+  /**
    * 添加当前窗口打开的项目
    */
   const addCurrentProject = vscode.commands.registerCommand(
@@ -91,5 +111,5 @@ export function createAddNode(treeViewController: TreeViewController) {
     },
   );
 
-  return [addGroup, addProject, addCurrentProject];
+  return [addGroup, addProject, addUriToRoot, addCurrentProject];
 }

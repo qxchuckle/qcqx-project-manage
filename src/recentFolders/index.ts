@@ -55,4 +55,20 @@ export function initRecentFolders(context: vscode.ExtensionContext): void {
       },
     ),
   );
+
+  // 保存到项目列表
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      'qcqx-project-manage.recent-folders.save-to-project-list',
+      async (item: RecentFolderTreeItem) => {
+        if (!item?.resourceUri) {
+          return;
+        }
+        await vscode.commands.executeCommand(
+          'qcqx-project-manage.project-list.add-uri-to-root',
+          item.resourceUri,
+        );
+      },
+    ),
+  );
 }

@@ -151,6 +151,11 @@
           "group": "inline@2"
         },
         {
+          "command": "qcqx-project-manage.recent-folders.save-to-project-list",
+          "when": "view == recent-folders && viewItem == recent-folder",
+          "group": "inline@3"
+        },
+        {
           "command": "qcqx-project-manage.project-list.delete-link",
           "when": "view == project-list && (viewItem == group || viewItem == project || viewItem == file)",
           "group": "2_modification@6"
@@ -392,6 +397,11 @@
         "command": "qcqx-project-manage.recent-folders.open-in-new-window",
         "title": "在新窗口打开",
         "icon": "$(multiple-windows)"
+      },
+      {
+        "command": "qcqx-project-manage.recent-folders.save-to-project-list",
+        "title": "保存到项目列表",
+        "icon": "$(add)"
       },
       {
         "command": "qcqx-project-manage.recent-folders.refresh",
