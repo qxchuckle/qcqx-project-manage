@@ -176,6 +176,11 @@
           "group": "3_modification@9"
         },
         {
+          "command": "qcqx-project-manage.project-list.copy-path",
+          "when": "view == project-list && (viewItem == project || viewItem == file || viewItem == folder || viewItem == fs-file)",
+          "group": "3_modification@10"
+        },
+        {
           "command": "qcqx-project-manage.project-list.open-project-in-current-window",
           "when": "view == project-list && (viewItem == project || viewItem == folder)",
           "group": "inline@1"
@@ -256,6 +261,11 @@
           "command": "qcqx-project-manage.project-list.open-project-in-terminal",
           "when": "view == project-list && (viewItem == project || viewItem == file || viewItem == folder || viewItem == fs-file)",
           "group": "3_modification@9"
+        },
+        {
+          "command": "qcqx-project-manage.project-list.copy-path",
+          "when": "view == project-list && (viewItem == project || viewItem == file || viewItem == folder || viewItem == fs-file)",
+          "group": "3_modification@10"
         }
       ]
     },
@@ -371,6 +381,11 @@
         "command": "qcqx-project-manage.project-list.open-path-in-file-explorer",
         "title": "在文件管理器中打开路径",
         "icon": "$(explorer-view-icon)"
+      },
+      {
+        "command": "qcqx-project-manage.project-list.copy-path",
+        "title": "复制路径",
+        "icon": "$(copy)"
       },
       {
         "command": "qcqx-project-manage.project-list.project-search",

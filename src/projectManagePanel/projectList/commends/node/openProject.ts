@@ -85,11 +85,23 @@ export function createOpenProject(treeViewController: TreeViewController) {
     },
   );
 
+  const copyPath = vscode.commands.registerCommand(
+    'qcqx-project-manage.project-list.copy-path',
+    async (target: BaseTreeItem | undefined) => {
+      if (!target?.projectPath) {
+        return;
+      }
+      await vscode.env.clipboard.writeText(target.projectPath);
+      vscode.window.showInformationMessage(`已复制路径: ${target.projectPath}`);
+    },
+  );
+
   return [
     openProjectInCurrentWindow,
     openProjectInNewWindow,
     openProjectInFileExplorer,
     openProjectInTerminal,
     openPathInFileExplorer,
+    copyPath,
   ];
 }
