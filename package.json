@@ -3,7 +3,7 @@
   "displayName": "项目管理(Project Manage)",
   "description": "一个更可靠、方便的项目管理插件",
   "publisher": "qcqx",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "scripts": {
     "vscode:prepublish": "npm run package",
     "compile": "npm run check-types && npm run lint && node esbuild.js",
