@@ -22,9 +22,7 @@ export class RecentFolderTreeItem extends vscode.TreeItem {
   }
 }
 
-export class RecentFoldersTreeDataProvider
-  implements vscode.TreeDataProvider<RecentFolderTreeItem>
-{
+export class RecentFoldersTreeDataProvider implements vscode.TreeDataProvider<RecentFolderTreeItem> {
   private _onDidChangeTreeData = new vscode.EventEmitter<
     RecentFolderTreeItem | undefined | void
   >();
@@ -39,11 +37,7 @@ export class RecentFoldersTreeDataProvider
     context.subscriptions.push(
       store.onChange(() => this._onDidChangeTreeData.fire()),
       vscode.workspace.onDidChangeConfiguration((e) => {
-        if (
-          e.affectsConfiguration(
-            `qcqx-project-manage.recent-folders-max`,
-          )
-        ) {
+        if (e.affectsConfiguration(`qcqx-project-manage.recent-folders-max`)) {
           this._onDidChangeTreeData.fire();
         }
       }),
@@ -60,6 +54,7 @@ export class RecentFoldersTreeDataProvider
 
   async getChildren(): Promise<RecentFolderTreeItem[]> {
     const list = await this.store.getList();
+    console.log('list', list);
     return list.map((e) => new RecentFolderTreeItem(e));
   }
 }

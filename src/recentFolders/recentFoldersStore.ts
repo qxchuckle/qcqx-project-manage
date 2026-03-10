@@ -1,8 +1,13 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
-import { Database } from 'node-sqlite3-wasm';
+import * as os from 'os';
+import initSqlJs from 'sql.js';
 import { vscodeConfigKeys, vscodeConfigName } from '@/config';
+
+type SqlJsDatabase = InstanceType<
+  Awaited<ReturnType<typeof initSqlJs>>['Database']
+>;
 
 const HISTORY_KEY = 'history.recentlyOpenedPathsList';
 
@@ -31,9 +36,17 @@ export class RecentFoldersStore {
   private context: vscode.ExtensionContext;
   private _onChange = new vscode.EventEmitter<void>();
   readonly onChange = this._onChange.event;
+  private sqlPromise: ReturnType<typeof initSqlJs> | null = null;
 
   private constructor(context: vscode.ExtensionContext) {
     this.context = context;
+  }
+
+  private async getSql() {
+    if (!this.sqlPromise) {
+      this.sqlPromise = initSqlJs();
+    }
+    return this.sqlPromise;
   }
 
   static getInstance(context: vscode.ExtensionContext): RecentFoldersStore {
@@ -59,19 +72,24 @@ export class RecentFoldersStore {
    */
   async getList(): Promise<RecentFolderEntry[]> {
     const statePath = this.getStateVscdbPath();
+    console.log('statePath', statePath);
     if (!fs.existsSync(statePath)) {
       return [];
     }
-    let db: Database | null = null;
+    let db: SqlJsDatabase | null = null;
     try {
-      db = new Database(statePath, { readOnly: true, fileMustExist: true });
-      const row = db.get(
-        'SELECT value FROM ItemTable WHERE key = ?',
-        [HISTORY_KEY],
-      ) as { value: string } | undefined;
+      const SQL = await this.getSql();
+      const buf = new Uint8Array(fs.readFileSync(statePath));
+      db = new SQL.Database(buf);
+      const stmt = db.prepare('SELECT value FROM ItemTable WHERE key = ?');
+      stmt.bind([HISTORY_KEY]);
+      let valueStr: string | undefined;
+      if (stmt.step()) {
+        valueStr = stmt.get()[0] as string;
+      }
+      stmt.free();
       db.close();
       db = null;
-      const valueStr = row?.value;
       if (typeof valueStr !== 'string') {
         return [];
       }
@@ -99,7 +117,8 @@ export class RecentFoldersStore {
         }
       }
       return list;
-    } catch {
+    } catch (error) {
+      console.error('Failed to read state.vscdb:', error);
       if (db) {
         try {
           db.close();

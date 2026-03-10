@@ -420,6 +420,7 @@
   "devDependencies": {
     "@types/mocha": "^10.0.10",
     "@types/node": "20.x",
+    "@types/sql.js": "^1.4.9",
     "@types/vscode": "^1.70.0",
     "@typescript-eslint/eslint-plugin": "^8.31.1",
     "@typescript-eslint/parser": "^8.31.1",
@@ -431,6 +432,6 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "node-sqlite3-wasm": "^0.8.54"
+    "sql.js": "^1.14.1"
   }
 }
