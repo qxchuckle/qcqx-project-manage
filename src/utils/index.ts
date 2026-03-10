@@ -8,6 +8,9 @@ export * from './localCache';
 export * from './workspace';
 export * from './doc';
 
+export const isNil = (value: any): value is null | undefined =>
+  value === null || value === undefined;
+
 export async function explorer(folderPath: string) {
   if (!folderPath) {
     return;

@@ -3,6 +3,7 @@ import { BaseTreeItem } from './treeItems/base';
 import { GroupTreeItem } from './treeItems/group';
 import { ProjectListDragDataTransferMimeType } from './mimeType';
 import { TreeNodeType } from './type';
+import { isNil } from '@/utils';
 
 export interface DragData {
   nodeIds: string[];
@@ -11,9 +12,7 @@ export interface DragData {
 /**
  * 树状视图的拖拽和放置控制器
  */
-export abstract class TreeDragAndDropController
-  implements vscode.TreeDragAndDropController<BaseTreeItem>
-{
+export abstract class TreeDragAndDropController implements vscode.TreeDragAndDropController<BaseTreeItem> {
   // dropMimeTypes 和 dragMimeTypes 与树状视图的 id 关联
   // 用来告诉 Vscode 该控制器只处理从 dragMimeTypes 指定的视图 A 拖拽到 dropMimeTypes 指定的视图 B
   dropMimeTypes = ['application/vnd.code.tree.project-list'];
@@ -91,8 +90,8 @@ export abstract class TreeDragAndDropController
       .map((id) => this.allTreeNodesMap[id])
       .filter(
         (node): node is BaseTreeItem =>
-          node != null &&
-          node.parent != null &&
+          !isNil(node) &&
+          !isNil(node.parent) &&
           !dragData.nodeIds.includes(node.parent.id),
       );
     return {

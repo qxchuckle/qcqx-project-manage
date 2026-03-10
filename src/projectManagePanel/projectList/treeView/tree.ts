@@ -150,8 +150,12 @@ export class Tree
     items.sort((a, b) => {
       const aIsFolder = a.type === TreeNodeType.Folder;
       const bIsFolder = b.type === TreeNodeType.Folder;
-      if (aIsFolder && !bIsFolder) return -1;
-      if (!aIsFolder && bIsFolder) return 1;
+      if (aIsFolder && !bIsFolder) {
+        return -1;
+      }
+      if (!aIsFolder && bIsFolder) {
+        return 1;
+      }
       return (a.title || '').localeCompare(b.title || '', undefined, {
         numeric: true,
       });
