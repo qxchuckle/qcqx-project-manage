@@ -11,6 +11,10 @@ export const enum TreeNodeType {
   Tip = 'tip',
   // 保存文件快捷打开
   File = 'file',
+  // 文件系统文件夹（展开项目/文件夹时动态加载，不持久化）
+  Folder = 'folder',
+  // 文件系统文件（展开项目/文件夹时动态加载，与持久化 File 区分）
+  FsFile = 'fs-file',
 }
 
 export const TreeNodeTypeNameMap: Record<TreeNodeType, string> = {
@@ -19,6 +23,8 @@ export const TreeNodeTypeNameMap: Record<TreeNodeType, string> = {
   [TreeNodeType.Root]: '根节点',
   [TreeNodeType.Tip]: '提示',
   [TreeNodeType.File]: '文件',
+  [TreeNodeType.Folder]: '文件夹',
+  [TreeNodeType.FsFile]: '文件',
 };
 
 export interface TreeItem extends vscode.TreeItem {
@@ -38,7 +44,7 @@ export interface JsonTreeNodeType {
   type: TreeNodeType;
   description?: vscode.TreeItem['description'];
   children?: JsonTreeNodeType[];
-  /** 仅当type为group时有效 */
+  /** 仅当 type 为 group 时写入/读取；project 的展开状态不持久化 */
   collapsibleState?: vscode.TreeItemCollapsibleState;
   fsPath?: string;
   links?: string[];

@@ -11,7 +11,8 @@ export class ProjectTreeItem extends BaseTreeItem {
 
   constructor(props: TreeItemProps) {
     props.contextValue = TreeNodeType.Project;
-    props.collapsibleState = vscode.TreeItemCollapsibleState.None;
+    props.collapsibleState =
+      props.collapsibleState ?? vscode.TreeItemCollapsibleState.Collapsed;
     super(props);
     this.update(props);
   }

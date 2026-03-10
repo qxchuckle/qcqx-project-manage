@@ -9,6 +9,8 @@ import { LocalCache } from '@/utils';
 import { TipTreeItem } from './treeItems/tip';
 import { RootTreeItem } from './treeItems/root';
 import { FileTreeItem } from './treeItems/file';
+import { FolderTreeItem } from './treeItems/folder';
+import { FsFileTreeItem } from './treeItems/fsFile';
 
 export const projectListCacheId = 'project-list';
 
@@ -83,6 +85,15 @@ export class Tree
   }
 
   getChildren(element?: BaseTreeItem): vscode.ProviderResult<BaseTreeItem[]> {
+    // 项目或文件夹节点：从文件系统加载子项（不持久化）
+    if (
+      element?.resourceUri &&
+      (element.type === TreeNodeType.Project ||
+        element.type === TreeNodeType.Folder)
+    ) {
+      return this.loadDirContents(element.resourceUri, element);
+    }
+
     let result = [...(element ? element.children : this.root.children)];
 
     // group 节点排在前面
@@ -107,6 +118,45 @@ export class Tree
     }
 
     return result;
+  }
+
+  /**
+   * 读取目录内容并返回子节点（仅用于展示，不写入 model）
+   */
+  private async loadDirContents(
+    uri: vscode.Uri,
+    parent: BaseTreeItem,
+  ): Promise<BaseTreeItem[]> {
+    const entries = await vscode.workspace.fs.readDirectory(uri);
+    const items: BaseTreeItem[] = [];
+    for (const [name, fileType] of entries) {
+      const childUri = vscode.Uri.joinPath(uri, name);
+      const childPath = childUri.fsPath;
+      const id = childPath;
+      const isDir = fileType === vscode.FileType.Directory;
+      const props: TreeItemProps = {
+        id,
+        title: name,
+        resourceUri: childUri,
+        contextValue: isDir ? TreeNodeType.Folder : TreeNodeType.FsFile,
+      };
+      const node = isDir
+        ? new FolderTreeItem(props)
+        : new FsFileTreeItem(props);
+      node.parent = parent;
+      items.push(node);
+    }
+    // 文件夹在前，再按名称排序
+    items.sort((a, b) => {
+      const aIsFolder = a.type === TreeNodeType.Folder;
+      const bIsFolder = b.type === TreeNodeType.Folder;
+      if (aIsFolder && !bIsFolder) return -1;
+      if (!aIsFolder && bIsFolder) return 1;
+      return (a.title || '').localeCompare(b.title || '', undefined, {
+        numeric: true,
+      });
+    });
+    return items;
   }
 
   getParent(element: BaseTreeItem): BaseTreeItem | undefined {
@@ -348,6 +398,10 @@ export class Tree
         return new TipTreeItem(props);
       case TreeNodeType.File:
         return new FileTreeItem(props);
+      case TreeNodeType.Folder:
+        return new FolderTreeItem(props);
+      case TreeNodeType.FsFile:
+        return new FsFileTreeItem(props);
       default:
         throw new Error(`没有处理的节点类型: ${type}`);
     }

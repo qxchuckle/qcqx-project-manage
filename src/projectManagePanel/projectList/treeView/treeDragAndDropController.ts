@@ -39,11 +39,21 @@ export abstract class TreeDragAndDropController
       return;
     }
 
-    // 获取拖拽节点
+    // 获取拖拽节点（仅包含持久化节点，展开的文件夹内容等动态节点不可拖拽）
     const dragData = transferItem.value as DragData;
     const { dragNodeIds, dragNodes } = this.getDragNodes(dragData);
     console.log('dragNodes', dragNodeIds, dragNodes);
 
+    if (dragNodes.length === 0) {
+      return;
+    }
+    // 禁止拖放到文件夹/文件系统文件上，保持被拖拽项原样（否则 project 会被误删）
+    if (
+      target?.type === TreeNodeType.Folder ||
+      target?.type === TreeNodeType.FsFile
+    ) {
+      return;
+    }
     // 放置前的安全检查
     if (!this.checkSafeToDrop(target, dragNodeIds)) {
       return;
@@ -77,11 +87,17 @@ export abstract class TreeDragAndDropController
         dragNodes: [],
       };
     }
+    const dragNodes = dragData.nodeIds
+      .map((id) => this.allTreeNodesMap[id])
+      .filter(
+        (node): node is BaseTreeItem =>
+          node != null &&
+          node.parent != null &&
+          !dragData.nodeIds.includes(node.parent.id),
+      );
     return {
       dragNodeIds,
-      dragNodes: dragData.nodeIds
-        .map((id) => this.allTreeNodesMap[id])
-        .filter((node) => !dragData.nodeIds.includes(node.parent!.id)),
+      dragNodes,
     };
   }
 

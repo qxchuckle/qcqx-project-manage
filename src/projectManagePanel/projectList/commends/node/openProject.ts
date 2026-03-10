@@ -63,7 +63,11 @@ export function createOpenProject(treeViewController: TreeViewController) {
         return;
       }
       let terminalPath = projectPath;
-      if (target.type === TreeNodeType.File || isWorkspaceFile(projectPath)) {
+      if (
+        target.type === TreeNodeType.File ||
+        target.type === TreeNodeType.FsFile ||
+        isWorkspaceFile(projectPath)
+      ) {
         // 对于工作区、文件，在其所在目录打开终端
         terminalPath = path.dirname(projectPath);
       }
