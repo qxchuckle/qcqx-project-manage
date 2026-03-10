@@ -72,7 +72,8 @@
         },
         {
           "id": "recent-folders",
-          "name": "最近打开的文件夹"
+          "name": "最近打开的文件夹",
+          "visibility": "collapsed"
         }
       ]
     },
