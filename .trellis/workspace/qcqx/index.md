@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 1
+- **Total Sessions**: 4
 - **Last Active**: 2026-03-10
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~38 | Active |
+| `journal-1.md` | ~128 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,9 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits |
 |---|------|-------|---------|
+| 4 | 2026-03-10 | 最近打开的文件夹增加保存到项目列表按钮 | - |
+| 3 | 2026-03-10 | 最近打开的文件夹增加保存到项目列表按钮 | - |
+| 2 | 2026-03-10 | 最近打开的文件夹增加「保存到项目列表」按钮 | - |
 | 1 | 2026-03-10 | 最近打开的文件夹增加保存到项目列表按钮 | - |
 <!-- @@@/auto:session-history -->
 
