@@ -1,59 +1,150 @@
 # Component Guidelines
 
-> How components are built in this project.
+> How extension UI building blocks (TreeView, tree items, commands) are built in this project.
 
 ---
 
 ## Overview
 
-<!--
-Document your project's component conventions here.
+This project has no React/DOM components. "Components" here mean:
 
-Questions to answer:
-- What component patterns do you use?
-- How are props defined?
-- How do you handle composition?
-- What accessibility standards apply?
--->
+- **TreeView**: A view backed by a `TreeDataProvider` and optional `TreeDragAndDropController`.
+- **Tree items**: Classes extending `vscode.TreeItem` (and project interface `TreeItem`), with a shared base class.
+- **Commands**: Factory functions that register commands and return `vscode.Disposable[]`.
 
-(To be filled by the team)
+Conventions: one TreeDataProvider per view, one base tree item class per tree, commands grouped by domain and registered via factories.
 
 ---
 
-## Component Structure
+## TreeView and TreeDataProvider
 
-<!-- Standard structure of a component file -->
+- **One provider per view**: The provider holds the data model (e.g. `Tree` holds `RootTreeItem` and implements `TreeDataProvider<BaseTreeItem>`).
+- **Controller separate**: View creation and config (e.g. lock) live in a controller (e.g. `TreeViewController`) that owns the `Tree` and calls `createTreeView(viewId, options)`.
+- **Refresh**: Provider exposes `onDidChangeTreeData` and calls `_onDidChangeTreeData.fire()` when data changes; controller calls `tree.refresh()` when needed.
 
-(To be filled by the team)
+**Example** — provider + controller wiring:
+
+```ts
+// src/projectManagePanel/projectList/index.ts
+const tree = new Tree({ context });
+const treeViewController = new TreeViewController(context, 'project-list', tree);
+treeViewController.init();
+initCommands(treeViewController);
+```
+
+**Example** — view creation with options:
+
+```ts
+// src/projectManagePanel/projectList/treeView/treeViewController.ts
+createView(): vscode.TreeView<BaseTreeItem> {
+  const options: vscode.TreeViewOptions<BaseTreeItem> = {
+    treeDataProvider: this.tree,
+    showCollapseAll: true,
+    canSelectMany: true,
+    dragAndDropController: this.locked ? undefined : this.tree,
+  };
+  this.view = vscode.window.createTreeView(this.viewId, options);
+  // ... onDidCollapseElement, onDidExpandElement, syncToLocalConfig
+  return this.view;
+}
+```
+
+---
+
+## Tree Item Structure
+
+- **Base class**: All node types extend `BaseTreeItem` (which extends `vscode.TreeItem` and implements project `TreeItem`). Base holds `id`, `title`, `type`, `children`, `parent`, and shared logic (e.g. `exportJsonNode`, `addChild`, `deleteChild`).
+- **Concrete items**: One class per `TreeNodeType` in `treeItems/`: `RootTreeItem`, `GroupTreeItem`, `ProjectTreeItem`, `FileTreeItem`, `TipTreeItem`. Each has `type` and implements `update(props: TreeItemProps)`.
+- **Creation**: Use `Tree.createNodeByType(type, props)` so node type is centralized.
+
+**Example** — base and type:
+
+```ts
+// src/projectManagePanel/projectList/treeView/type.ts
+export const enum TreeNodeType {
+  Project = 'project', Group = 'group', Root = 'root', Tip = 'tip', File = 'file',
+}
+export interface TreeItem extends vscode.TreeItem {
+  id: string; title: string; type: TreeNodeType;
+}
+```
+
+```ts
+// src/projectManagePanel/projectList/treeView/treeItems/base.ts
+export abstract class BaseTreeItem extends vscode.TreeItem implements TreeItem {
+  abstract type: TreeNodeType;
+  title: string = ''; id: string = '';
+  children: BaseTreeItem[] = []; parent?: BaseTreeItem;
+  abstract update(props: TreeItemProps): void;
+  // ... exportJsonNode, addChild, deleteChild, traverse, etc.
+}
+```
+
+**Example** — creating nodes:
+
+```ts
+// src/utils/index.ts (saveProjectByUriQuickPick)
+const newNode = Tree.createNodeByType(item.type, { title: item.title, resourceUri: item.uri });
+tree.addNodes(target, newNodes);
+```
+
+---
+
+## Command Registration
+
+- **Factory per group**: Each command group is a file exporting a single function `create*(controllerOrContext): vscode.Disposable[]`.
+- **Naming**: `createOpenProject`, `createAddNode`, `createLockList`, etc. Command IDs in package.json match pattern `qcqx-project-manage.<view>.<command>`.
+- **Registration**: All factories are called from `initCommands`; returned disposables are pushed to `context.subscriptions`.
+
+**Example** — command factory:
+
+```ts
+// src/projectManagePanel/projectList/commends/node/openProject.ts
+export function createOpenProject(treeViewController: TreeViewController) {
+  const openInCurrent = vscode.commands.registerCommand(
+    'qcqx-project-manage.project-list.open-project-in-current-window',
+    async (target: BaseTreeItem | undefined) => {
+      if (!target?.projectPath) return;
+      vscode.commands.executeCommand('vscode.openFolder', target.resourceUri, { forceNewWindow: false });
+    },
+  );
+  // ... more registerCommand calls
+  return [openInCurrent, openInNewWindow, ...];
+}
+```
+
+**Example** — aggregating in init:
+
+```ts
+// src/projectManagePanel/projectList/commends/index.ts
+export function initCommands(treeViewController: TreeViewController) {
+  const commands: vscode.Disposable[] = [
+    ...createAddNode(treeViewController),
+    ...createOpenProject(treeViewController),
+    // ...
+  ];
+  treeViewController.context.subscriptions.push(...commands);
+}
+```
 
 ---
 
 ## Props Conventions
 
-<!-- How props should be defined and typed -->
-
-(To be filled by the team)
-
----
-
-## Styling Patterns
-
-<!-- How styles are applied (CSS modules, styled-components, Tailwind, etc.) -->
-
-(To be filled by the team)
+- **Tree item props**: Use `TreeItemProps` (and `JsonTreeNodeType` for serialization). Optional fields use `Partial`; required `type` comes from `TreeNodeType`. Use `BaseTreeItem.treePropsProcess()` for defaults (id, label, tooltip).
+- **Init/constructor props**: Use a single object argument, e.g. `{ context: vscode.ExtensionContext }` or `{ tree, target, uris?, view?, quickPickProps? }`. Prefer destructuring in the function body.
 
 ---
 
-## Accessibility
+## Styling and Accessibility
 
-<!-- A11y requirements and patterns -->
-
-(To be filled by the team)
+- **Styling**: No CSS; icons and labels come from `TreeItem` (iconPath, label, description, tooltip). Use `contextValue` for view/item menus.
+- **Accessibility**: Rely on VS Code’s tree and command UI; provide clear `label` and `tooltip` on tree items.
 
 ---
 
 ## Common Mistakes
 
-<!-- Component-related mistakes your team has made -->
-
-(To be filled by the team)
+- **Registering commands outside init**: Always register in a `create*` and push to `context.subscriptions` so they are disposed on deactivate.
+- **New tree node type without enum**: Add the value to `TreeNodeType` and handle it in `Tree.createNodeByType` and any switch on `type`.
+- **Relative imports across features**: Prefer `@/utils` or `@/config` for shared code instead of long `../../../` paths.
