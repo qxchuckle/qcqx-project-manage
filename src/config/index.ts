@@ -5,4 +5,6 @@ export const vscodeConfigName = 'qcqx-project-manage';
 export const enum vscodeConfigKeys {
   /** 项目列表是否锁定 */
   projectListLock = 'project-list-lock',
+  /** 最近打开的文件夹最多显示数量 */
+  recentFoldersMax = 'recent-folders-max',
 }

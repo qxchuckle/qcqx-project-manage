@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { initProjectList } from './projectList';
+import { initRecentFolders } from '@/recentFolders';
 
 export const initProjectManagePanel = (props: {
   context: vscode.ExtensionContext;
@@ -7,4 +8,5 @@ export const initProjectManagePanel = (props: {
   const { context } = props;
 
   initProjectList({ context });
+  initRecentFolders(context);
 };

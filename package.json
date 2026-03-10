@@ -69,6 +69,10 @@
         {
           "id": "project-list",
           "name": "项目列表"
+        },
+        {
+          "id": "recent-folders",
+          "name": "最近打开的文件夹"
         }
       ]
     },
@@ -98,6 +102,11 @@
           "command": "qcqx-project-manage.project-list.open-local-config",
           "when": "view == project-list",
           "group": "navigation@8"
+        },
+        {
+          "command": "qcqx-project-manage.recent-folders.refresh",
+          "when": "view == recent-folders",
+          "group": "navigation@1"
         }
       ],
       "view/item/context": [
@@ -130,6 +139,16 @@
           "command": "qcqx-project-manage.project-list.save-active-editor-file",
           "when": "view == project-list && (viewItem == group)",
           "group": "1_modification@4"
+        },
+        {
+          "command": "qcqx-project-manage.recent-folders.open-in-current-window",
+          "when": "view == recent-folders && viewItem == recent-folder",
+          "group": "inline@1"
+        },
+        {
+          "command": "qcqx-project-manage.recent-folders.open-in-new-window",
+          "when": "view == recent-folders && viewItem == recent-folder",
+          "group": "inline@2"
         },
         {
           "command": "qcqx-project-manage.project-list.delete-link",
@@ -363,6 +382,21 @@
       {
         "command": "qcqx-project-manage.project-list.save-active-editor-file",
         "title": "添加当前编辑文件"
+      },
+      {
+        "command": "qcqx-project-manage.recent-folders.open-in-current-window",
+        "title": "在当前窗口打开",
+        "icon": "$(window)"
+      },
+      {
+        "command": "qcqx-project-manage.recent-folders.open-in-new-window",
+        "title": "在新窗口打开",
+        "icon": "$(multiple-windows)"
+      },
+      {
+        "command": "qcqx-project-manage.recent-folders.refresh",
+        "title": "刷新",
+        "icon": "$(refresh)"
       }
     ],
     "configuration": {
@@ -372,21 +406,31 @@
           "type": "boolean",
           "default": false,
           "description": "是否锁定项目列表"
+        },
+        "qcqx-project-manage.recent-folders-max": {
+          "type": "number",
+          "default": 20,
+          "minimum": 1,
+          "maximum": 100,
+          "description": "最近打开的文件夹视图最多显示数量"
         }
       }
     }
   },
   "devDependencies": {
-    "@types/vscode": "^1.70.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "20.x",
+    "@types/vscode": "^1.70.0",
     "@typescript-eslint/eslint-plugin": "^8.31.1",
     "@typescript-eslint/parser": "^8.31.1",
-    "eslint": "^9.25.1",
-    "esbuild": "^0.25.3",
-    "npm-run-all": "^4.1.5",
-    "typescript": "^5.8.3",
     "@vscode/test-cli": "^0.0.10",
-    "@vscode/test-electron": "^2.5.2"
+    "@vscode/test-electron": "^2.5.2",
+    "esbuild": "^0.25.3",
+    "eslint": "^9.25.1",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "node-sqlite3-wasm": "^0.8.54"
   }
 }
