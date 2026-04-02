@@ -126,3 +126,62 @@
 ### Next Steps
 
 - None - task complete
+
+
+## Session 5: 项目管理面板功能增强与 v1.1.4 发布
+
+**Date**: 2026-04-02
+**Task**: 项目管理面板功能增强与 v1.1.4 发布
+
+### Summary
+
+(Add summary)
+
+### Main Changes
+
+### Summary
+
+多项功能增强与代码重构，发布 v1.1.4 版本。
+
+### Main Changes
+
+| 提交 | 类型 | 描述 |
+|------|------|------|
+| `7fa3deb` | feat | 支持文件夹项目继续展开子目录/文件 |
+| `8e9b567` | feat | 右键菜单增加复制路径功能 |
+| `677921d` | feat | 最近打开的文件夹视图容器默认收起 |
+| `83b07a4` | chore | 版本号升级到 1.1.4 |
+| `1f7a775` | refactor | 改进排序逻辑并增强树视图组件的空值检查 |
+
+**修改文件 (13 files, +234/-26)**:
+- `package.json` — 新增命令注册、版本升级
+- `treeView/tree.ts` — 新增文件夹展开逻辑
+- `treeView/treeItems/folder.ts` — 新增文件夹树项
+- `treeView/treeItems/fsFile.ts` — 新增文件系统文件树项
+- `treeView/treeDragAndDropController.ts` — 拖拽控制器增强
+- `treeView/treeItems/base.ts` — 基础树项空值检查
+- `commends/node/openProject.ts` — 打开项目命令增强
+- `utils/index.ts` — 工具函数新增
+
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `7fa3deb` | (see git log) |
+| `8e9b567` | (see git log) |
+| `677921d` | (see git log) |
+| `83b07a4` | (see git log) |
+| `1f7a775` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
