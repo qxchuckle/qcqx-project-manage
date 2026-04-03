@@ -259,7 +259,7 @@ export class LocalGitProjectsTreeDataProvider
         const children = catProjects
           .sort((a, b) => a.name.localeCompare(b.name))
           .map((p) => new GitProjectTreeItem(p));
-        return new FolderTreeItem(cat, children, `git-folder:cat:${cat}`);
+        return new FolderTreeItem(cat, children, { id: `git-folder:cat:${cat}` });
       });
   }
 
@@ -294,7 +294,10 @@ export class LocalGitProjectsTreeDataProvider
       const label = scanFolder.startsWith(homedir)
         ? '~' + scanFolder.slice(homedir.length)
         : scanFolder;
-      const folder = new FolderTreeItem(label, children, `git-folder:scan:${scanFolder}`);
+      const folder = new FolderTreeItem(label, children, {
+        id: `git-folder:scan:${scanFolder}`,
+        fsPath: scanFolder,
+      });
       folder.tooltip = scanFolder;
       result.push(folder);
     }
@@ -381,7 +384,10 @@ export class LocalGitProjectsTreeDataProvider
         projects.push(new GitProjectTreeItem(child.project));
       } else {
         const children = this.pathNodeToTreeItems(child);
-        const folder = new FolderTreeItem(child.name, children, `git-folder:path:${child.fullPath}`);
+        const folder = new FolderTreeItem(child.name, children, {
+          id: `git-folder:path:${child.fullPath}`,
+          fsPath: child.fullPath,
+        });
         folder.tooltip = child.fullPath;
         folders.push(folder);
       }

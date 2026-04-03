@@ -1,11 +1,13 @@
 import * as vscode from 'vscode';
 import { CMD_PREFIX_LOCAL_GIT } from '@/config';
-import { GitProjectTreeItem } from '../../treeView/treeItems';
+import { GitProjectTreeItem, FolderTreeItem } from '../../treeView/treeItems';
+
+type FsPathItem = GitProjectTreeItem | FolderTreeItem;
 
 export function createOpenProject() {
   const openInCurrentWindow = vscode.commands.registerCommand(
     `${CMD_PREFIX_LOCAL_GIT}.open-in-current-window`,
-    async (item: GitProjectTreeItem) => {
+    async (item: FsPathItem) => {
       if (!item?.fsPath) {
         return;
       }
@@ -19,7 +21,7 @@ export function createOpenProject() {
 
   const openInNewWindow = vscode.commands.registerCommand(
     `${CMD_PREFIX_LOCAL_GIT}.open-in-new-window`,
-    async (item: GitProjectTreeItem) => {
+    async (item: FsPathItem) => {
       if (!item?.fsPath) {
         return;
       }

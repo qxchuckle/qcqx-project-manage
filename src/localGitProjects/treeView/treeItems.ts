@@ -25,14 +25,22 @@ export class GitProjectTreeItem extends vscode.TreeItem {
 
 export class FolderTreeItem extends vscode.TreeItem {
   readonly childItems: LocalGitTreeItem[];
+  readonly fsPath?: string;
 
-  constructor(label: string, childItems: LocalGitTreeItem[], id?: string) {
+  constructor(
+    label: string,
+    childItems: LocalGitTreeItem[],
+    options?: { id?: string; fsPath?: string },
+  ) {
     super(label, vscode.TreeItemCollapsibleState.Collapsed);
-    if (id) {
-      this.id = id;
+    if (options?.id) {
+      this.id = options.id;
     }
     this.childItems = childItems;
-    this.contextValue = 'local-git-folder';
+    this.fsPath = options?.fsPath;
+    this.contextValue = this.fsPath
+      ? 'local-git-path-folder'
+      : 'local-git-folder';
     this.iconPath = vscode.ThemeIcon.Folder;
   }
 }
