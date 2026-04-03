@@ -252,3 +252,50 @@
 ### Next Steps
 
 - None - task complete
+
+
+## Session 7: 优化代码结构
+
+**Date**: 2026-04-03
+**Task**: 优化代码结构
+
+### Summary
+
+(Add summary)
+
+### Main Changes
+
+## 改动概要
+
+| 改动 | 说明 |
+|------|------|
+| 扁平化入口 | 将三个面板初始化从 `projectManagePanel/index.ts` 提升到 `extension.ts`，删除不必要的中间层 |
+| 统一目录结构 | `localGitProjects` 和 `recentFolders` 按 `commands/` + `treeView/` 拆分，与 `projectList` 保持一致 |
+| 公共命令前缀 | 在 `config/index.ts` 定义 `CMD_PREFIX_PROJECT_LIST` / `CMD_PREFIX_RECENT_FOLDERS` / `CMD_PREFIX_LOCAL_GIT`，全项目 22 个文件消除硬编码 |
+| 视图模式持久化 | `localGitViewMode` 配置项注册到 `package.json`，通过 `vscode.workspace.getConfiguration` 读写，重启后保留 |
+
+**关键文件**:
+- `src/config/index.ts` — 新增 `EXTENSION_ID`、三个 `CMD_PREFIX_*` 常量、`localGitViewMode` 配置键
+- `src/extension.ts` — 直接初始化三个模块
+- `src/localGitProjects/` — 拆分为 `commands/{config,node}/` + `treeView/`
+- `src/recentFolders/` — 拆分为 `commands/node/` + `treeView/`
+- `package.json` — 新增 `local-git-view-mode` 配置声明
+
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `9cadbb4` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
