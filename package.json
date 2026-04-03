@@ -117,6 +117,11 @@
           "group": "navigation@8"
         },
         {
+          "command": "qcqx-project-manage.project-list.open-cache-config",
+          "when": "view == project-list",
+          "group": "navigation@9"
+        },
+        {
           "command": "qcqx-project-manage.recent-folders.refresh",
           "when": "view == recent-folders",
           "group": "navigation@1"
@@ -412,8 +417,13 @@
       },
       {
         "command": "qcqx-project-manage.project-list.open-local-config",
-        "title": "打开本地配置",
+        "title": "编辑项目列表",
         "icon": "$(edit)"
+      },
+      {
+        "command": "qcqx-project-manage.project-list.open-cache-config",
+        "title": "打开配置文件",
+        "icon": "$(gear)"
       },
       {
         "command": "qcqx-project-manage.project-list.expand-all",

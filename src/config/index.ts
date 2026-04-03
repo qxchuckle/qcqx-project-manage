@@ -14,6 +14,12 @@ export const enum vscodeConfigKeys {
 }
 
 /**
+ * LocalCache 配置
+ */
+export const CACHE_CONFIG_ID = 'app-config';
+export const CACHE_CONFIG_FILE = 'config.json';
+
+/**
  * 各模块命令前缀
  */
 export const CMD_PREFIX_PROJECT_LIST = `${EXTENSION_ID}.project-list`;

@@ -4,7 +4,7 @@ import * as path from 'path';
 import { GitProjectInfo, ViewMode, AppConfig } from '../types';
 import { scanForGitProjects } from '../scanner';
 import { LocalCache } from '@/utils/localCache';
-import { vscodeConfigName, vscodeConfigKeys } from '@/config';
+import { vscodeConfigName, vscodeConfigKeys, CACHE_CONFIG_ID, CACHE_CONFIG_FILE } from '@/config';
 import {
   GitProjectTreeItem,
   FolderTreeItem,
@@ -12,8 +12,6 @@ import {
   LocalGitTreeItem,
 } from './treeItems';
 
-const CONFIG_CACHE_ID = 'app-config';
-const CONFIG_FILE_PATH = 'config.json';
 const DEFAULT_CONFIG: AppConfig = {
   gitProjectScanFolders: [],
   gitProjectIgnoredFolders: [],
@@ -68,12 +66,12 @@ export class LocalGitProjectsTreeDataProvider
 
   private async doInit(): Promise<void> {
     await this.localCache.createCacheFile(
-      CONFIG_CACHE_ID,
-      CONFIG_FILE_PATH,
+      CACHE_CONFIG_ID,
+      CACHE_CONFIG_FILE,
       JSON.stringify(DEFAULT_CONFIG, null, 2),
     );
 
-    this.localCache.watchCacheFile(CONFIG_CACHE_ID, async () => {
+    this.localCache.watchCacheFile(CACHE_CONFIG_ID, async () => {
       if (this.debounceTimer) {
         clearTimeout(this.debounceTimer);
       }
@@ -158,11 +156,11 @@ export class LocalGitProjectsTreeDataProvider
   }
 
   async openConfigFile(): Promise<void> {
-    let uri = this.localCache.getCacheFile(CONFIG_CACHE_ID);
+    let uri = this.localCache.getCacheFile(CACHE_CONFIG_ID);
     if (!uri) {
       uri = await this.localCache.createCacheFile(
-        CONFIG_CACHE_ID,
-        CONFIG_FILE_PATH,
+        CACHE_CONFIG_ID,
+        CACHE_CONFIG_FILE,
         JSON.stringify(DEFAULT_CONFIG, null, 2),
       );
     }
@@ -171,7 +169,7 @@ export class LocalGitProjectsTreeDataProvider
 
   private async readConfig(): Promise<AppConfig> {
     try {
-      const content = await this.localCache.readCacheFile(CONFIG_CACHE_ID);
+      const content = await this.localCache.readCacheFile(CACHE_CONFIG_ID);
       return content ? JSON.parse(content) : DEFAULT_CONFIG;
     } catch {
       return DEFAULT_CONFIG;

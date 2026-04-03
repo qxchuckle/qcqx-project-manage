@@ -11,6 +11,7 @@ import { createLocateProject } from './node/locateProject';
 import { createLink } from './node/link';
 import { createSearch } from './node/search';
 import { createFileCommand } from './node/file';
+import { createOpenCacheConfig } from './config/openCacheConfig';
 
 export function initCommands(treeViewController: TreeViewController) {
   const { context } = treeViewController;
@@ -26,6 +27,7 @@ export function initCommands(treeViewController: TreeViewController) {
     ...createLink(treeViewController),
     ...createSearch(treeViewController),
     ...createFileCommand(treeViewController),
+    ...createOpenCacheConfig(),
   ];
   context.subscriptions.push(...commands);
 }
