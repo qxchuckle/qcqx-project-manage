@@ -6,6 +6,7 @@ import { TreeNodeType } from '../../treeView/type';
 import { getCurrentWorkspace, saveProjectByUriQuickPick } from '@/utils';
 import { Tree } from '../../treeView/tree';
 
+/** 注册添加项目和分组命令 */
 export function createAddNode(treeViewController: TreeViewController) {
   // 添加项目
   const addProject = vscode.commands.registerCommand(

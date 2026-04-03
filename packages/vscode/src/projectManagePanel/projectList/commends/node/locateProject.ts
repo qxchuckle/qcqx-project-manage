@@ -5,6 +5,7 @@ import { getCurrentWorkspace } from '@/utils';
 import { TreeNodeType } from '../../treeView/type';
 import { BaseTreeItem } from '../../treeView/treeItems/base';
 
+/** 注册定位项目节点命令 */
 export function createLocateProject(treeViewController: TreeViewController) {
   /**
    * 定位当前打开的文件夹/工作区

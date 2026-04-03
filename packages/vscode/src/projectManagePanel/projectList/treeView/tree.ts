@@ -11,13 +11,16 @@ import { RootTreeItem } from './treeItems/root';
 import { FileTreeItem } from './treeItems/file';
 import { FolderTreeItem } from './treeItems/folder';
 import { FsFileTreeItem } from './treeItems/fsFile';
+import { PROJECT_LIST_CACHE_ID, PROJECT_LIST_FILE_NAME } from '@qcqx/project-manage-core';
 
-export const projectListCacheId = 'project-list';
+/** @deprecated 使用 PROJECT_LIST_CACHE_ID 代替 */
+export const projectListCacheId = PROJECT_LIST_CACHE_ID;
 
 interface TreeProps {
   context: vscode.ExtensionContext;
 }
 
+/** 项目列表树，集成数据提供、拖放与持久化 */
 export class Tree
   extends TreeDragAndDropController
   implements
@@ -57,8 +60,8 @@ export class Tree
 
   async init() {
     await this.localCache.createCacheFile(
-      projectListCacheId,
-      'project-list.json',
+      PROJECT_LIST_CACHE_ID,
+      PROJECT_LIST_FILE_NAME,
     );
     await this.parseJsonNodeToTree();
     this.watchLocalConfig();
@@ -234,7 +237,7 @@ export class Tree
     this._isSyncLocalConfigChange = true;
     const json = this.parseToJson();
     return this.localCache.updateCacheFile(
-      projectListCacheId,
+      PROJECT_LIST_CACHE_ID,
       JSON.stringify(json, null, 2),
     );
   }
@@ -243,7 +246,7 @@ export class Tree
    * 监听配置变化
    */
   watchLocalConfig() {
-    this.localCache.watchCacheFile(projectListCacheId, async (uri) => {
+    this.localCache.watchCacheFile(PROJECT_LIST_CACHE_ID, async (uri) => {
       console.log('watchLocalConfig', this._isSyncLocalConfigChange);
       if (this._isSyncLocalConfigChange) {
         this._isSyncLocalConfigChange = false;
@@ -257,7 +260,7 @@ export class Tree
    * 获取本地配置uri
    */
   getLocalConfigUri() {
-    return this.localCache.getCacheFile(projectListCacheId);
+    return this.localCache.getCacheFile(PROJECT_LIST_CACHE_ID);
   }
 
   /**
@@ -268,7 +271,7 @@ export class Tree
     const jsonObj = _jsonObj
       ? _jsonObj
       : JSON.parse(
-          (await this.localCache.readCacheFile(projectListCacheId)) || '[]',
+          (await this.localCache.readCacheFile(PROJECT_LIST_CACHE_ID)) || '[]',
         );
     // 如果和当前树相同，则不更新
     const currentJson = this.parseToJson();

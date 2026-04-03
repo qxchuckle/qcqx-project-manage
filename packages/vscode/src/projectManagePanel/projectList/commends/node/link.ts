@@ -4,6 +4,7 @@ import { TreeViewController } from '../../treeView/treeViewController';
 import { BaseTreeItem } from '../../treeView/treeItems/base';
 import { findLineInDoc } from '@/utils';
 
+/** 注册关联链接命令（打开、添加、删除） */
 export function createLink(treeViewController: TreeViewController) {
   const openLink = vscode.commands.registerCommand(
     `${CMD_PREFIX_PROJECT_LIST}.open-link`,

@@ -4,6 +4,7 @@ import { GitProjectTreeItem, FolderTreeItem } from '../../treeView/treeItems';
 
 type FsPathItem = GitProjectTreeItem | FolderTreeItem;
 
+/** 注册打开项目命令（当前窗口/新窗口） */
 export function createOpenProject() {
   const openInCurrentWindow = vscode.commands.registerCommand(
     `${CMD_PREFIX_LOCAL_GIT}.open-in-current-window`,

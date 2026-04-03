@@ -1,8 +1,5 @@
-/**
- * 配置
- */
-export const EXTENSION_ID = 'qcqx-project-manage';
-export const vscodeConfigName = EXTENSION_ID;
+export { APP_NAME, CONFIG_CACHE_ID, CONFIG_FILE_NAME } from '@qcqx/project-manage-core';
+import { APP_NAME } from '@qcqx/project-manage-core';
 
 export const enum vscodeConfigKeys {
   /** 项目列表是否锁定 */
@@ -14,14 +11,8 @@ export const enum vscodeConfigKeys {
 }
 
 /**
- * LocalCache 配置
- */
-export const CACHE_CONFIG_ID = 'app-config';
-export const CACHE_CONFIG_FILE = 'config.json';
-
-/**
  * 各模块命令前缀
  */
-export const CMD_PREFIX_PROJECT_LIST = `${EXTENSION_ID}.project-list`;
-export const CMD_PREFIX_RECENT_FOLDERS = `${EXTENSION_ID}.recent-folders`;
-export const CMD_PREFIX_LOCAL_GIT = `${EXTENSION_ID}.local-git-projects`;
+export const CMD_PREFIX_PROJECT_LIST = `${APP_NAME}.project-list`;
+export const CMD_PREFIX_RECENT_FOLDERS = `${APP_NAME}.recent-folders`;
+export const CMD_PREFIX_LOCAL_GIT = `${APP_NAME}.local-git-projects`;

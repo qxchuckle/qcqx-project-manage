@@ -4,6 +4,7 @@ import { TreeViewController } from '../../treeView/treeViewController';
 import { BaseTreeItem } from '../../treeView/treeItems/base';
 import { TreeNodeTypeNameMap } from '../../treeView/type';
 
+/** 注册删除节点命令 */
 export function createDeleteNode(treeViewController: TreeViewController) {
   const deleteNode = vscode.commands.registerCommand(
     `${CMD_PREFIX_PROJECT_LIST}.delete-node`,

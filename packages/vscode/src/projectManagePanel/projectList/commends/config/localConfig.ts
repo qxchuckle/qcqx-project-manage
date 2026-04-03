@@ -4,6 +4,7 @@ import { TreeViewController } from '../../treeView/treeViewController';
 import { BaseTreeItem } from '../../treeView/treeItems/base';
 import { findLineInDoc } from '@/utils';
 
+/** 注册打开/定位本地配置文件命令 */
 export function createLocalConfig(treeViewController: TreeViewController) {
   const openLocalConfig = vscode.commands.registerCommand(
     `${CMD_PREFIX_PROJECT_LIST}.open-local-config`,

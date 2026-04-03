@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { CMD_PREFIX_RECENT_FOLDERS } from '@/config';
 import { RecentFolderTreeItem } from '../../treeView/treeItems';
 
+/** 注册打开文件夹命令（当前窗口/新窗口） */
 export function createOpenFolder() {
   const openInCurrentWindow = vscode.commands.registerCommand(
     `${CMD_PREFIX_RECENT_FOLDERS}.open-in-current-window`,

@@ -1,8 +1,9 @@
 import * as vscode from 'vscode';
 import * as os from 'os';
 import * as path from 'path';
-import { GitProjectInfo } from '../types';
+import type { GitProjectInfo } from '@qcqx/project-manage-core';
 
+/** Git 项目树节点 */
 export class GitProjectTreeItem extends vscode.TreeItem {
   readonly fsPath: string;
 
@@ -23,6 +24,7 @@ export class GitProjectTreeItem extends vscode.TreeItem {
   }
 }
 
+/** 文件夹分组节点 */
 export class FolderTreeItem extends vscode.TreeItem {
   readonly childItems: LocalGitTreeItem[];
   readonly fsPath?: string;
@@ -45,6 +47,7 @@ export class FolderTreeItem extends vscode.TreeItem {
   }
 }
 
+/** 项目总数摘要节点 */
 export class SummaryTreeItem extends vscode.TreeItem {
   constructor(projectCount: number) {
     super(`共 ${projectCount} 个项目`, vscode.TreeItemCollapsibleState.None);
@@ -54,6 +57,7 @@ export class SummaryTreeItem extends vscode.TreeItem {
   }
 }
 
+/** 本地 Git 树节点联合类型 */
 export type LocalGitTreeItem =
   | GitProjectTreeItem
   | FolderTreeItem

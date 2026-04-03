@@ -5,6 +5,7 @@ import { ProjectListDragDataTransferMimeType } from './mimeType';
 import { TreeNodeType } from './type';
 import { isNil } from '@/utils';
 
+/** 拖拽操作传递的数据 */
 export interface DragData {
   nodeIds: string[];
 }

@@ -4,6 +4,7 @@ import { GitProjectTreeItem, FolderTreeItem } from '../../treeView/treeItems';
 
 type FsPathItem = GitProjectTreeItem | FolderTreeItem;
 
+/** 注册复制路径命令 */
 export function createCopyPath() {
   return [
     vscode.commands.registerCommand(

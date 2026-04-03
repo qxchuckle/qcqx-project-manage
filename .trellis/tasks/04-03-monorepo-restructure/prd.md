@@ -36,11 +36,13 @@ qcqx-project-manage/
 - [ ] 确保扩展功能不受影响（编译通过、功能正常）
 
 ### Phase 3: 抽离 `packages/core/`
-- [ ] 提取纯 Node 版的文件存储接口（替代 vscode.workspace.fs）
-- [ ] 提取项目列表数据模型和 CRUD 操作
-- [ ] 提取配置读写逻辑
-- [ ] 提取共享类型定义
-- [ ] VS Code 扩展改为依赖 `@qcqx/core`
+- [x] 提取纯 Node 版的文件存储接口（CacheManager 替代 vscode.workspace.fs）
+- [x] 提取项目列表数据模型和 CRUD 操作（ProjectList）
+- [x] 提取配置读写逻辑（AppConfigManager）
+- [x] 提取共享类型定义（TreeNodeType, ProjectNode, GitProjectInfo, AppConfig 等）
+- [x] 提取 Git 仓库扫描能力（scanForGitProjects）
+- [x] 提取通用工具函数（generateId, isWorkspaceFile, getProjectTitle）
+- [x] VS Code 扩展改为依赖 `@qcqx/project-manage-core`
 
 ### Phase 4: 创建 `packages/cli/`
 - [ ] CLI 基础框架搭建（入口、命令路由）
@@ -68,4 +70,4 @@ qcqx-project-manage/
 
 Phase 1 → Phase 2 → 验证扩展正常 → Phase 3 → Phase 4
 
-本次先完成 Phase 1 和 Phase 2，确保 monorepo 骨架搭建完成且现有扩展正常工作。
+Phase 1 ~ Phase 3 已完成，下一步进行 Phase 4（CLI 工具）。

@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as os from 'os';
 import initSqlJs from 'sql.js';
-import { vscodeConfigKeys, vscodeConfigName } from '@/config';
+import { vscodeConfigKeys, APP_NAME } from '@/config';
 
 type SqlJsDatabase = InstanceType<
   Awaited<ReturnType<typeof initSqlJs>>['Database']
@@ -11,6 +11,7 @@ type SqlJsDatabase = InstanceType<
 
 const HISTORY_KEY = 'history.recentlyOpenedPathsList';
 
+/** 最近打开的文件夹条目 */
 export interface RecentFolderEntry {
   path: string;
   openedAt: number;
@@ -63,7 +64,7 @@ export class RecentFoldersStore {
   }
 
   private getMax(): number {
-    const config = vscode.workspace.getConfiguration(vscodeConfigName);
+    const config = vscode.workspace.getConfiguration(APP_NAME);
     return config.get<number>(vscodeConfigKeys.recentFoldersMax, 20);
   }
 

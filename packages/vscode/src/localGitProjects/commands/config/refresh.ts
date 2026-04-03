@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { CMD_PREFIX_LOCAL_GIT } from '@/config';
 import { LocalGitProjectsTreeDataProvider } from '../../treeView/treeDataProvider';
 
+/** 注册刷新命令 */
 export function createRefresh(
   treeDataProvider: LocalGitProjectsTreeDataProvider,
 ) {

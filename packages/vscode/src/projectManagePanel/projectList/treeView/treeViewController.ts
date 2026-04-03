@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { Tree } from './tree';
 import { BaseTreeItem } from './treeItems/base';
-import { vscodeConfigKeys, vscodeConfigName } from '../../../config';
+import { vscodeConfigKeys, APP_NAME } from '../../../config';
 
 /**
  * 树视图控制器
@@ -23,7 +23,7 @@ export class TreeViewController {
     vscode.workspace.onDidChangeConfiguration((e) => {
       if (
         e.affectsConfiguration(
-          `${vscodeConfigName}.${vscodeConfigKeys.projectListLock}`,
+          `${APP_NAME}.${vscodeConfigKeys.projectListLock}`,
         )
       ) {
         this.createView();
@@ -32,12 +32,12 @@ export class TreeViewController {
   }
 
   get locked() {
-    const config = vscode.workspace.getConfiguration(vscodeConfigName);
+    const config = vscode.workspace.getConfiguration(APP_NAME);
     return config.get<boolean>(vscodeConfigKeys.projectListLock, false);
   }
 
   updateConfig(key: string, value: any) {
-    const config = vscode.workspace.getConfiguration(vscodeConfigName);
+    const config = vscode.workspace.getConfiguration(APP_NAME);
     config
       .update(key, value, vscode.ConfigurationTarget.Global)
       .then(undefined, () => {

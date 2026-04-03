@@ -10,6 +10,7 @@ import { TreeNodeType } from '../../treeView/type';
 import { BaseTreeItem } from '../../treeView/treeItems/base';
 import { Tree } from '../../treeView/tree';
 
+/** 注册文件相关命令（在编辑器中打开、保存活跃文件） */
 export function createFileCommand(treeViewController: TreeViewController) {
   /**
    * 在当前编辑器打开文件

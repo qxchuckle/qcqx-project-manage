@@ -3,6 +3,7 @@ import { CMD_PREFIX_LOCAL_GIT } from '@/config';
 import { ViewMode } from '../../types';
 import { LocalGitProjectsTreeDataProvider } from '../../treeView/treeDataProvider';
 
+/** 注册切换视图模式命令 */
 export function createSwitchViewMode(
   treeDataProvider: LocalGitProjectsTreeDataProvider,
 ) {

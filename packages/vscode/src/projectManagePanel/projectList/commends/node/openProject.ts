@@ -6,6 +6,7 @@ import { BaseTreeItem } from '../../treeView/treeItems/base';
 import { explorer, isWorkspaceFile } from '@/utils';
 import { TreeNodeType } from '../../treeView/type';
 
+/** 注册打开项目相关命令（当前窗口、新窗口、文件管理器、终端、复制路径） */
 export function createOpenProject(treeViewController: TreeViewController) {
   const openProjectInCurrentWindow = vscode.commands.registerCommand(
     `${CMD_PREFIX_PROJECT_LIST}.open-project-in-current-window`,

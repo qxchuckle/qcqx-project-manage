@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as os from 'os';
 import * as fs from 'fs';
+import { CACHE_DIR_NAME, APP_NAME } from '@qcqx/project-manage-core';
 
 const vscodeFs = vscode.workspace.fs;
 
@@ -26,8 +27,8 @@ export class LocalCache {
     } else {
       this.cacheUri = vscode.Uri.joinPath(
         vscode.Uri.file(homeDir),
-        '.qcqx',
-        'qcqx-project-manage',
+        CACHE_DIR_NAME,
+        APP_NAME,
       );
     }
     console.log('cacheUri', this.cacheUri);

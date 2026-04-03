@@ -7,6 +7,7 @@ interface RecentFolderSearchItem extends vscode.QuickPickItem {
   fsPath: string;
 }
 
+/** 注册搜索最近文件夹命令 */
 export function createSearch(
   treeDataProvider: RecentFoldersTreeDataProvider,
 ) {

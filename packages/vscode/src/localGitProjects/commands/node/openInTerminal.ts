@@ -5,6 +5,7 @@ import { GitProjectTreeItem, FolderTreeItem } from '../../treeView/treeItems';
 
 type FsPathItem = GitProjectTreeItem | FolderTreeItem;
 
+/** 注册在终端中打开命令 */
 export function createOpenInTerminal() {
   return [
     vscode.commands.registerCommand(

@@ -6,6 +6,7 @@ interface GitSearchItem extends vscode.QuickPickItem {
   fsPath: string;
 }
 
+/** 注册搜索本地 Git 项目命令 */
 export function createSearch(
   treeDataProvider: LocalGitProjectsTreeDataProvider,
 ) {

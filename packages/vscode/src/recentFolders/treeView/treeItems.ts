@@ -2,8 +2,10 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import { RecentFolderEntry } from '../recentFoldersStore';
 
+/** 最近文件夹节点的 contextValue */
 export const RECENT_FOLDER_CONTEXT_VALUE = 'recent-folder';
 
+/** 最近打开的文件夹树节点 */
 export class RecentFolderTreeItem extends vscode.TreeItem {
   readonly path: string;
   readonly openedAt: number;

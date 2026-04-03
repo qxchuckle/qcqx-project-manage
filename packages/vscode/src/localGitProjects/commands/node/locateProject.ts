@@ -4,6 +4,7 @@ import { getCurrentWorkspace } from '@/utils';
 import { LocalGitProjectsTreeDataProvider } from '../../treeView/treeDataProvider';
 import { LocalGitTreeItem } from '../../treeView/treeItems';
 
+/** 注册定位当前项目命令 */
 export function createLocateProject(
   treeDataProvider: LocalGitProjectsTreeDataProvider,
   treeView: vscode.TreeView<LocalGitTreeItem>,

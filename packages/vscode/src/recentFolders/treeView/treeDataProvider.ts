@@ -1,8 +1,9 @@
 import * as vscode from 'vscode';
-import { vscodeConfigName, vscodeConfigKeys } from '@/config';
+import { APP_NAME, vscodeConfigKeys } from '@/config';
 import { RecentFoldersStore } from '../recentFoldersStore';
 import { RecentFolderTreeItem } from './treeItems';
 
+/** 最近打开的文件夹树数据提供者 */
 export class RecentFoldersTreeDataProvider implements vscode.TreeDataProvider<RecentFolderTreeItem> {
   private _onDidChangeTreeData = new vscode.EventEmitter<
     RecentFolderTreeItem | undefined | void
@@ -18,7 +19,7 @@ export class RecentFoldersTreeDataProvider implements vscode.TreeDataProvider<Re
     context.subscriptions.push(
       store.onChange(() => this._onDidChangeTreeData.fire()),
       vscode.workspace.onDidChangeConfiguration((e) => {
-        if (e.affectsConfiguration(`${vscodeConfigName}.${vscodeConfigKeys.recentFoldersMax}`)) {
+        if (e.affectsConfiguration(`${APP_NAME}.${vscodeConfigKeys.recentFoldersMax}`)) {
           this._onDidChangeTreeData.fire();
         }
       }),

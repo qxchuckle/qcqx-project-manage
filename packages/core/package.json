@@ -35,6 +35,10 @@
   ],
   "devDependencies": {
     "@types/node": "~20.19.37",
+    "@types/picomatch": "^4.0.3",
     "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "picomatch": "^4.0.4"
   }
 }

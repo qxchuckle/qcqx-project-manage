@@ -1,42 +1,21 @@
 import * as vscode from 'vscode';
+import { TreeNodeType } from '@qcqx/project-manage-core';
 
-/**
- * treeItem封装
- */
-export const enum TreeNodeType {
-  Project = 'project',
-  Group = 'group',
-  Root = 'root',
-  // 特殊的节点，用于提示，以及操作
-  Tip = 'tip',
-  // 保存文件快捷打开
-  File = 'file',
-  // 文件系统文件夹（展开项目/文件夹时动态加载，不持久化）
-  Folder = 'folder',
-  // 文件系统文件（展开项目/文件夹时动态加载，与持久化 File 区分）
-  FsFile = 'fs-file',
-}
+export { TreeNodeType };
+export { TreeNodeTypeNameMap } from '@qcqx/project-manage-core';
 
-export const TreeNodeTypeNameMap: Record<TreeNodeType, string> = {
-  [TreeNodeType.Group]: '组',
-  [TreeNodeType.Project]: '项目',
-  [TreeNodeType.Root]: '根节点',
-  [TreeNodeType.Tip]: '提示',
-  [TreeNodeType.File]: '文件',
-  [TreeNodeType.Folder]: '文件夹',
-  [TreeNodeType.FsFile]: '文件',
-};
-
+/** 项目列表树节点项（扩展 vscode.TreeItem） */
 export interface TreeItem extends vscode.TreeItem {
   id: string;
   title: string;
   type: TreeNodeType;
 }
+/** 创建树节点时的属性参数 */
 export type TreeItemProps = Omit<Partial<TreeItem>, 'type'> &
   Pick<JsonTreeNodeType, 'links'>;
 
 /**
- * json树节点
+ * json树节点（与 core ProjectNode 兼容，扩展 vscode 特定类型）
  */
 export interface JsonTreeNodeType {
   id?: string;

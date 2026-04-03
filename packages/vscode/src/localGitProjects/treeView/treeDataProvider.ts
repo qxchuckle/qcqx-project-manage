@@ -1,23 +1,17 @@
 import * as vscode from 'vscode';
 import * as os from 'os';
 import * as path from 'path';
-import { GitProjectInfo, ViewMode, AppConfig } from '../types';
-import { scanForGitProjects } from '../scanner';
+import { scanForGitProjects, DEFAULT_APP_CONFIG } from '@qcqx/project-manage-core';
+import type { GitProjectInfo, AppConfig } from '@qcqx/project-manage-core';
+import { ViewMode } from '../types';
 import { LocalCache } from '@/utils/localCache';
-import { vscodeConfigName, vscodeConfigKeys, CACHE_CONFIG_ID, CACHE_CONFIG_FILE } from '@/config';
+import { APP_NAME, vscodeConfigKeys, CONFIG_CACHE_ID, CONFIG_FILE_NAME } from '@/config';
 import {
   GitProjectTreeItem,
   FolderTreeItem,
   SummaryTreeItem,
   LocalGitTreeItem,
 } from './treeItems';
-
-const DEFAULT_CONFIG: AppConfig = {
-  gitProjectScanFolders: [],
-  gitProjectIgnoredFolders: [],
-  gitProjectScanNestedProjects: false,
-  gitProjectMaxDepth: -1,
-};
 
 interface PathNode {
   name: string;
@@ -26,6 +20,7 @@ interface PathNode {
   project?: GitProjectInfo;
 }
 
+/** 本地 Git 项目树数据提供者，支持平铺/分类/路径三种视图 */
 export class LocalGitProjectsTreeDataProvider
   implements vscode.TreeDataProvider<LocalGitTreeItem>
 {
@@ -48,7 +43,7 @@ export class LocalGitProjectsTreeDataProvider
       vscode.workspace.onDidChangeConfiguration((e) => {
         if (
           e.affectsConfiguration(
-            `${vscodeConfigName}.${vscodeConfigKeys.localGitViewMode}`,
+            `${APP_NAME}.${vscodeConfigKeys.localGitViewMode}`,
           )
         ) {
           this.rootItems = null;
@@ -66,12 +61,12 @@ export class LocalGitProjectsTreeDataProvider
 
   private async doInit(): Promise<void> {
     await this.localCache.createCacheFile(
-      CACHE_CONFIG_ID,
-      CACHE_CONFIG_FILE,
-      JSON.stringify(DEFAULT_CONFIG, null, 2),
+      CONFIG_CACHE_ID,
+      CONFIG_FILE_NAME,
+      JSON.stringify(DEFAULT_APP_CONFIG, null, 2),
     );
 
-    this.localCache.watchCacheFile(CACHE_CONFIG_ID, async () => {
+    this.localCache.watchCacheFile(CONFIG_CACHE_ID, async () => {
       if (this.debounceTimer) {
         clearTimeout(this.debounceTimer);
       }
@@ -91,7 +86,7 @@ export class LocalGitProjectsTreeDataProvider
     if (this.getViewMode() === mode) {
       return;
     }
-    const config = vscode.workspace.getConfiguration(vscodeConfigName);
+    const config = vscode.workspace.getConfiguration(APP_NAME);
     config.update(
       vscodeConfigKeys.localGitViewMode,
       mode,
@@ -100,7 +95,7 @@ export class LocalGitProjectsTreeDataProvider
   }
 
   getViewMode(): ViewMode {
-    const config = vscode.workspace.getConfiguration(vscodeConfigName);
+    const config = vscode.workspace.getConfiguration(APP_NAME);
     return config.get<ViewMode>(
       vscodeConfigKeys.localGitViewMode,
       ViewMode.Flat,
@@ -156,12 +151,12 @@ export class LocalGitProjectsTreeDataProvider
   }
 
   async openConfigFile(): Promise<void> {
-    let uri = this.localCache.getCacheFile(CACHE_CONFIG_ID);
+    let uri = this.localCache.getCacheFile(CONFIG_CACHE_ID);
     if (!uri) {
       uri = await this.localCache.createCacheFile(
-        CACHE_CONFIG_ID,
-        CACHE_CONFIG_FILE,
-        JSON.stringify(DEFAULT_CONFIG, null, 2),
+        CONFIG_CACHE_ID,
+        CONFIG_FILE_NAME,
+        JSON.stringify(DEFAULT_APP_CONFIG, null, 2),
       );
     }
     await vscode.window.showTextDocument(uri);
@@ -169,10 +164,10 @@ export class LocalGitProjectsTreeDataProvider
 
   private async readConfig(): Promise<AppConfig> {
     try {
-      const content = await this.localCache.readCacheFile(CACHE_CONFIG_ID);
-      return content ? JSON.parse(content) : DEFAULT_CONFIG;
+      const content = await this.localCache.readCacheFile(CONFIG_CACHE_ID);
+      return content ? JSON.parse(content) : DEFAULT_APP_CONFIG;
     } catch {
-      return DEFAULT_CONFIG;
+      return DEFAULT_APP_CONFIG;
     }
   }
 

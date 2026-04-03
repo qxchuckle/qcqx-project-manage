@@ -4,6 +4,7 @@ import { GitProjectTreeItem, FolderTreeItem } from '../../treeView/treeItems';
 
 type FsPathItem = GitProjectTreeItem | FolderTreeItem;
 
+/** 注册保存到项目列表命令 */
 export function createSaveToProjectList() {
   return [
     vscode.commands.registerCommand(

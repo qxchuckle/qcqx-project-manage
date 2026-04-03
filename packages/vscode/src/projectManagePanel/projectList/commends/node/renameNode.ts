@@ -3,6 +3,7 @@ import { CMD_PREFIX_PROJECT_LIST } from '@/config';
 import { TreeViewController } from '../../treeView/treeViewController';
 import { BaseTreeItem } from '../../treeView/treeItems/base';
 
+/** 注册重命名节点和编辑描述命令 */
 export function createRenameNode(treeViewController: TreeViewController) {
   const renameNode = vscode.commands.registerCommand(
     `${CMD_PREFIX_PROJECT_LIST}.rename-node`,

@@ -1,5 +1,5 @@
 {
-  "name": "@qcqx/project-manage-vscode",
+  "name": "qcqx-project-manage",
   "displayName": "项目管理(Project Manage)",
   "description": "一个更可靠、方便的项目管理插件",
   "publisher": "qcqx",
@@ -618,6 +618,7 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@qcqx/project-manage-core": "workspace:*",
     "picomatch": "^4.0.4",
     "sql.js": "^1.14.1"
   }
