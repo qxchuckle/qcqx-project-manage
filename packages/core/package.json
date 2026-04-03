@@ -19,6 +19,9 @@
   "bugs": {
     "url": "https://github.com/qxchuckle/qcqx-project-manage/issues"
   },
+  "engines": {
+    "node": ">=16"
+  },
   "keywords": [
     "qcqx",
     "project-manage",
@@ -34,7 +37,7 @@
     "dist"
   ],
   "devDependencies": {
-    "@types/node": "~20.19.37",
+    "@types/node": "^16.18.0",
     "@types/picomatch": "^4.0.3",
     "typescript": "^5.9.3"
   },

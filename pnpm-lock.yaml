@@ -21,8 +21,8 @@ importers:
         version: 4.0.4
     devDependencies:
       '@types/node':
-        specifier: ~20.19.37
-        version: 20.19.37
+        specifier: ^16.18.0
+        version: 16.18.126
       '@types/picomatch':
         specifier: ^4.0.3
         version: 4.0.3
@@ -333,6 +333,9 @@ packages:
 
   '@types/mocha@10.0.10':
     resolution: {integrity: sha512-xPyYSz1cMPnJQhl0CLMH68j3gprKZaTjG3s5Vi+fDgx+uhG9NOXwbVt52eFS8ECyXhyKcjDLCBEqBExKuiZb7Q==}
+
+  '@types/node@16.18.126':
+    resolution: {integrity: sha512-OTcgaiwfGFBKacvfwuHzzn1KLxH/er8mluiy8/uM3sGXHaRe73RrSIj01jow9t4kJEW633Ov+cOexXeiApTyAw==}
 
   '@types/node@20.19.37':
     resolution: {integrity: sha512-8kzdPJ3FsNsVIurqBs7oodNnCEVbni9yUEkaHbgptDACOPW04jimGagZ51E6+lXUwJjgnBw+hyko/lkFWCldqw==}
@@ -1851,6 +1854,8 @@ snapshots:
   '@types/json-schema@7.0.15': {}
 
   '@types/mocha@10.0.10': {}
+
+  '@types/node@16.18.126': {}
 
   '@types/node@20.19.37':
     dependencies:
