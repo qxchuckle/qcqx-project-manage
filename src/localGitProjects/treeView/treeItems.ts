@@ -37,4 +37,16 @@ export class FolderTreeItem extends vscode.TreeItem {
   }
 }
 
-export type LocalGitTreeItem = GitProjectTreeItem | FolderTreeItem;
+export class SummaryTreeItem extends vscode.TreeItem {
+  constructor(projectCount: number) {
+    super(`共 ${projectCount} 个项目`, vscode.TreeItemCollapsibleState.None);
+    this.id = 'git-summary';
+    this.contextValue = 'local-git-summary';
+    this.iconPath = new vscode.ThemeIcon('info');
+  }
+}
+
+export type LocalGitTreeItem =
+  | GitProjectTreeItem
+  | FolderTreeItem
+  | SummaryTreeItem;

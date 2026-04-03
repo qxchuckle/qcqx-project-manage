@@ -8,6 +8,7 @@ import { vscodeConfigName, vscodeConfigKeys } from '@/config';
 import {
   GitProjectTreeItem,
   FolderTreeItem,
+  SummaryTreeItem,
   LocalGitTreeItem,
 } from './treeItems';
 
@@ -145,7 +146,11 @@ export class LocalGitProjectsTreeDataProvider
     if (this.initPromise) {
       await this.initPromise;
     }
-    return this.rootItems || [];
+    const items = this.rootItems || [];
+    if (items.length === 0) {
+      return items;
+    }
+    return [new SummaryTreeItem(this.projects.length), ...items];
   }
 
   getProjects(): GitProjectInfo[] {
