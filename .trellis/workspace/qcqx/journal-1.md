@@ -299,3 +299,62 @@
 ### Next Steps
 
 - None - task complete
+
+
+## Session 8: 本地Git面板功能增强
+
+**Date**: 2026-04-03
+**Task**: 本地Git面板功能增强
+
+### Summary
+
+(Add summary)
+
+### Main Changes
+
+## 本次会话完成的功能
+
+| 功能 | 说明 |
+|------|------|
+| 搜索功能 | Git面板和最近文件夹面板增加 QuickPick 搜索 |
+| 定位当前项目 | Git面板增加定位按钮，支持所有视图模式 |
+| 树展开状态记忆 | TreeItem 添加稳定 id，VS Code 自动恢复展开状态 |
+| picomatch 替换 minimatch | glob 匹配预编译，性能提升 |
+| 统计节点 | Git面板顶部显示项目总数 |
+| 路径文件夹操作 | 路径视图的文件夹节点支持打开/终端/复制等操作 |
+| 打开配置文件 | 项目列表面板增加打开 config.json 按钮 |
+| 常量提取 | CACHE_CONFIG_ID/FILE 统一到 config/index.ts |
+
+**修改的关键文件**:
+- `src/localGitProjects/treeView/treeItems.ts` — SummaryTreeItem、FolderTreeItem 增强
+- `src/localGitProjects/treeView/treeDataProvider.ts` — getParent、findItemByPath、parentMap
+- `src/localGitProjects/commands/` — search、locateProject 及所有命令类型扩展
+- `src/recentFolders/commands/node/search.ts` — 最近文件夹搜索
+- `src/projectManagePanel/projectList/commends/config/openCacheConfig.ts` — 新建
+- `src/config/index.ts` — CACHE_CONFIG_ID/FILE 常量
+- `src/localGitProjects/scanner.ts` — picomatch 替换 minimatch
+- `package.json` — 命令定义、菜单贡献点
+
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `4cdd3fa` | (see git log) |
+| `499f94f` | (see git log) |
+| `bbbedd0` | (see git log) |
+| `79e74f0` | (see git log) |
+| `ca2de00` | (see git log) |
+| `8290d17` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
