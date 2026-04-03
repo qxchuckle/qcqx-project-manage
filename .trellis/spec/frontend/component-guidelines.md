@@ -93,16 +93,19 @@ tree.addNodes(target, newNodes);
 ## Command Registration
 
 - **Factory per group**: Each command group is a file exporting a single function `create*(controllerOrContext): vscode.Disposable[]`.
-- **Naming**: `createOpenProject`, `createAddNode`, `createLockList`, etc. Command IDs in package.json match pattern `qcqx-project-manage.<view>.<command>`.
+- **Naming**: `createOpenProject`, `createAddNode`, `createLockList`, etc.
+- **Command IDs**: Always use `CMD_PREFIX_*` from `@/config` — never hardcode the extension ID. Pattern: `` `${CMD_PREFIX_PROJECT_LIST}.open-project` ``. Cross-module references also use the target module's prefix (e.g. `CMD_PREFIX_PROJECT_LIST` in recentFolders' "save to project list" command).
 - **Registration**: All factories are called from `initCommands`; returned disposables are pushed to `context.subscriptions`.
 
-**Example** — command factory:
+**Example** — command factory with shared prefix:
 
 ```ts
 // src/projectManagePanel/projectList/commends/node/openProject.ts
+import { CMD_PREFIX_PROJECT_LIST } from '@/config';
+
 export function createOpenProject(treeViewController: TreeViewController) {
   const openInCurrent = vscode.commands.registerCommand(
-    'qcqx-project-manage.project-list.open-project-in-current-window',
+    `${CMD_PREFIX_PROJECT_LIST}.open-project-in-current-window`,
     async (target: BaseTreeItem | undefined) => {
       if (!target?.projectPath) return;
       vscode.commands.executeCommand('vscode.openFolder', target.resourceUri, { forceNewWindow: false });
@@ -124,6 +127,28 @@ export function initCommands(treeViewController: TreeViewController) {
     // ...
   ];
   treeViewController.context.subscriptions.push(...commands);
+}
+```
+
+**Example** — cross-module command reference:
+
+```ts
+// src/recentFolders/commands/node/saveToProjectList.ts
+import { CMD_PREFIX_RECENT_FOLDERS, CMD_PREFIX_PROJECT_LIST } from '@/config';
+
+export function createSaveToProjectList() {
+  return [
+    vscode.commands.registerCommand(
+      `${CMD_PREFIX_RECENT_FOLDERS}.save-to-project-list`,
+      async (item: RecentFolderTreeItem) => {
+        if (!item?.resourceUri) return;
+        await vscode.commands.executeCommand(
+          `${CMD_PREFIX_PROJECT_LIST}.add-uri-to-root`,
+          item.resourceUri,
+        );
+      },
+    ),
+  ];
 }
 ```
 

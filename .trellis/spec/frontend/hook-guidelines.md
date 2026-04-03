@@ -8,7 +8,7 @@
 
 This is a **VS Code extension** with no React. There are no React hooks. The equivalent of "setup" and "teardown" is:
 
-- **Init functions**: `initProjectManagePanel`, `initProjectList`, `initRecentFolders`, `initCommands`. They receive `ExtensionContext` (or a controller that holds it) and register providers/commands/events. All disposable resources are pushed to `context.subscriptions`.
+- **Init functions**: `initProjectList`, `initRecentFolders`, `initLocalGitProjects`, `initCommands`. They receive `ExtensionContext` (or a controller that holds it) and register providers/commands/events. All disposable resources are pushed to `context.subscriptions`. Each module is initialized directly from `extension.ts` — no intermediate wrapper.
 - **Singleton getInstance**: Some stateful objects (e.g. `RecentFoldersStore`, `LocalCache`) use a static `getInstance(context)` so the same instance is reused for the session.
 
 ---
@@ -19,15 +19,17 @@ This is a **VS Code extension** with no React. There are no React hooks. The equ
 - **Signature**: Either `(props: { context: vscode.ExtensionContext }) => void` or `(context: vscode.ExtensionContext) => void`. For commands, `(treeViewController: TreeViewController) => void` so commands can use both context and tree/view.
 - **Responsibility**: Create the feature’s objects (Tree, TreeViewController, store), register views/commands, and push all disposables to `context.subscriptions`. Do not return values; the caller only needs to know init ran.
 
-**Example** — panel init (composes sub-inits):
+**Example** — extension entry (directly initializes each module):
 
 ```ts
-// src/projectManagePanel/index.ts
-export const initProjectManagePanel = (props: { context: vscode.ExtensionContext }) => {
-  const { context } = props;
+// src/extension.ts
+export function activate(context: vscode.ExtensionContext) {
   initProjectList({ context });
   initRecentFolders(context);
-};
+  initLocalGitProjects(context).catch((err) => {
+    console.error('Failed to initialize local git projects:', err);
+  });
+}
 ```
 
 **Example** — feature init (creates model + view + commands):
@@ -41,6 +43,19 @@ export const initProjectList = (props: { context: vscode.ExtensionContext }) => 
   treeViewController.init();
   initCommands(treeViewController);
 };
+```
+
+**Example** — simpler feature init (treeView + commands):
+
+```ts
+// src/localGitProjects/index.ts
+export async function initLocalGitProjects(context: vscode.ExtensionContext) {
+  const treeDataProvider = new LocalGitProjectsTreeDataProvider(context);
+  const treeView = vscode.window.createTreeView(VIEW_ID, { treeDataProvider, showCollapseAll: true });
+  context.subscriptions.push(treeView);
+  await treeDataProvider.init();
+  initCommands(context, treeDataProvider);
+}
 ```
 
 ---
@@ -88,7 +103,7 @@ const store = RecentFoldersStore.getInstance(context);
 
 | Kind | Convention | Example |
 |------|------------|---------|
-| Panel/feature init | `init<Feature>` | `initProjectList`, `initRecentFolders` |
+| Feature init | `init<Feature>` | `initProjectList`, `initRecentFolders`, `initLocalGitProjects` |
 | Command registration | `initCommands` (aggregator), `create<Group>` (factory) | `createOpenProject` |
 | Singleton accessor | `getInstance(...)` | `RecentFoldersStore.getInstance(context)` |
 
