@@ -358,3 +358,236 @@
 ### Next Steps
 
 - None - task complete
+
+
+## Session 9: Monorepo架构改造 Phase 1+2
+
+**Date**: 2026-04-03
+**Task**: Monorepo架构改造 Phase 1+2
+
+### Summary
+
+(Add summary)
+
+### Main Changes
+
+## 完成内容
+
+| 阶段 | 内容 | 状态 |
+|------|------|------|
+| Phase 1 | 创建 monorepo 骨架（pnpm workspace、tsconfig.base、根 package.json、packages/ 目录） | ✅ |
+| Phase 2 | 迁移现有 VS Code 扩展代码到 packages/vscode/，调整构建和调试配置 | ✅ |
+| Phase 3 | 抽离 @qcqx/core 共享数据层 | 待做 |
+| Phase 4 | 实现 @qcqx/cli 命令行工具 | 待做 |
+
+## 关键变更
+
+- 项目从单包改为 pnpm workspaces monorepo（packages/vscode、packages/core、packages/cli）
+- 现有扩展代码通过 `git mv` 迁入 `packages/vscode/`，保留完整 git 历史
+- `tsconfig.json` 改为继承 `tsconfig.base.json`
+- `.vscode/launch.json` 和 `tasks.json` 调试路径指向 `packages/vscode/`
+- 从 npm (package-lock.json) 切换到 pnpm (pnpm-lock.yaml)
+- `packages/core/` 初始骨架：纯 Node 文件存储接口（getCacheDir、readJSON、writeJSON）
+- `packages/cli/` 初始骨架：占位入口
+
+## 验证
+
+- `tsc --noEmit` 类型检查通过（vscode 包 + core 包）
+- `node esbuild.js` 打包通过（dist/extension.js 146KB）
+- `eslint src` 通过
+- 分支：feat/monorepo-restructure
+
+**Updated Files (主要)**:
+- `pnpm-workspace.yaml` (新建)
+- `tsconfig.base.json` (新建)
+- `package.json` (根 workspace 配置)
+- `packages/vscode/` (迁入全部扩展代码)
+- `packages/core/src/storage.ts` (新建)
+- `packages/cli/src/index.ts` (新建)
+- `.vscode/launch.json`, `.vscode/tasks.json` (路径调整)
+- `.gitignore` (更新)
+
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `4b8c53c` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
+
+
+## Session 10: 优化包命名和 npm 元数据
+
+**Date**: 2026-04-03
+**Task**: 优化包命名和 npm 元数据
+
+### Summary
+
+(Add summary)
+
+### Main Changes
+
+## 变更内容
+
+| 变更项 | 说明 |
+|--------|------|
+| 包重命名 | `@qcqx/core` → `@qcqx/project-manage-core`，`@qcqx/cli` → `@qcqx/project-manage-cli`，`qcqx-project-manage` → `@qcqx/project-manage-vscode`，根包 → `@qcqx/project-manage-monorepo` |
+| 中文描述 | core: "共享核心库"，cli: "命令行工具"，root: "Monorepo 工作区" |
+| npm 元数据 | 为 root/core/cli 添加 author、license、repository、homepage、bugs、keywords |
+| 依赖更新 | cli 中 `@qcqx/core` → `@qcqx/project-manage-core`，根 package.json filter 命令同步更新 |
+
+**修改文件**:
+- `package.json` (root)
+- `packages/core/package.json`
+- `packages/cli/package.json`
+- `packages/vscode/package.json`
+- `pnpm-lock.yaml`
+
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `fbc2bd7` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
+
+
+## Session 11: Core模块重构：类型/常量集中化、JSDoc注释、硬编码消除
+
+**Date**: 2026-04-03
+**Task**: Core模块重构：类型/常量集中化、JSDoc注释、硬编码消除
+
+### Summary
+
+(Add summary)
+
+### Main Changes
+
+## 本次会话完成的工作
+
+### 1. 类型集中化到 `types/` 文件夹
+- 将 `git/types.ts`、`config/types.ts`、`project/types.ts` 以及散落在 `scanner.ts`、`list.ts` 中的接口（`ScanOptions`、`FindResult`）全部归入 `core/src/types/`
+- 按领域拆分：`tree.ts`、`git.ts`、`config.ts`、`project.ts`
+- 各业务模块（`git/`、`config/`、`project/`）现在只保留实现逻辑
+
+### 2. 常量集中化到 `constants/` 文件夹
+- `TreeNodeTypeNameMap`、`DEFAULT_APP_CONFIG`、`CONFIG_CACHE_ID`、`CONFIG_FILE_NAME`、`PROJECT_LIST_CACHE_ID`、`PROJECT_LIST_FILE_NAME` 归入 `constants/index.ts`
+- 新增 `APP_NAME`、`CACHE_DIR_NAME` 常量，消除 `.qcqx` / `qcqx-project-manage` 硬编码
+
+### 3. 全量 JSDoc 注释
+- 为 `packages/core` 和 `packages/vscode` 中约 40+ 个文件的所有导出函数、类、接口、枚举、常量添加了 JSDoc 注释
+
+### 4. 消除常量别名链
+- 移除 `EXTENSION_ID`、`vscodeConfigName`、`CACHE_CONFIG_ID`、`CACHE_CONFIG_FILE` 等不必要的别名
+- 所有地方直接使用 core 导出的原始常量名（`APP_NAME`、`CONFIG_CACHE_ID`、`CONFIG_FILE_NAME`）
+
+### 5. 修复 VS Code 扩展激活失败
+- `packages/vscode/package.json` 的 `name` 被错误改为 npm scope 格式 `@qcqx/project-manage-vscode`
+- 改回 `qcqx-project-manage`，修复 VS Code 扩展 ID 冲突
+
+**core 最终结构**:
+```
+packages/core/src/
+├── index.ts
+├── types/        (tree.ts, git.ts, config.ts, project.ts)
+├── constants/    (index.ts)
+├── utils/        (index.ts)
+├── storage/      (fs.ts, cache-manager.ts)
+├── git/          (scanner.ts)
+├── config/       (manager.ts)
+└── project/      (list.ts)
+```
+
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `01d9480` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
+
+
+## Session 12: Core 包 Node 16 兼容性适配
+
+**Date**: 2026-04-03
+**Task**: Core 包 Node 16 兼容性适配
+
+### Summary
+
+(Add summary)
+
+### Main Changes
+
+## 目标
+确保 `@qcqx/project-manage-core` 包兼容 Node >= 16。
+
+## 完成内容
+
+| 项目 | 说明 |
+|------|------|
+| 源码审查 | 审查 core 包全部 17 个 TS 文件，确认无 Node 16 不兼容 API |
+| 依赖检查 | 确认 picomatch v4 (engines: node >= 12) 兼容 Node 16 |
+| @types/node 降级 | 从 `~20.19.37` 降到 `^16.18.0`（安装 16.18.126），防止误用 Node 20+ API |
+| engines 声明 | 添加 `"engines": { "node": ">=16" }` |
+| 构建验证 | core 包和 vscode 扩展构建均通过 |
+
+## 兼容性分析结论
+
+- **Node 16+**: 完全兼容，无需改代码
+- **Node 14**: 因 `node:` 前缀导入（如 `require("node:fs")`）不兼容 14.0-14.17；如需支持需去掉 `node:` 前缀
+
+**Updated Files**:
+- `packages/core/package.json` — 添加 engines 字段，降级 @types/node
+- `pnpm-lock.yaml` — 依赖锁定更新
+
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `fb9f230` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete

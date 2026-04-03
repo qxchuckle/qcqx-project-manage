@@ -1,0 +1,47 @@
+{
+  "name": "@qcqx/project-manage-core",
+  "version": "0.1.0",
+  "private": true,
+  "description": "qcqx-project-manage 共享核心库",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "license": "MIT",
+  "author": {
+    "name": "qcqx",
+    "url": "https://github.com/qxchuckle"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qxchuckle/qcqx-project-manage.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/qxchuckle/qcqx-project-manage/tree/main/packages/core#readme",
+  "bugs": {
+    "url": "https://github.com/qxchuckle/qcqx-project-manage/issues"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "keywords": [
+    "qcqx",
+    "project-manage",
+    "core",
+    "vscode"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "check-types": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@types/node": "^16.18.0",
+    "@types/picomatch": "^4.0.3",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "picomatch": "^4.0.4"
+  }
+}

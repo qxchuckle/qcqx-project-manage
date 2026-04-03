@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 8
+- **Total Sessions**: 12
 - **Last Active**: 2026-04-03
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~360 | Active |
+| `journal-1.md` | ~593 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,10 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits |
 |---|------|-------|---------|
+| 12 | 2026-04-03 | Core 包 Node 16 兼容性适配 | `fb9f230` |
+| 11 | 2026-04-03 | Core模块重构：类型/常量集中化、JSDoc注释、硬编码消除 | `01d9480` |
+| 10 | 2026-04-03 | 优化包命名和 npm 元数据 | `fbc2bd7` |
+| 9 | 2026-04-03 | Monorepo架构改造 Phase 1+2 | `4b8c53c` |
 | 8 | 2026-04-03 | 本地Git面板功能增强 | `4cdd3fa`, `499f94f`, `bbbedd0`, `79e74f0`, `ca2de00`, `8290d17` |
 | 7 | 2026-04-03 | 优化代码结构 | `9cadbb4` |
 | 6 | 2026-04-03 | feat: 新增本地Git项目面板 | `500592b` |
