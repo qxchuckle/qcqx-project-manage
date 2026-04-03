@@ -3,7 +3,7 @@
   "displayName": "项目管理(Project Manage)",
   "description": "一个更可靠、方便的项目管理插件",
   "publisher": "qcqx",
-  "version": "1.1.4",
+  "version": "1.2.0",
   "scripts": {
     "vscode:prepublish": "npm run package",
     "compile": "npm run check-types && npm run lint && node esbuild.js",
@@ -546,7 +546,11 @@
         "qcqx-project-manage.local-git-view-mode": {
           "type": "string",
           "default": "flat",
-          "enum": ["flat", "category", "path"],
+          "enum": [
+            "flat",
+            "category",
+            "path"
+          ],
           "enumDescriptions": [
             "按名称平铺展示所有 Git 项目",
             "按配置中的分类分组展示",
