@@ -595,6 +595,7 @@
   "devDependencies": {
     "@types/mocha": "^10.0.10",
     "@types/node": "20.x",
+    "@types/picomatch": "^4.0.3",
     "@types/sql.js": "^1.4.9",
     "@types/vscode": "^1.70.0",
     "@typescript-eslint/eslint-plugin": "^8.31.1",
@@ -607,7 +608,7 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "minimatch": "^10.2.5",
+    "picomatch": "^4.0.4",
     "sql.js": "^1.14.1"
   }
 }

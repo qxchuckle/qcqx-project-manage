@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
-import { minimatch } from 'minimatch';
+import picomatch from 'picomatch';
 import { ScanFolderConfig, ScanFolderEntry, GitProjectInfo } from './types';
 
 const BUILTIN_IGNORED_FOLDERS: string[] = [
@@ -49,6 +49,9 @@ function buildIgnoreMatcher(
     }
   }
 
+  const globMatcher =
+    globPatterns.length > 0 ? picomatch(globPatterns) : null;
+
   return (folderName: string) => {
     if (folderName.startsWith('.')) {
       return true;
@@ -56,7 +59,7 @@ function buildIgnoreMatcher(
     if (exactSet.has(folderName)) {
       return true;
     }
-    return globPatterns.some((p) => minimatch(folderName, p));
+    return globMatcher !== null && globMatcher(folderName);
   };
 }
 
