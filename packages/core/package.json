@@ -1,0 +1,20 @@
+{
+  "name": "@qcqx/core",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Shared core library for qcqx-project-manage",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "check-types": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@types/node": "~20.19.37",
+    "typescript": "^5.9.3"
+  }
+}

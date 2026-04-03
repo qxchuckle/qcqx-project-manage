@@ -1,74 +1,77 @@
-// See https://go.microsoft.com/fwlink/?LinkId=733558
-// for the documentation about the tasks.json format
 {
 	"version": "2.0.0",
 	"tasks": [
 		{
 			"label": "compile",
-			"type": "npm",
-			"script": "compile",
+			"type": "shell",
+			"command": "npm run compile",
 			"group": "build",
 			"problemMatcher": "$tsc",
 			"presentation": {
 				"reveal": "silent"
+			},
+			"options": {
+				"cwd": "${workspaceFolder}/packages/vscode"
 			}
 		},
 		{
-            "label": "watch",
-            "dependsOn": [
-                "npm: watch:tsc",
-                "npm: watch:esbuild"
-            ],
-            "presentation": {
-                "reveal": "never"
-            },
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
-        },
-        {
-            "type": "npm",
-            "script": "watch:esbuild",
-            "group": "build",
-            "problemMatcher": "$esbuild-watch",
-            "isBackground": true,
-            "label": "npm: watch:esbuild",
-            "presentation": {
-                "group": "watch",
-                "reveal": "never"
-            }
-        },
+			"label": "watch",
+			"dependsOn": [
+				"watch:esbuild",
+				"watch:tsc"
+			],
+			"presentation": {
+				"reveal": "never"
+			},
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
 		{
-            "type": "npm",
-            "script": "watch:tsc",
-            "group": "build",
-            "problemMatcher": "$tsc-watch",
-            "isBackground": true,
-            "label": "npm: watch:tsc",
-            "presentation": {
-                "group": "watch",
-                "reveal": "never"
-            }
-        },
+			"label": "watch:esbuild",
+			"type": "shell",
+			"command": "node esbuild.js --watch",
+			"group": "build",
+			"problemMatcher": "$esbuild-watch",
+			"isBackground": true,
+			"presentation": {
+				"group": "watch",
+				"reveal": "never"
+			},
+			"options": {
+				"cwd": "${workspaceFolder}/packages/vscode"
+			}
+		},
 		{
-			"type": "npm",
-			"script": "watch-tests",
+			"label": "watch:tsc",
+			"type": "shell",
+			"command": "tsc --noEmit --watch --project tsconfig.json",
+			"group": "build",
+			"problemMatcher": "$tsc-watch",
+			"isBackground": true,
+			"presentation": {
+				"group": "watch",
+				"reveal": "never"
+			},
+			"options": {
+				"cwd": "${workspaceFolder}/packages/vscode"
+			}
+		},
+		{
+			"label": "watch-tests",
+			"type": "shell",
+			"command": "tsc -p . -w --outDir out",
 			"problemMatcher": "$tsc-watch",
 			"isBackground": true,
 			"presentation": {
 				"reveal": "never",
 				"group": "watchers"
 			},
-			"group": "build"
-		},
-		{
-			"label": "tasks: watch-tests",
-			"dependsOn": [
-				"npm: watch",
-				"npm: watch-tests"
-			],
-			"problemMatcher": []
+			"group": "build",
+			"options": {
+				"cwd": "${workspaceFolder}/packages/vscode"
+			}
 		}
 	]
 }
