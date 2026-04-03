@@ -17,7 +17,8 @@
     "check-types": "tsc --noEmit",
     "lint": "eslint src",
     "test": "vscode-test",
-    "publish": "vsce publish && ovsx publish"
+    "publish": "vsce publish && ovsx publish",
+    "package-vsix": "vsce package"
   },
   "engines": {
     "vscode": "^1.70.0"
@@ -121,6 +122,11 @@
           "group": "navigation@1"
         },
         {
+          "command": "qcqx-project-manage.recent-folders.search",
+          "when": "view == recent-folders",
+          "group": "navigation@2"
+        },
+        {
           "command": "qcqx-project-manage.local-git-projects.refresh",
           "when": "view == local-git-projects",
           "group": "navigation@1"
@@ -134,6 +140,16 @@
           "command": "qcqx-project-manage.local-git-projects.open-config",
           "when": "view == local-git-projects",
           "group": "navigation@3"
+        },
+        {
+          "command": "qcqx-project-manage.local-git-projects.search",
+          "when": "view == local-git-projects",
+          "group": "navigation@4"
+        },
+        {
+          "command": "qcqx-project-manage.local-git-projects.locate-current-project",
+          "when": "view == local-git-projects",
+          "group": "navigation@5"
         }
       ],
       "view/item/context": [
@@ -483,6 +499,11 @@
         "icon": "$(refresh)"
       },
       {
+        "command": "qcqx-project-manage.recent-folders.search",
+        "title": "搜索最近文件夹",
+        "icon": "$(search)"
+      },
+      {
         "command": "qcqx-project-manage.local-git-projects.refresh",
         "title": "刷新",
         "icon": "$(refresh)"
@@ -491,6 +512,16 @@
         "command": "qcqx-project-manage.local-git-projects.switch-view-mode",
         "title": "切换视图模式",
         "icon": "$(list-tree)"
+      },
+      {
+        "command": "qcqx-project-manage.local-git-projects.search",
+        "title": "搜索Git项目",
+        "icon": "$(search)"
+      },
+      {
+        "command": "qcqx-project-manage.local-git-projects.locate-current-project",
+        "title": "定位当前项目",
+        "icon": "$(location)"
       },
       {
         "command": "qcqx-project-manage.local-git-projects.open-config",

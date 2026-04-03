@@ -3,6 +3,7 @@ import { CMD_PREFIX_RECENT_FOLDERS } from '@/config';
 import { RecentFoldersTreeDataProvider } from '../treeView/treeDataProvider';
 import { createOpenFolder } from './node/openFolder';
 import { createSaveToProjectList } from './node/saveToProjectList';
+import { createSearch } from './node/search';
 
 export function initCommands(
   context: vscode.ExtensionContext,
@@ -17,6 +18,7 @@ export function initCommands(
     ),
     ...createOpenFolder(),
     ...createSaveToProjectList(),
+    ...createSearch(treeDataProvider),
   ];
   context.subscriptions.push(...commands);
 }

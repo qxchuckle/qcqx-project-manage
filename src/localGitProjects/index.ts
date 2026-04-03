@@ -17,5 +17,5 @@ export async function initLocalGitProjects(
 
   await treeDataProvider.init();
 
-  initCommands(context, treeDataProvider);
+  initCommands(context, treeDataProvider, treeView);
 }

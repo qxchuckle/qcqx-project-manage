@@ -37,6 +37,7 @@ export class LocalGitProjectsTreeDataProvider
 
   private projects: GitProjectInfo[] = [];
   private rootItems: LocalGitTreeItem[] | null = null;
+  private parentMap = new Map<LocalGitTreeItem, LocalGitTreeItem | undefined>();
   private localCache: LocalCache;
   private initPromise: Promise<void> | null = null;
   private debounceTimer: ReturnType<typeof setTimeout> | undefined;
@@ -111,6 +112,30 @@ export class LocalGitProjectsTreeDataProvider
     return element;
   }
 
+  getParent(element: LocalGitTreeItem): LocalGitTreeItem | undefined {
+    return this.parentMap.get(element);
+  }
+
+  findItemByPath(fsPath: string): GitProjectTreeItem | undefined {
+    const search = (
+      items: LocalGitTreeItem[],
+    ): GitProjectTreeItem | undefined => {
+      for (const item of items) {
+        if (item instanceof GitProjectTreeItem && item.fsPath === fsPath) {
+          return item;
+        }
+        if (item instanceof FolderTreeItem) {
+          const found = search(item.childItems);
+          if (found) {
+            return found;
+          }
+        }
+      }
+      return undefined;
+    };
+    return search(this.rootItems || []);
+  }
+
   async getChildren(
     element?: LocalGitTreeItem,
   ): Promise<LocalGitTreeItem[]> {
@@ -121,6 +146,10 @@ export class LocalGitProjectsTreeDataProvider
       await this.initPromise;
     }
     return this.rootItems || [];
+  }
+
+  getProjects(): GitProjectInfo[] {
+    return this.projects;
   }
 
   async openConfigFile(): Promise<void> {
@@ -170,6 +199,23 @@ export class LocalGitProjectsTreeDataProvider
         this.rootItems = this.buildPathTree();
         break;
     }
+    this.rebuildParentMap();
+  }
+
+  private rebuildParentMap(): void {
+    this.parentMap.clear();
+    const walk = (
+      items: LocalGitTreeItem[],
+      parent: LocalGitTreeItem | undefined,
+    ) => {
+      for (const item of items) {
+        this.parentMap.set(item, parent);
+        if (item instanceof FolderTreeItem) {
+          walk(item.childItems, item);
+        }
+      }
+    };
+    walk(this.rootItems || [], undefined);
   }
 
   // ── Flat ──
@@ -208,7 +254,7 @@ export class LocalGitProjectsTreeDataProvider
         const children = catProjects
           .sort((a, b) => a.name.localeCompare(b.name))
           .map((p) => new GitProjectTreeItem(p));
-        return new FolderTreeItem(cat, children);
+        return new FolderTreeItem(cat, children, `git-folder:cat:${cat}`);
       });
   }
 
@@ -243,7 +289,7 @@ export class LocalGitProjectsTreeDataProvider
       const label = scanFolder.startsWith(homedir)
         ? '~' + scanFolder.slice(homedir.length)
         : scanFolder;
-      const folder = new FolderTreeItem(label, children);
+      const folder = new FolderTreeItem(label, children, `git-folder:scan:${scanFolder}`);
       folder.tooltip = scanFolder;
       result.push(folder);
     }
@@ -330,7 +376,7 @@ export class LocalGitProjectsTreeDataProvider
         projects.push(new GitProjectTreeItem(child.project));
       } else {
         const children = this.pathNodeToTreeItems(child);
-        const folder = new FolderTreeItem(child.name, children);
+        const folder = new FolderTreeItem(child.name, children, `git-folder:path:${child.fullPath}`);
         folder.tooltip = child.fullPath;
         folders.push(folder);
       }
