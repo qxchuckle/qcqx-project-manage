@@ -358,3 +358,70 @@
 ### Next Steps
 
 - None - task complete
+
+
+## Session 9: Monorepo架构改造 Phase 1+2
+
+**Date**: 2026-04-03
+**Task**: Monorepo架构改造 Phase 1+2
+
+### Summary
+
+(Add summary)
+
+### Main Changes
+
+## 完成内容
+
+| 阶段 | 内容 | 状态 |
+|------|------|------|
+| Phase 1 | 创建 monorepo 骨架（pnpm workspace、tsconfig.base、根 package.json、packages/ 目录） | ✅ |
+| Phase 2 | 迁移现有 VS Code 扩展代码到 packages/vscode/，调整构建和调试配置 | ✅ |
+| Phase 3 | 抽离 @qcqx/core 共享数据层 | 待做 |
+| Phase 4 | 实现 @qcqx/cli 命令行工具 | 待做 |
+
+## 关键变更
+
+- 项目从单包改为 pnpm workspaces monorepo（packages/vscode、packages/core、packages/cli）
+- 现有扩展代码通过 `git mv` 迁入 `packages/vscode/`，保留完整 git 历史
+- `tsconfig.json` 改为继承 `tsconfig.base.json`
+- `.vscode/launch.json` 和 `tasks.json` 调试路径指向 `packages/vscode/`
+- 从 npm (package-lock.json) 切换到 pnpm (pnpm-lock.yaml)
+- `packages/core/` 初始骨架：纯 Node 文件存储接口（getCacheDir、readJSON、writeJSON）
+- `packages/cli/` 初始骨架：占位入口
+
+## 验证
+
+- `tsc --noEmit` 类型检查通过（vscode 包 + core 包）
+- `node esbuild.js` 打包通过（dist/extension.js 146KB）
+- `eslint src` 通过
+- 分支：feat/monorepo-restructure
+
+**Updated Files (主要)**:
+- `pnpm-workspace.yaml` (新建)
+- `tsconfig.base.json` (新建)
+- `package.json` (根 workspace 配置)
+- `packages/vscode/` (迁入全部扩展代码)
+- `packages/core/src/storage.ts` (新建)
+- `packages/cli/src/index.ts` (新建)
+- `.vscode/launch.json`, `.vscode/tasks.json` (路径调整)
+- `.gitignore` (更新)
+
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `4b8c53c` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
