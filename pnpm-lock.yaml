@@ -10,7 +10,7 @@ importers:
 
   packages/cli:
     dependencies:
-      '@qcqx/core':
+      '@qcqx/project-manage-core':
         specifier: workspace:*
         version: link:../core
 

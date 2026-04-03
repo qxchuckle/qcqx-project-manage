@@ -1,19 +1,39 @@
 {
-  "name": "@qcqx/cli",
+  "name": "@qcqx/project-manage-cli",
   "version": "0.1.0",
   "private": true,
-  "description": "CLI tool for qcqx-project-manage",
+  "description": "qcqx-project-manage 命令行工具",
   "bin": {
     "pm": "./dist/index.js"
   },
   "main": "./dist/index.js",
+  "license": "MIT",
+  "author": {
+    "name": "qcqx",
+    "url": "https://github.com/qxchuckle"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qxchuckle/qcqx-project-manage.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://github.com/qxchuckle/qcqx-project-manage/tree/main/packages/cli#readme",
+  "bugs": {
+    "url": "https://github.com/qxchuckle/qcqx-project-manage/issues"
+  },
+  "keywords": [
+    "qcqx",
+    "project-manage",
+    "cli",
+    "vscode"
+  ],
   "scripts": {
     "build": "tsc",
     "check-types": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@qcqx/core": "workspace:*"
+    "@qcqx/project-manage-core": "workspace:*"
   },
   "files": [
     "dist"

@@ -1,20 +1,40 @@
 {
-  "name": "@qcqx/monorepo",
+  "name": "@qcqx/project-manage-monorepo",
   "private": true,
-  "description": "qcqx-project-manage monorepo",
+  "description": "qcqx-project-manage Monorepo 工作区",
+  "license": "MIT",
+  "author": {
+    "name": "qcqx",
+    "url": "https://github.com/qxchuckle"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qxchuckle/qcqx-project-manage.git"
+  },
+  "homepage": "https://github.com/qxchuckle/qcqx-project-manage#readme",
+  "bugs": {
+    "url": "https://github.com/qxchuckle/qcqx-project-manage/issues"
+  },
+  "keywords": [
+    "qcqx",
+    "project-manage",
+    "vscode",
+    "monorepo",
+    "项目管理"
+  ],
   "pnpm": {
     "onlyBuiltDependencies": ["esbuild"]
   },
   "scripts": {
     "build": "pnpm -r run compile",
-    "build:vscode": "pnpm --filter qcqx-project-manage run compile",
-    "build:core": "pnpm --filter @qcqx/core run build",
-    "build:cli": "pnpm --filter @qcqx/cli run build",
-    "watch": "pnpm --filter qcqx-project-manage run watch",
+    "build:vscode": "pnpm --filter @qcqx/project-manage-vscode run compile",
+    "build:core": "pnpm --filter @qcqx/project-manage-core run build",
+    "build:cli": "pnpm --filter @qcqx/project-manage-cli run build",
+    "watch": "pnpm --filter @qcqx/project-manage-vscode run watch",
     "lint": "pnpm -r run lint",
     "check-types": "pnpm -r run check-types",
-    "package": "pnpm --filter qcqx-project-manage run package",
-    "publish:vscode": "pnpm --filter qcqx-project-manage run publish"
+    "package": "pnpm --filter @qcqx/project-manage-vscode run package",
+    "publish:vscode": "pnpm --filter @qcqx/project-manage-vscode run publish"
   },
   "engines": {
     "node": ">=18",
