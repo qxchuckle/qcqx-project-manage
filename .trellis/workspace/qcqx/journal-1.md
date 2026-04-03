@@ -425,3 +425,50 @@
 ### Next Steps
 
 - None - task complete
+
+
+## Session 10: 优化包命名和 npm 元数据
+
+**Date**: 2026-04-03
+**Task**: 优化包命名和 npm 元数据
+
+### Summary
+
+(Add summary)
+
+### Main Changes
+
+## 变更内容
+
+| 变更项 | 说明 |
+|--------|------|
+| 包重命名 | `@qcqx/core` → `@qcqx/project-manage-core`，`@qcqx/cli` → `@qcqx/project-manage-cli`，`qcqx-project-manage` → `@qcqx/project-manage-vscode`，根包 → `@qcqx/project-manage-monorepo` |
+| 中文描述 | core: "共享核心库"，cli: "命令行工具"，root: "Monorepo 工作区" |
+| npm 元数据 | 为 root/core/cli 添加 author、license、repository、homepage、bugs、keywords |
+| 依赖更新 | cli 中 `@qcqx/core` → `@qcqx/project-manage-core`，根 package.json filter 命令同步更新 |
+
+**修改文件**:
+- `package.json` (root)
+- `packages/core/package.json`
+- `packages/cli/package.json`
+- `packages/vscode/package.json`
+- `pnpm-lock.yaml`
+
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `fbc2bd7` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
