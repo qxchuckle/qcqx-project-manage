@@ -538,3 +538,56 @@ packages/core/src/
 ### Next Steps
 
 - None - task complete
+
+
+## Session 12: Core 包 Node 16 兼容性适配
+
+**Date**: 2026-04-03
+**Task**: Core 包 Node 16 兼容性适配
+
+### Summary
+
+(Add summary)
+
+### Main Changes
+
+## 目标
+确保 `@qcqx/project-manage-core` 包兼容 Node >= 16。
+
+## 完成内容
+
+| 项目 | 说明 |
+|------|------|
+| 源码审查 | 审查 core 包全部 17 个 TS 文件，确认无 Node 16 不兼容 API |
+| 依赖检查 | 确认 picomatch v4 (engines: node >= 12) 兼容 Node 16 |
+| @types/node 降级 | 从 `~20.19.37` 降到 `^16.18.0`（安装 16.18.126），防止误用 Node 20+ API |
+| engines 声明 | 添加 `"engines": { "node": ">=16" }` |
+| 构建验证 | core 包和 vscode 扩展构建均通过 |
+
+## 兼容性分析结论
+
+- **Node 16+**: 完全兼容，无需改代码
+- **Node 14**: 因 `node:` 前缀导入（如 `require("node:fs")`）不兼容 14.0-14.17；如需支持需去掉 `node:` 前缀
+
+**Updated Files**:
+- `packages/core/package.json` — 添加 engines 字段，降级 @types/node
+- `pnpm-lock.yaml` — 依赖锁定更新
+
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `fb9f230` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete

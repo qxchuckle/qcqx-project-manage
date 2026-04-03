@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 11
+- **Total Sessions**: 12
 - **Last Active**: 2026-04-03
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~540 | Active |
+| `journal-1.md` | ~593 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits |
 |---|------|-------|---------|
+| 12 | 2026-04-03 | Core 包 Node 16 兼容性适配 | `fb9f230` |
 | 11 | 2026-04-03 | Core模块重构：类型/常量集中化、JSDoc注释、硬编码消除 | `01d9480` |
 | 10 | 2026-04-03 | 优化包命名和 npm 元数据 | `fbc2bd7` |
 | 9 | 2026-04-03 | Monorepo架构改造 Phase 1+2 | `4b8c53c` |
