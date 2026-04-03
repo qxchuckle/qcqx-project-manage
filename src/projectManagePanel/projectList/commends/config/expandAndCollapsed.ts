@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { CMD_PREFIX_PROJECT_LIST } from '@/config';
 import { TreeViewController } from '../../treeView/treeViewController';
 import { TreeNodeType } from '../../treeView/type';
 
@@ -9,7 +10,7 @@ export function createExpandAndCollapsed(
   treeViewController: TreeViewController,
 ) {
   const expandAll = vscode.commands.registerCommand(
-    'qcqx-project-manage.project-list.expand-all',
+    `${CMD_PREFIX_PROJECT_LIST}.expand-all`,
     async () => {
       const { tree, context, view } = treeViewController;
       tree.root.traverseChildren((node) => {
@@ -22,7 +23,7 @@ export function createExpandAndCollapsed(
   );
 
   const collapseAll = vscode.commands.registerCommand(
-    'qcqx-project-manage.project-list.collapse-all',
+    `${CMD_PREFIX_PROJECT_LIST}.collapse-all`,
     async () => {
       const { tree, context, view } = treeViewController;
       tree.root.traverseChildren((node) => {

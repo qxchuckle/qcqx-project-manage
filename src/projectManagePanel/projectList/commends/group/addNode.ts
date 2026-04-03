@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { CMD_PREFIX_PROJECT_LIST } from '@/config';
 import { TreeViewController } from '../../treeView/treeViewController';
 import { BaseTreeItem } from '../../treeView/treeItems/base';
 import { TreeNodeType } from '../../treeView/type';
@@ -8,7 +9,7 @@ import { Tree } from '../../treeView/tree';
 export function createAddNode(treeViewController: TreeViewController) {
   // 添加项目
   const addProject = vscode.commands.registerCommand(
-    'qcqx-project-manage.project-list.add-project',
+    `${CMD_PREFIX_PROJECT_LIST}.add-project`,
     async (target: BaseTreeItem | undefined) => {
       const { tree, view, context } = treeViewController;
       let targetTitle = target?.title || '';
@@ -37,7 +38,7 @@ export function createAddNode(treeViewController: TreeViewController) {
 
   // 添加分组
   const addGroup = vscode.commands.registerCommand(
-    'qcqx-project-manage.project-list.add-group',
+    `${CMD_PREFIX_PROJECT_LIST}.add-group`,
     async (target: BaseTreeItem | undefined) => {
       const { tree, view, context } = treeViewController;
       if (!target || target.type === TreeNodeType.Tip) {
@@ -68,7 +69,7 @@ export function createAddNode(treeViewController: TreeViewController) {
    * 将指定 URI 添加到项目列表根目录（供最近文件夹等调用）
    */
   const addUriToRoot = vscode.commands.registerCommand(
-    'qcqx-project-manage.project-list.add-uri-to-root',
+    `${CMD_PREFIX_PROJECT_LIST}.add-uri-to-root`,
     async (uri: vscode.Uri) => {
       if (!uri) {
         return;
@@ -88,7 +89,7 @@ export function createAddNode(treeViewController: TreeViewController) {
    * 添加当前窗口打开的项目
    */
   const addCurrentProject = vscode.commands.registerCommand(
-    'qcqx-project-manage.project-list.add-current-project',
+    `${CMD_PREFIX_PROJECT_LIST}.add-current-project`,
     async (target: BaseTreeItem | undefined) => {
       const { tree, view, context } = treeViewController;
       let targetTitle = target?.title || '';

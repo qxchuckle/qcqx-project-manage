@@ -1,10 +1,11 @@
 import * as vscode from 'vscode';
+import { CMD_PREFIX_PROJECT_LIST } from '@/config';
 import { TreeViewController } from '../../treeView/treeViewController';
 import { BaseTreeItem } from '../../treeView/treeItems/base';
 
 export function createRenameNode(treeViewController: TreeViewController) {
   const renameNode = vscode.commands.registerCommand(
-    'qcqx-project-manage.project-list.rename-node',
+    `${CMD_PREFIX_PROJECT_LIST}.rename-node`,
     async (target: BaseTreeItem | undefined) => {
       const { tree, context } = treeViewController;
       if (!target) {
@@ -23,7 +24,7 @@ export function createRenameNode(treeViewController: TreeViewController) {
   );
 
   const editDescription = vscode.commands.registerCommand(
-    'qcqx-project-manage.project-list.edit-description',
+    `${CMD_PREFIX_PROJECT_LIST}.edit-description`,
     async (target: BaseTreeItem | undefined) => {
       const { tree, context } = treeViewController;
       if (!target) {

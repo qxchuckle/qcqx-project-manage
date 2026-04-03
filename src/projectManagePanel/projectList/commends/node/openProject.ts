@@ -1,13 +1,14 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
+import { CMD_PREFIX_PROJECT_LIST } from '@/config';
 import { TreeViewController } from '../../treeView/treeViewController';
 import { BaseTreeItem } from '../../treeView/treeItems/base';
 import { explorer, isWorkspaceFile } from '@/utils';
-import * as path from 'path';
 import { TreeNodeType } from '../../treeView/type';
 
 export function createOpenProject(treeViewController: TreeViewController) {
   const openProjectInCurrentWindow = vscode.commands.registerCommand(
-    'qcqx-project-manage.project-list.open-project-in-current-window',
+    `${CMD_PREFIX_PROJECT_LIST}.open-project-in-current-window`,
     async (target: BaseTreeItem | undefined) => {
       if (!target) {
         return;
@@ -23,7 +24,7 @@ export function createOpenProject(treeViewController: TreeViewController) {
   );
 
   const openProjectInNewWindow = vscode.commands.registerCommand(
-    'qcqx-project-manage.project-list.open-project-in-new-window',
+    `${CMD_PREFIX_PROJECT_LIST}.open-project-in-new-window`,
     async (target: BaseTreeItem | undefined) => {
       if (!target) {
         return;
@@ -39,7 +40,7 @@ export function createOpenProject(treeViewController: TreeViewController) {
   );
 
   const openProjectInFileExplorer = vscode.commands.registerCommand(
-    'qcqx-project-manage.project-list.open-project-in-file-explorer',
+    `${CMD_PREFIX_PROJECT_LIST}.open-project-in-file-explorer`,
     async (target: BaseTreeItem | undefined) => {
       if (!target) {
         return;
@@ -53,7 +54,7 @@ export function createOpenProject(treeViewController: TreeViewController) {
   );
 
   const openProjectInTerminal = vscode.commands.registerCommand(
-    'qcqx-project-manage.project-list.open-project-in-terminal',
+    `${CMD_PREFIX_PROJECT_LIST}.open-project-in-terminal`,
     async (target: BaseTreeItem | undefined) => {
       if (!target) {
         return;
@@ -76,7 +77,7 @@ export function createOpenProject(treeViewController: TreeViewController) {
   );
 
   const openPathInFileExplorer = vscode.commands.registerCommand(
-    'qcqx-project-manage.project-list.open-path-in-file-explorer',
+    `${CMD_PREFIX_PROJECT_LIST}.open-path-in-file-explorer`,
     async (projectPath: string) => {
       if (!projectPath?.trim()) {
         return;
@@ -86,7 +87,7 @@ export function createOpenProject(treeViewController: TreeViewController) {
   );
 
   const copyPath = vscode.commands.registerCommand(
-    'qcqx-project-manage.project-list.copy-path',
+    `${CMD_PREFIX_PROJECT_LIST}.copy-path`,
     async (target: BaseTreeItem | undefined) => {
       if (!target?.projectPath) {
         return;

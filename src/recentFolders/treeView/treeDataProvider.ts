@@ -1,26 +1,7 @@
 import * as vscode from 'vscode';
-import * as path from 'path';
-import { RecentFoldersStore, RecentFolderEntry } from './recentFoldersStore';
-
-export const RECENT_FOLDER_CONTEXT_VALUE = 'recent-folder';
-
-export class RecentFolderTreeItem extends vscode.TreeItem {
-  readonly path: string;
-  readonly openedAt: number;
-
-  constructor(entry: RecentFolderEntry) {
-    const uri = vscode.Uri.file(entry.path);
-    const label = path.basename(entry.path) || entry.path;
-    super(label, vscode.TreeItemCollapsibleState.None);
-    this.path = entry.path;
-    this.openedAt = entry.openedAt;
-    this.resourceUri = uri;
-    this.description = path.dirname(entry.path);
-    this.tooltip = entry.path;
-    this.contextValue = RECENT_FOLDER_CONTEXT_VALUE;
-    this.iconPath = vscode.ThemeIcon.Folder;
-  }
-}
+import { vscodeConfigName, vscodeConfigKeys } from '@/config';
+import { RecentFoldersStore } from '../recentFoldersStore';
+import { RecentFolderTreeItem } from './treeItems';
 
 export class RecentFoldersTreeDataProvider implements vscode.TreeDataProvider<RecentFolderTreeItem> {
   private _onDidChangeTreeData = new vscode.EventEmitter<
@@ -37,7 +18,7 @@ export class RecentFoldersTreeDataProvider implements vscode.TreeDataProvider<Re
     context.subscriptions.push(
       store.onChange(() => this._onDidChangeTreeData.fire()),
       vscode.workspace.onDidChangeConfiguration((e) => {
-        if (e.affectsConfiguration(`qcqx-project-manage.recent-folders-max`)) {
+        if (e.affectsConfiguration(`${vscodeConfigName}.${vscodeConfigKeys.recentFoldersMax}`)) {
           this._onDidChangeTreeData.fire();
         }
       }),

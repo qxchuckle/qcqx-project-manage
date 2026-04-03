@@ -1,7 +1,13 @@
 import * as vscode from 'vscode';
-import { initProjectManagePanel } from './projectManagePanel';
+import { initProjectList } from './projectManagePanel/projectList';
+import { initRecentFolders } from './recentFolders';
+import { initLocalGitProjects } from './localGitProjects';
 
 export function activate(context: vscode.ExtensionContext) {
-  initProjectManagePanel({ context });
+  initProjectList({ context });
+  initRecentFolders(context);
+  initLocalGitProjects(context).catch((err) => {
+    console.error('Failed to initialize local git projects:', err);
+  });
 }
 export function deactivate() {}

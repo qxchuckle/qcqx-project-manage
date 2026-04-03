@@ -1,11 +1,12 @@
 import * as vscode from 'vscode';
+import { CMD_PREFIX_PROJECT_LIST } from '@/config';
 import { TreeViewController } from '../../treeView/treeViewController';
 import { BaseTreeItem } from '../../treeView/treeItems/base';
 import { findLineInDoc } from '@/utils';
 
 export function createLocalConfig(treeViewController: TreeViewController) {
   const openLocalConfig = vscode.commands.registerCommand(
-    'qcqx-project-manage.project-list.open-local-config',
+    `${CMD_PREFIX_PROJECT_LIST}.open-local-config`,
     async () => {
       const { tree, context } = treeViewController;
       const uri = tree.getLocalConfigUri();
@@ -17,7 +18,7 @@ export function createLocalConfig(treeViewController: TreeViewController) {
   );
 
   const editInLocalConfig = vscode.commands.registerCommand(
-    'qcqx-project-manage.project-list.edit-in-local-config',
+    `${CMD_PREFIX_PROJECT_LIST}.edit-in-local-config`,
     async (item: BaseTreeItem) => {
       const { tree, context } = treeViewController;
       if (!item) {

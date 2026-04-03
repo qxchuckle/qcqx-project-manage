@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { CMD_PREFIX_PROJECT_LIST } from '@/config';
 import { TreeViewController } from '../../treeView/treeViewController';
 import { TreeNodeType } from '../../treeView/type';
 
@@ -11,7 +12,7 @@ interface ProjectSearchItem extends vscode.QuickPickItem {
  */
 export function createSearch(treeViewController: TreeViewController) {
   const projectSearch = vscode.commands.registerCommand(
-    'qcqx-project-manage.project-list.project-search',
+    `${CMD_PREFIX_PROJECT_LIST}.project-search`,
     async () => {
       const { tree, context, view } = treeViewController;
       const allProjectNodes = Object.values(tree.allTreeNodesMap).filter(
@@ -42,14 +43,14 @@ export function createSearch(treeViewController: TreeViewController) {
           //   {
           //     iconPath: new vscode.ThemeIcon('location'),
           //     tooltip: '定位该项目',
-          //     command: `qcqx-project-manage.project-list.locate-project-by-id?${encodedArgs}`,
+          //     command: `${CMD_PREFIX_PROJECT_LIST}.locate-project-by-id?${encodedArgs}`,
           //   },
           // ],
         };
       });
       quickPick.onDidAccept(() => {
         vscode.commands.executeCommand(
-          'qcqx-project-manage.project-list.locate-project-by-id',
+          `${CMD_PREFIX_PROJECT_LIST}.locate-project-by-id`,
           quickPick.selectedItems[0].id,
         );
         quickPick.hide();

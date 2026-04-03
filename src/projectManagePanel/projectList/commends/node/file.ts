@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { CMD_PREFIX_PROJECT_LIST } from '@/config';
 import { TreeViewController } from '../../treeView/treeViewController';
 import {
   getCurrentWorkspace,
@@ -14,7 +15,7 @@ export function createFileCommand(treeViewController: TreeViewController) {
    * 在当前编辑器打开文件
    */
   const openFile = vscode.commands.registerCommand(
-    'qcqx-project-manage.project-list.open-file-in-current-editor',
+    `${CMD_PREFIX_PROJECT_LIST}.open-file-in-current-editor`,
     async (target: BaseTreeItem | undefined) => {
       const { tree, context, view } = treeViewController;
       if (!target) {
@@ -35,7 +36,7 @@ export function createFileCommand(treeViewController: TreeViewController) {
    * 保存当前活跃的编辑器文件
    */
   const saveActiveEditorFile = vscode.commands.registerCommand(
-    'qcqx-project-manage.project-list.save-active-editor-file',
+    `${CMD_PREFIX_PROJECT_LIST}.save-active-editor-file`,
     async (target: BaseTreeItem | undefined) => {
       const { tree, context, view } = treeViewController;
       let targetTitle = target?.title || '';

@@ -1,9 +1,7 @@
 import * as vscode from 'vscode';
 import { RecentFoldersStore } from './recentFoldersStore';
-import {
-  RecentFoldersTreeDataProvider,
-  RecentFolderTreeItem,
-} from './recentFoldersTree';
+import { RecentFoldersTreeDataProvider } from './treeView/treeDataProvider';
+import { initCommands } from './commands';
 
 const VIEW_ID = 'recent-folders';
 
@@ -16,59 +14,5 @@ export function initRecentFolders(context: vscode.ExtensionContext): void {
     showCollapseAll: false,
   });
 
-  // 刷新按钮（视图标题栏）
-  context.subscriptions.push(
-    vscode.commands.registerCommand(
-      'qcqx-project-manage.recent-folders.refresh',
-      () => {
-        treeDataProvider.refresh();
-      },
-    ),
-  );
-
-  // 在当前窗口打开（列表来自 VS Code，打开后由 VS Code 自己更新记录）
-  context.subscriptions.push(
-    vscode.commands.registerCommand(
-      'qcqx-project-manage.recent-folders.open-in-current-window',
-      async (item: RecentFolderTreeItem) => {
-        if (!item?.path) {
-          return;
-        }
-        await vscode.commands.executeCommand('vscode.openFolder', item.resourceUri, {
-          forceNewWindow: false,
-        });
-      },
-    ),
-  );
-
-  // 在新窗口打开
-  context.subscriptions.push(
-    vscode.commands.registerCommand(
-      'qcqx-project-manage.recent-folders.open-in-new-window',
-      async (item: RecentFolderTreeItem) => {
-        if (!item?.path) {
-          return;
-        }
-        await vscode.commands.executeCommand('vscode.openFolder', item.resourceUri, {
-          forceNewWindow: true,
-        });
-      },
-    ),
-  );
-
-  // 保存到项目列表
-  context.subscriptions.push(
-    vscode.commands.registerCommand(
-      'qcqx-project-manage.recent-folders.save-to-project-list',
-      async (item: RecentFolderTreeItem) => {
-        if (!item?.resourceUri) {
-          return;
-        }
-        await vscode.commands.executeCommand(
-          'qcqx-project-manage.project-list.add-uri-to-root',
-          item.resourceUri,
-        );
-      },
-    ),
-  );
+  initCommands(context, treeDataProvider);
 }

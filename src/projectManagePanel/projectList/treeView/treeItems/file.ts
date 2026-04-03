@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { CMD_PREFIX_PROJECT_LIST } from '@/config';
 import { BaseTreeItem } from './base';
 import { TreeItem, TreeItemProps, TreeNodeType } from '../type';
 import { isWorkspaceFile } from '@/utils';
@@ -27,7 +28,7 @@ export class FileTreeItem extends BaseTreeItem {
       const encodedArgs = encodeURIComponent(
         JSON.stringify([this.projectPath]),
       );
-      showPathInTooltip = `[${this.projectPath}](command:qcqx-project-manage.project-list.open-path-in-file-explorer?${encodedArgs})`;
+      showPathInTooltip = `[${this.projectPath}](command:${CMD_PREFIX_PROJECT_LIST}.open-path-in-file-explorer?${encodedArgs})`;
     } else {
       showPathInTooltip = '无路径';
     }

@@ -542,6 +542,17 @@
           "minimum": 1,
           "maximum": 100,
           "description": "最近打开的文件夹视图最多显示数量"
+        },
+        "qcqx-project-manage.local-git-view-mode": {
+          "type": "string",
+          "default": "flat",
+          "enum": ["flat", "category", "path"],
+          "enumDescriptions": [
+            "按名称平铺展示所有 Git 项目",
+            "按配置中的分类分组展示",
+            "按文件路径层级展示，自动合并单子目录"
+          ],
+          "description": "本地 Git 项目视图模式"
         }
       }
     }

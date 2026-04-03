@@ -1,9 +1,15 @@
 import * as vscode from 'vscode';
 import * as os from 'os';
 import * as path from 'path';
-import { GitProjectInfo, ViewMode, AppConfig } from './types';
-import { scanForGitProjects } from './scanner';
+import { GitProjectInfo, ViewMode, AppConfig } from '../types';
+import { scanForGitProjects } from '../scanner';
 import { LocalCache } from '@/utils/localCache';
+import { vscodeConfigName, vscodeConfigKeys } from '@/config';
+import {
+  GitProjectTreeItem,
+  FolderTreeItem,
+  LocalGitTreeItem,
+} from './treeItems';
 
 const CONFIG_CACHE_ID = 'app-config';
 const CONFIG_FILE_PATH = 'config.json';
@@ -13,38 +19,6 @@ const DEFAULT_CONFIG: AppConfig = {
   gitProjectScanNestedProjects: false,
   gitProjectMaxDepth: -1,
 };
-
-export class GitProjectTreeItem extends vscode.TreeItem {
-  readonly fsPath: string;
-
-  constructor(public readonly project: GitProjectInfo) {
-    super(project.name, vscode.TreeItemCollapsibleState.None);
-    this.fsPath = project.fsPath;
-    this.contextValue = 'local-git-project';
-    this.iconPath = new vscode.ThemeIcon('repo');
-    this.tooltip = project.fsPath;
-    this.resourceUri = vscode.Uri.file(project.fsPath);
-
-    const homedir = os.homedir();
-    const dir = path.dirname(project.fsPath);
-    this.description = dir.startsWith(homedir)
-      ? '~' + dir.slice(homedir.length)
-      : dir;
-  }
-}
-
-export class FolderTreeItem extends vscode.TreeItem {
-  readonly childItems: LocalGitTreeItem[];
-
-  constructor(label: string, childItems: LocalGitTreeItem[]) {
-    super(label, vscode.TreeItemCollapsibleState.Collapsed);
-    this.childItems = childItems;
-    this.contextValue = 'local-git-folder';
-    this.iconPath = vscode.ThemeIcon.Folder;
-  }
-}
-
-export type LocalGitTreeItem = GitProjectTreeItem | FolderTreeItem;
 
 interface PathNode {
   name: string;
@@ -63,13 +37,26 @@ export class LocalGitProjectsTreeDataProvider
 
   private projects: GitProjectInfo[] = [];
   private rootItems: LocalGitTreeItem[] | null = null;
-  private viewMode: ViewMode = ViewMode.Flat;
   private localCache: LocalCache;
   private initPromise: Promise<void> | null = null;
   private debounceTimer: ReturnType<typeof setTimeout> | undefined;
 
   constructor(private context: vscode.ExtensionContext) {
     this.localCache = LocalCache.getInstance();
+
+    context.subscriptions.push(
+      vscode.workspace.onDidChangeConfiguration((e) => {
+        if (
+          e.affectsConfiguration(
+            `${vscodeConfigName}.${vscodeConfigKeys.localGitViewMode}`,
+          )
+        ) {
+          this.rootItems = null;
+          this.buildTree();
+          this._onDidChangeTreeData.fire();
+        }
+      }),
+    );
   }
 
   async init(): Promise<void> {
@@ -101,16 +88,23 @@ export class LocalGitProjectsTreeDataProvider
   }
 
   setViewMode(mode: ViewMode): void {
-    if (this.viewMode === mode) {
+    if (this.getViewMode() === mode) {
       return;
     }
-    this.viewMode = mode;
-    this.buildTree();
-    this._onDidChangeTreeData.fire();
+    const config = vscode.workspace.getConfiguration(vscodeConfigName);
+    config.update(
+      vscodeConfigKeys.localGitViewMode,
+      mode,
+      vscode.ConfigurationTarget.Global,
+    );
   }
 
   getViewMode(): ViewMode {
-    return this.viewMode;
+    const config = vscode.workspace.getConfiguration(vscodeConfigName);
+    return config.get<ViewMode>(
+      vscodeConfigKeys.localGitViewMode,
+      ViewMode.Flat,
+    );
   }
 
   getTreeItem(element: LocalGitTreeItem): vscode.TreeItem {
@@ -165,7 +159,7 @@ export class LocalGitProjectsTreeDataProvider
   }
 
   private buildTree(): void {
-    switch (this.viewMode) {
+    switch (this.getViewMode()) {
       case ViewMode.Flat:
         this.rootItems = this.buildFlatTree();
         break;

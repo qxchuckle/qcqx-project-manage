@@ -1,11 +1,12 @@
 import * as vscode from 'vscode';
+import { CMD_PREFIX_PROJECT_LIST } from '@/config';
 import { TreeViewController } from '../../treeView/treeViewController';
 import { BaseTreeItem } from '../../treeView/treeItems/base';
 import { findLineInDoc } from '@/utils';
 
 export function createLink(treeViewController: TreeViewController) {
   const openLink = vscode.commands.registerCommand(
-    'qcqx-project-manage.project-list.open-link',
+    `${CMD_PREFIX_PROJECT_LIST}.open-link`,
     async (item: BaseTreeItem) => {
       const { tree, context } = treeViewController;
       if (!item) {
@@ -28,7 +29,7 @@ export function createLink(treeViewController: TreeViewController) {
   );
 
   const addLink = vscode.commands.registerCommand(
-    'qcqx-project-manage.project-list.add-link',
+    `${CMD_PREFIX_PROJECT_LIST}.add-link`,
     async (item: BaseTreeItem) => {
       const { tree, context } = treeViewController;
       if (!item) {
@@ -49,7 +50,7 @@ export function createLink(treeViewController: TreeViewController) {
   );
 
   const deleteLink = vscode.commands.registerCommand(
-    'qcqx-project-manage.project-list.delete-link',
+    `${CMD_PREFIX_PROJECT_LIST}.delete-link`,
     async (item: BaseTreeItem) => {
       const { tree, context } = treeViewController;
       if (!item) {

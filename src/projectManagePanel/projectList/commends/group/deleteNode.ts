@@ -1,11 +1,12 @@
 import * as vscode from 'vscode';
+import { CMD_PREFIX_PROJECT_LIST } from '@/config';
 import { TreeViewController } from '../../treeView/treeViewController';
 import { BaseTreeItem } from '../../treeView/treeItems/base';
 import { TreeNodeTypeNameMap } from '../../treeView/type';
 
 export function createDeleteNode(treeViewController: TreeViewController) {
   const deleteNode = vscode.commands.registerCommand(
-    'qcqx-project-manage.project-list.delete-node',
+    `${CMD_PREFIX_PROJECT_LIST}.delete-node`,
     async (target: BaseTreeItem | undefined) => {
       if (!target) {
         return;

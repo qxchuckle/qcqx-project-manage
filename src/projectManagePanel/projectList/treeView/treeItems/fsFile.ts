@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { CMD_PREFIX_PROJECT_LIST } from '@/config';
 import { BaseTreeItem } from './base';
 import { TreeItemProps, TreeNodeType } from '../type';
 
@@ -27,7 +28,7 @@ export class FsFileTreeItem extends BaseTreeItem {
       const encodedArgs = encodeURIComponent(
         JSON.stringify([this.projectPath]),
       );
-      pathLine = `[${this.projectPath}](command:qcqx-project-manage.project-list.open-path-in-file-explorer?${encodedArgs})`;
+      pathLine = `[${this.projectPath}](command:${CMD_PREFIX_PROJECT_LIST}.open-path-in-file-explorer?${encodedArgs})`;
     }
     treeProps.tooltip = new vscode.MarkdownString(`${pathLine}`);
     treeProps.tooltip.isTrusted = true;
