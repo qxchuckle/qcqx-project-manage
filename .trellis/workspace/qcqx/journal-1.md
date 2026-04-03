@@ -185,3 +185,70 @@
 ### Next Steps
 
 - None - task complete
+
+
+## Session 6: feat: 新增本地Git项目面板
+
+**Date**: 2026-04-03
+**Task**: feat: 新增本地Git项目面板
+
+### Summary
+
+(Add summary)
+
+### Main Changes
+
+## 新增功能
+
+新增「本地Git项目」树视图面板，自动扫描本地文件系统中的 Git 仓库并展示。
+
+| 功能 | 描述 |
+|------|------|
+| Git 项目扫描 | 递归扫描配置目录，检测 .git 存在性，支持 worktree |
+| 三种视图模式 | 平铺（默认）/ 按分类 / 按路径，标题栏一键切换 |
+| 路径压缩 | 按路径模式下自动合并单子目录节点（如 bbb/ccc） |
+| 忽略规则 | 内置常见忽略目录 + 用户自定义 glob 模式 |
+| 嵌套扫描 | 可配置是否扫描 Git 项目内部的子项目 |
+| 深度控制 | 可配置最大递归深度，默认无限制 |
+| 配置文件 | ~/.qcqx/qcqx-project-manage/config.json，不存在自动创建 |
+| 操作命令 | 当前/新窗口打开、保存到项目列表、终端打开、文件管理器打开、复制路径 |
+
+**配置文件字段**:
+- `gitProjectScanFolders`: 扫描目录列表（字符串或 {path, desc, category} 对象）
+- `gitProjectIgnoredFolders`: 额外忽略文件夹（支持 glob）
+- `gitProjectScanNestedProjects`: 是否扫描嵌套项目（默认 false）
+- `gitProjectMaxDepth`: 最大递归深度（默认 -1 无限制）
+
+**新增文件**:
+- `src/localGitProjects/types.ts`
+- `src/localGitProjects/scanner.ts`
+- `src/localGitProjects/localGitProjectsTree.ts`
+- `src/localGitProjects/index.ts`
+
+**修改文件**:
+- `package.json` — 视图、命令、菜单声明
+- `src/projectManagePanel/index.ts` — 注册新面板
+
+**修复**:
+- 删除 home 目录残留的 `.pnp.cjs`（影响 esbuild 模块解析）
+- 移除 minimatch 外部依赖，改用内置 globToRegex 实现
+- 将命令注册移到 init() 之前，避免初始化失败导致命令未注册
+
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `500592b` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
