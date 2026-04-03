@@ -21,7 +21,7 @@ This is a **VS Code extension** (TypeScript). There are no React components or p
 src/
 ├── extension.ts              # Entry: activate/deactivate, directly inits each module
 ├── config/
-│   └── index.ts              # EXTENSION_ID, CMD_PREFIX_*, vscodeConfigKeys
+│   └── index.ts              # EXTENSION_ID, CMD_PREFIX_*, vscodeConfigKeys, CACHE_CONFIG_*
 ├── utils/
 │   ├── index.ts              # Re-exports + shared helpers (explorer, generateId, etc.)
 │   ├── localCache.ts
@@ -41,7 +41,7 @@ src/
 │       │       ├── root.ts, group.ts, project.ts, file.ts, tip.ts, folder.ts, fsFile.ts
 │       └── commends/
 │           ├── index.ts      # initCommands: aggregates all command factories
-│           ├── config/       # lockList, localConfig, expandAndCollapsed
+│           ├── config/       # lockList, localConfig, expandAndCollapsed, openCacheConfig
 │           ├── group/        # addNode, deleteNode
 │           └── node/         # openProject, renameNode, locateProject, link, search, file
 ├── recentFolders/
@@ -52,7 +52,7 @@ src/
 │   │   └── treeItems.ts
 │   └── commands/
 │       ├── index.ts          # initCommands: aggregates all command factories
-│       └── node/             # openFolder, saveToProjectList
+│       └── node/             # openFolder, saveToProjectList, search
 └── localGitProjects/
     ├── index.ts              # initLocalGitProjects: treeView + commands
     ├── types.ts              # ViewMode, GitProjectInfo, AppConfig
@@ -63,7 +63,7 @@ src/
     └── commands/
         ├── index.ts          # initCommands: aggregates all command factories
         ├── config/           # refresh, openConfig, switchViewMode
-        └── node/             # openProject, saveToProjectList, openInTerminal, etc.
+        └── node/             # openProject, saveToProjectList, openInTerminal, search, locateProject, etc.
 ```
 
 ---
