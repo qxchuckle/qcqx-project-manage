@@ -472,3 +472,69 @@
 ### Next Steps
 
 - None - task complete
+
+
+## Session 11: Core模块重构：类型/常量集中化、JSDoc注释、硬编码消除
+
+**Date**: 2026-04-03
+**Task**: Core模块重构：类型/常量集中化、JSDoc注释、硬编码消除
+
+### Summary
+
+(Add summary)
+
+### Main Changes
+
+## 本次会话完成的工作
+
+### 1. 类型集中化到 `types/` 文件夹
+- 将 `git/types.ts`、`config/types.ts`、`project/types.ts` 以及散落在 `scanner.ts`、`list.ts` 中的接口（`ScanOptions`、`FindResult`）全部归入 `core/src/types/`
+- 按领域拆分：`tree.ts`、`git.ts`、`config.ts`、`project.ts`
+- 各业务模块（`git/`、`config/`、`project/`）现在只保留实现逻辑
+
+### 2. 常量集中化到 `constants/` 文件夹
+- `TreeNodeTypeNameMap`、`DEFAULT_APP_CONFIG`、`CONFIG_CACHE_ID`、`CONFIG_FILE_NAME`、`PROJECT_LIST_CACHE_ID`、`PROJECT_LIST_FILE_NAME` 归入 `constants/index.ts`
+- 新增 `APP_NAME`、`CACHE_DIR_NAME` 常量，消除 `.qcqx` / `qcqx-project-manage` 硬编码
+
+### 3. 全量 JSDoc 注释
+- 为 `packages/core` 和 `packages/vscode` 中约 40+ 个文件的所有导出函数、类、接口、枚举、常量添加了 JSDoc 注释
+
+### 4. 消除常量别名链
+- 移除 `EXTENSION_ID`、`vscodeConfigName`、`CACHE_CONFIG_ID`、`CACHE_CONFIG_FILE` 等不必要的别名
+- 所有地方直接使用 core 导出的原始常量名（`APP_NAME`、`CONFIG_CACHE_ID`、`CONFIG_FILE_NAME`）
+
+### 5. 修复 VS Code 扩展激活失败
+- `packages/vscode/package.json` 的 `name` 被错误改为 npm scope 格式 `@qcqx/project-manage-vscode`
+- 改回 `qcqx-project-manage`，修复 VS Code 扩展 ID 冲突
+
+**core 最终结构**:
+```
+packages/core/src/
+├── index.ts
+├── types/        (tree.ts, git.ts, config.ts, project.ts)
+├── constants/    (index.ts)
+├── utils/        (index.ts)
+├── storage/      (fs.ts, cache-manager.ts)
+├── git/          (scanner.ts)
+├── config/       (manager.ts)
+└── project/      (list.ts)
+```
+
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `01d9480` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
