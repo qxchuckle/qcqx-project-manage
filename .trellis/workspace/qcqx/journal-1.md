@@ -705,3 +705,60 @@ packages/core/src/
 ### Next Steps
 
 - None - task complete
+
+
+## Session 15: 修复 pnpm monorepo 下 vsce 发布问题
+
+**Date**: 2026-04-07
+**Task**: 修复 pnpm monorepo 下 vsce 发布问题
+
+### Summary
+
+(Add summary)
+
+### Main Changes
+
+## 修复内容
+
+| 问题 | 解决方案 |
+|------|---------|
+| vsce publish 因 npm 依赖检查失败 | 添加 `--no-dependencies` 跳过 npm 依赖检测 |
+| sql.js 作为 external 未打包进 VSIX | esbuild alias 指向 `sql-asm.js` 纯 JS 版本，完整打包 |
+| `@qcqx/project-manage-core` 解析编译产物 | esbuild alias + tsconfig paths 指向 core 源码 |
+| 缺少 LICENSE 文件警告 | 复制 LICENSE 到 packages/vscode/ |
+
+## 关键改动
+
+**`packages/vscode/esbuild.js`**:
+- 移除 `sql.js` 的 external 标记，alias 到 `sql.js/dist/sql-asm.js`（纯 JS，无需 WASM）
+- alias `@qcqx/project-manage-core` 到 core 源码 `../core/src/index.ts`
+
+**`packages/vscode/package.json`**:
+- publish/package-vsix 脚本添加 `--no-dependencies` 参数
+
+**`packages/vscode/tsconfig.json`**:
+- 添加 `@qcqx/project-manage-core` paths 映射到 core 源码
+- 移除 `rootDir` 限制（仅做 `--noEmit` 类型检查，不需要此约束）
+
+**`packages/vscode/LICENSE`**:
+- 新增 Apache License 文件
+
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `c9c2731` | (see git log) |
+| `b4edfa0` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete

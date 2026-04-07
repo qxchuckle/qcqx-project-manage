@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 14
+- **Total Sessions**: 15
 - **Last Active**: 2026-04-07
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~707 | Active |
+| `journal-1.md` | ~764 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits |
 |---|------|-------|---------|
+| 15 | 2026-04-07 | 修复 pnpm monorepo 下 vsce 发布问题 | `c9c2731`, `b4edfa0` |
 | 14 | 2026-04-07 | Git扫描缓存功能 | `d2d4fef`, `20a2f1c` |
 | 13 | 2026-04-07 | 使用 tsup 构建 core 包 | `f3bf4fe` |
 | 12 | 2026-04-03 | Core 包 Node 16 兼容性适配 | `fb9f230` |
