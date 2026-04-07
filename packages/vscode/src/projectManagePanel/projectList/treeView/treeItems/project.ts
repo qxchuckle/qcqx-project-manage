@@ -48,8 +48,16 @@ ${
     // 受信任才能识别command
     treeProps.tooltip.isTrusted = true;
 
-    // 如果是工作区
-    if (isWorkspace) {
+    if (this._pathInvalid) {
+      treeProps.iconPath = new vscode.ThemeIcon(
+        'warning',
+        new vscode.ThemeColor('problemsWarningIcon.foreground'),
+      );
+      treeProps.tooltip = new vscode.MarkdownString(
+        `$(warning) **路径无效**\n\n${this.projectPath ?? '无路径'}`,
+      );
+      treeProps.tooltip.supportThemeIcons = true;
+    } else if (isWorkspace) {
       treeProps.iconPath = new vscode.ThemeIcon('folder-library');
     } else {
       treeProps.iconPath = vscode.ThemeIcon.Folder;

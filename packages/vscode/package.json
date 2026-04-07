@@ -122,6 +122,11 @@
           "group": "navigation@9"
         },
         {
+          "command": "qcqx-project-manage.project-list.clean-invalid-projects",
+          "when": "view == project-list",
+          "group": "2_config@1"
+        },
+        {
           "command": "qcqx-project-manage.recent-folders.refresh",
           "when": "view == recent-folders",
           "group": "navigation@1"
@@ -522,6 +527,11 @@
         "command": "qcqx-project-manage.recent-folders.search",
         "title": "搜索最近文件夹",
         "icon": "$(search)"
+      },
+      {
+        "command": "qcqx-project-manage.project-list.clean-invalid-projects",
+        "title": "清理无效项目",
+        "icon": "$(trash)"
       },
       {
         "command": "qcqx-project-manage.local-git-projects.refresh",

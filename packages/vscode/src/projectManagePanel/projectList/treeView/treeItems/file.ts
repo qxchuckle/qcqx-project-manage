@@ -22,7 +22,6 @@ export class FileTreeItem extends BaseTreeItem {
       ...this,
       ...props,
     });
-    treeProps.iconPath = vscode.ThemeIcon.File;
     let showPathInTooltip = '';
     if (this.projectPath) {
       const encodedArgs = encodeURIComponent(
@@ -33,7 +32,18 @@ export class FileTreeItem extends BaseTreeItem {
       showPathInTooltip = '无路径';
     }
 
-    treeProps.tooltip = new vscode.MarkdownString(`文件: ${treeProps.label}  
+    if (this._pathInvalid) {
+      treeProps.iconPath = new vscode.ThemeIcon(
+        'warning',
+        new vscode.ThemeColor('problemsWarningIcon.foreground'),
+      );
+      treeProps.tooltip = new vscode.MarkdownString(
+        `$(warning) **路径无效**\n\n${this.projectPath ?? '无路径'}`,
+      );
+      treeProps.tooltip.supportThemeIcons = true;
+    } else {
+      treeProps.iconPath = vscode.ThemeIcon.File;
+      treeProps.tooltip = new vscode.MarkdownString(`文件: ${treeProps.label}  
 ${props.description || '无描述'}  
 ${showPathInTooltip}  
 🔗关联链接:  
@@ -42,14 +52,16 @@ ${
     ?.map((link, index) => `${index + 1}. [${link}](${link})`)
     .join('\n') || ' '
 }`);
-    // 受信任才能识别command
-    treeProps.tooltip.isTrusted = true;
+      treeProps.tooltip.isTrusted = true;
+    }
 
-    this.command = {
-      command: 'vscode.open',
-      title: '在当前编辑器打开文件',
-      arguments: [this.resourceUri],
-    };
+    this.command = this._pathInvalid
+      ? undefined
+      : {
+          command: 'vscode.open',
+          title: '在当前编辑器打开文件',
+          arguments: [this.resourceUri],
+        };
 
     Object.assign(this, treeProps);
   }

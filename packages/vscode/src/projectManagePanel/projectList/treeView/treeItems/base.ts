@@ -17,6 +17,8 @@ export abstract class BaseTreeItem extends vscode.TreeItem implements TreeItem {
   children: BaseTreeItem[] = [];
   parent?: BaseTreeItem;
   links?: string[];
+  /** 路径是否无效（目录被删除/移动/重命名） */
+  _pathInvalid = false;
 
   abstract update(props: TreeItemProps): void;
 

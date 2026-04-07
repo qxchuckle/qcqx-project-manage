@@ -295,6 +295,7 @@ export class Tree
     _parse(this.root, jsonObj);
     // 不同步本地配置，避免循环调用
     this.refresh(undefined, false);
+    this.scheduleValidatePaths();
   }
 
   /**
@@ -385,6 +386,90 @@ export class Tree
       links: Array.from(_links),
     });
     this.refresh(node.parent);
+  }
+
+  private _validateVersion = 0;
+  private _validateTimer: ReturnType<typeof setTimeout> | undefined;
+
+  /**
+   * 防抖触发路径校验，连续调用只执行最后一次；
+   * version 确保异步返回的旧结果不会覆盖新结果。
+   */
+  scheduleValidatePaths(): void {
+    if (this._validateTimer) {
+      clearTimeout(this._validateTimer);
+    }
+    this._validateTimer = setTimeout(() => {
+      void this.validatePaths();
+    }, 200);
+  }
+
+  /**
+   * 校验所有带路径节点的有效性，异步检测后刷新外观
+   */
+  async validatePaths(): Promise<void> {
+    const nodes = this.collectPathNodes();
+    if (nodes.length === 0) {
+      return;
+    }
+
+    const version = ++this._validateVersion;
+
+    const results = await Promise.all(
+      nodes.map(async (node) => {
+        const fsPath = node.resourceUri?.fsPath;
+        if (!fsPath) {
+          return { node, invalid: false };
+        }
+        try {
+          await vscode.workspace.fs.stat(vscode.Uri.file(fsPath));
+          return { node, invalid: false };
+        } catch {
+          return { node, invalid: true };
+        }
+      }),
+    );
+
+    if (version !== this._validateVersion) {
+      return;
+    }
+
+    let changed = false;
+    for (const { node, invalid } of results) {
+      if (node._pathInvalid !== invalid) {
+        node._pathInvalid = invalid;
+        node.update({});
+        changed = true;
+      }
+    }
+
+    if (changed) {
+      this._onDidChangeTreeData.fire();
+    }
+  }
+
+  /**
+   * 获取所有路径无效的节点
+   */
+  getInvalidPathNodes(): BaseTreeItem[] {
+    return this.collectPathNodes().filter((n) => n._pathInvalid);
+  }
+
+  private collectPathNodes(): BaseTreeItem[] {
+    const result: BaseTreeItem[] = [];
+    const walk = (node: BaseTreeItem) => {
+      if (
+        node.resourceUri &&
+        (node.type === TreeNodeType.Project || node.type === TreeNodeType.File)
+      ) {
+        result.push(node);
+      }
+      for (const child of node.children) {
+        walk(child);
+      }
+    };
+    walk(this.root);
+    return result;
   }
 
   /**

@@ -12,6 +12,7 @@ import { createLink } from './node/link';
 import { createSearch } from './node/search';
 import { createFileCommand } from './node/file';
 import { createOpenCacheConfig } from './config/openCacheConfig';
+import { createCleanInvalidProjects } from './config/cleanInvalidProjects';
 
 export function initCommands(treeViewController: TreeViewController) {
   const { context } = treeViewController;
@@ -28,6 +29,7 @@ export function initCommands(treeViewController: TreeViewController) {
     ...createSearch(treeViewController),
     ...createFileCommand(treeViewController),
     ...createOpenCacheConfig(),
+    ...createCleanInvalidProjects(treeViewController),
   ];
   context.subscriptions.push(...commands);
 }
