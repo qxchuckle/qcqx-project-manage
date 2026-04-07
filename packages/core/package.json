@@ -4,7 +4,20 @@
   "private": true,
   "description": "qcqx-project-manage 共享核心库",
   "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
+  },
   "license": "MIT",
   "author": {
     "name": "qcqx",
@@ -29,7 +42,7 @@
     "vscode"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsup",
     "check-types": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
@@ -39,6 +52,7 @@
   "devDependencies": {
     "@types/node": "^16.18.0",
     "@types/picomatch": "^4.0.3",
+    "tsup": "^8.5.1",
     "typescript": "^5.9.3"
   },
   "dependencies": {
