@@ -1,4 +1,5 @@
 const esbuild = require('esbuild');
+const path = require('path');
 
 const production = process.argv.includes('--production');
 const watch = process.argv.includes('--watch');
@@ -35,7 +36,11 @@ async function main() {
     sourcesContent: false,
     platform: 'node',
     outfile: 'dist/extension.js',
-    external: ['vscode', 'sql.js'],
+    external: ['vscode'],
+    alias: {
+      'sql.js': 'sql.js/dist/sql-asm.js',
+      '@qcqx/project-manage-core': path.resolve(__dirname, '../core/src/index.ts'),
+    },
     logLevel: 'silent',
     plugins: [
       /* add to the end of plugins array */
