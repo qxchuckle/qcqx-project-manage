@@ -818,3 +818,52 @@ packages/core/src/
 ### Next Steps
 
 - None - task complete
+
+
+## Session 17: 项目路径有效性检测 + 清理无效项目命令
+
+**Date**: 2026-04-07
+**Task**: 项目路径有效性检测 + 清理无效项目命令
+
+### Summary
+
+(Add summary)
+
+### Main Changes
+
+## 实现内容
+
+| 功能 | 描述 |
+|------|------|
+| 路径有效性检测 | 项目列表中 Project/File 节点的路径自动异步校验，无效路径显示警告图标 |
+| 清理无效项目命令 | 新增「清理无效项目」命令，QuickPick 多选 + 二次确认后批量删除 |
+| 性能优化 | 防抖 + 版本号机制，避免连续触发和旧结果覆盖 |
+
+## 修改文件
+
+- `packages/vscode/src/projectManagePanel/projectList/treeView/treeItems/base.ts` — 新增 `_pathInvalid` 标记
+- `packages/vscode/src/projectManagePanel/projectList/treeView/treeItems/project.ts` — 无效路径时显示警告图标和提示
+- `packages/vscode/src/projectManagePanel/projectList/treeView/treeItems/file.ts` — 同上，且禁用点击打开
+- `packages/vscode/src/projectManagePanel/projectList/treeView/tree.ts` — 新增 `validatePaths()`、`scheduleValidatePaths()`、`getInvalidPathNodes()` 方法
+- `packages/vscode/src/projectManagePanel/projectList/commends/config/cleanInvalidProjects.ts` — 新增清理命令
+- `packages/vscode/src/projectManagePanel/projectList/commends/index.ts` — 注册新命令
+- `packages/vscode/package.json` — 声明命令和菜单项
+
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `5bd4c6c` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
