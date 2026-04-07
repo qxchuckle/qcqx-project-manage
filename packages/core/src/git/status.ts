@@ -78,6 +78,34 @@ export async function getRemoteUrl(
 }
 
 /**
+ * 批量获取多个仓库的 origin 远程 URL，返回以 fsPath 为 key 的 Map。
+ * 失败或无 remote 的仓库不会出现在结果中。
+ */
+export async function getRemoteUrlBatch(
+  repoPaths: string[],
+  concurrency?: number,
+): Promise<Map<string, string>> {
+  let limit = concurrency;
+  if (limit === undefined) {
+    const config = await AppConfigManager.readConfig();
+    limit = config.gitStatusConcurrency ?? -1;
+  }
+
+  const results = new Map<string, string>();
+  await asyncPool(
+    repoPaths,
+    async (p) => {
+      const url = await getRemoteUrl(p);
+      if (url) {
+        results.set(p, url);
+      }
+    },
+    limit,
+  );
+  return results;
+}
+
+/**
  * 批量获取多个仓库的 Git 状态，返回以 fsPath 为 key 的 Map。
  *
  * @param concurrency - 并发数。省略时自动从 config.json 的 gitStatusConcurrency 读取；

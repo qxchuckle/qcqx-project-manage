@@ -11,4 +11,5 @@ export const enum ViewMode {
   Flat = 'flat',
   ByCategory = 'category',
   ByPath = 'path',
+  ByRemote = 'remote',
 }

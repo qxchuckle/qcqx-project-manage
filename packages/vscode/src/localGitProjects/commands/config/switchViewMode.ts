@@ -29,6 +29,12 @@ export function createSwitchViewMode(
             currentMode === ViewMode.ByPath ? '(当前)' : undefined,
           detail: '按文件路径层级展示，自动合并单子目录',
         },
+        {
+          label: '按远程仓库',
+          description:
+            currentMode === ViewMode.ByRemote ? '(当前)' : undefined,
+          detail: '按 Git 远程仓库 URL 路径结构分组展示',
+        },
       ];
 
       const picked = await vscode.window.showQuickPick(items, {
@@ -42,6 +48,7 @@ export function createSwitchViewMode(
         '平铺': ViewMode.Flat,
         '按分类': ViewMode.ByCategory,
         '按路径': ViewMode.ByPath,
+        '按远程仓库': ViewMode.ByRemote,
       };
       const mode = modeMap[picked.label];
       if (mode !== undefined) {

@@ -6,5 +6,5 @@ export {
 
 export { scanForGitProjectsCached } from './scan-cache.js';
 
-export { getGitStatus, getGitStatusBatch, getRemoteUrl, getRemoteUrls } from './status.js';
+export { getGitStatus, getGitStatusBatch, getRemoteUrl, getRemoteUrls, getRemoteUrlBatch } from './status.js';
 export type { GitStatusInfo, GitRemoteInfo } from './status.js';

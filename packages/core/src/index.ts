@@ -60,6 +60,7 @@ export {
   getGitStatusBatch,
   getRemoteUrl,
   getRemoteUrls,
+  getRemoteUrlBatch,
 } from './git/index.js';
 export type { GitRemoteInfo } from './git/index.js';
 

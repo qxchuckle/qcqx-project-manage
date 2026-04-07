@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as os from 'os';
 import * as path from 'path';
-import { scanForGitProjectsCached, getGitStatusBatch, DEFAULT_APP_CONFIG } from '@qcqx/project-manage-core';
+import { scanForGitProjectsCached, getGitStatusBatch, getRemoteUrlBatch, DEFAULT_APP_CONFIG } from '@qcqx/project-manage-core';
 import type { GitProjectInfo, AppConfig } from '@qcqx/project-manage-core';
 import { ViewMode } from '../types';
 import { LocalCache } from '@/utils/localCache';
@@ -32,6 +32,8 @@ export class LocalGitProjectsTreeDataProvider
   private projects: GitProjectInfo[] = [];
   private rootItems: LocalGitTreeItem[] | null = null;
   private parentMap = new Map<LocalGitTreeItem, LocalGitTreeItem | undefined>();
+  private remoteUrlMap = new Map<string, string>();
+  private remoteUrlsLoaded = false;
   private localCache: LocalCache;
   private initPromise: Promise<void> | null = null;
   private debounceTimer: ReturnType<typeof setTimeout> | undefined;
@@ -77,6 +79,8 @@ export class LocalGitProjectsTreeDataProvider
 
   async refresh(skipCache = true): Promise<void> {
     this.rootItems = null;
+    this.remoteUrlsLoaded = false;
+    this.remoteUrlMap.clear();
     await this.scan(skipCache);
     this._onDidChangeTreeData.fire();
   }
@@ -216,6 +220,10 @@ export class LocalGitProjectsTreeDataProvider
         break;
       case ViewMode.ByPath:
         this.rootItems = this.buildPathTree();
+        break;
+      case ViewMode.ByRemote:
+        this.rootItems = this.buildRemoteTree();
+        this.ensureRemoteUrls();
         break;
     }
     this.rebuildParentMap();
@@ -466,5 +474,145 @@ export class LocalGitProjectsTreeDataProvider
     );
 
     return [...folders, ...projects];
+  }
+
+  // ── Remote ──
+
+  private remoteUrlLoadVersion = 0;
+
+  private ensureRemoteUrls(): void {
+    if (this.remoteUrlsLoaded) {
+      return;
+    }
+    const version = ++this.remoteUrlLoadVersion;
+    const paths = this.projects.map((p) => p.fsPath);
+    void getRemoteUrlBatch(paths).then((urlMap) => {
+      if (version !== this.remoteUrlLoadVersion) {
+        return;
+      }
+      this.remoteUrlMap = urlMap;
+      this.remoteUrlsLoaded = true;
+      if (this.getViewMode() === ViewMode.ByRemote) {
+        this.rootItems = this.buildRemoteTree();
+        this.rebuildParentMap();
+        this._onDidChangeTreeData.fire();
+      }
+    });
+  }
+
+  /**
+   * 按远程仓库 URL 路径结构分组。
+   * URL 如 https://gitlab.cfuture.shop/hbos-fe-section/doctor-order-editor
+   * → host: gitlab.cfuture.shop → group: hbos-fe-section → project leaf
+   */
+  private buildRemoteTree(): LocalGitTreeItem[] {
+    interface RemoteNode {
+      name: string;
+      children: Map<string, RemoteNode>;
+      project?: GitProjectInfo;
+    }
+
+    const root: RemoteNode = { name: '', children: new Map() };
+    const uncategorized: GitProjectInfo[] = [];
+
+    for (const project of this.projects) {
+      const remoteUrl = this.remoteUrlMap.get(project.fsPath);
+      if (!remoteUrl) {
+        uncategorized.push(project);
+        continue;
+      }
+
+      const segments = this.parseRemoteUrlSegments(remoteUrl);
+      if (segments.length === 0) {
+        uncategorized.push(project);
+        continue;
+      }
+
+      let current = root;
+      for (const seg of segments.slice(0, -1)) {
+        if (!current.children.has(seg)) {
+          current.children.set(seg, { name: seg, children: new Map() });
+        }
+        current = current.children.get(seg)!;
+      }
+
+      const leafName = segments[segments.length - 1];
+      current.children.set(leafName, {
+        name: leafName,
+        children: new Map(),
+        project,
+      });
+    }
+
+    const toTreeItems = (node: RemoteNode, prefix: string): LocalGitTreeItem[] => {
+      const folders: FolderTreeItem[] = [];
+      const projects: GitProjectTreeItem[] = [];
+
+      for (const [, child] of node.children) {
+        if (child.project) {
+          projects.push(new GitProjectTreeItem(child.project));
+        } else {
+          const id = prefix ? `${prefix}/${child.name}` : child.name;
+          let merged = child;
+          let mergedId = id;
+          let label = child.name;
+          while (merged.children.size === 1) {
+            const [, grandchild] = merged.children.entries().next().value!;
+            if (grandchild.project) {
+              break;
+            }
+            merged = grandchild;
+            mergedId = `${mergedId}/${merged.name}`;
+            label = `${label}/${merged.name}`;
+          }
+          const children = toTreeItems(merged, mergedId);
+          folders.push(
+            new FolderTreeItem(label, children, {
+              id: `git-folder:remote:${mergedId}`,
+            }),
+          );
+        }
+      }
+
+      folders.sort((a, b) =>
+        (a.label as string).localeCompare(b.label as string),
+      );
+      projects.sort((a, b) =>
+        (a.label as string).localeCompare(b.label as string),
+      );
+
+      return [...folders, ...projects];
+    };
+
+    const result = toTreeItems(root, '');
+
+    if (uncategorized.length > 0) {
+      const children = uncategorized
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map((p) => new GitProjectTreeItem(p));
+      result.push(
+        new FolderTreeItem('未配置远程仓库', children, {
+          id: 'git-folder:remote:__no_remote__',
+        }),
+      );
+    }
+
+    return result;
+  }
+
+  private parseRemoteUrlSegments(url: string): string[] {
+    try {
+      const u = new URL(url);
+      const segments = u.pathname
+        .split('/')
+        .filter(Boolean)
+        .map((s) => s.replace(/\.git$/, ''));
+      if (segments.length === 0) {
+        return [];
+      }
+      return [u.host, ...segments];
+    } catch {
+      return [];
+    }
   }
 }
