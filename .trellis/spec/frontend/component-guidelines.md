@@ -289,6 +289,94 @@ quickPick.show();
 
 ---
 
+## Adding a New ViewMode (Checklist)
+
+When adding a new view mode to `LocalGitProjectsTreeDataProvider`, update all of the following:
+
+| # | File | Change |
+|---|------|--------|
+| 1 | `packages/vscode/src/localGitProjects/types.ts` | Add value to `ViewMode` enum |
+| 2 | `packages/vscode/src/localGitProjects/treeView/treeDataProvider.ts` | Add `case ViewMode.NewMode:` in `buildTree()` switch + implement `buildNewModeTree()` |
+| 3 | `packages/vscode/src/localGitProjects/commands/config/switchViewMode.ts` | Add QuickPick item + entry in `modeMap` |
+| 4 | `packages/vscode/package.json` | Add the new enum value to `configuration.properties` if the setting is declared there |
+
+If the new mode requires async data (e.g. remote URLs), also add:
+- A cache field + loaded flag on the provider (e.g. `remoteUrlMap`, `remoteUrlsLoaded`)
+- Clear the cache in `refresh()`
+- Use the Lazy Async Data Loading pattern (see below)
+
+**Convention**: `FolderTreeItem.id` must use a unique prefix per view mode to avoid cross-mode id collisions:
+
+```ts
+this.id = `git-folder:cat:${category}`;    // category view
+this.id = `git-folder:path:${fullPath}`;   // path view
+this.id = `git-folder:remote:${mergedId}`; // remote view
+this.id = `git-folder:scan:${scanFolder}`; // scan root
+```
+
+---
+
+## Lazy Async Data Loading with Version Control
+
+When a tree view mode depends on data that must be fetched asynchronously (e.g. remote URLs for each project), use this pattern:
+
+1. **Build tree with available data first** (may be empty/flat), then trigger async fetch.
+2. **Version-control the fetch** so stale responses don't overwrite fresh data.
+3. **Rebuild tree and fire change event** only if still in the same view mode.
+
+```ts
+private remoteUrlMap = new Map<string, string>();
+private remoteUrlsLoaded = false;
+private remoteUrlLoadVersion = 0;
+
+private ensureRemoteUrls(): void {
+  if (this.remoteUrlsLoaded) return;
+  const version = ++this.remoteUrlLoadVersion;
+  const paths = this.projects.map((p) => p.fsPath);
+  void getRemoteUrlBatch(paths).then((urlMap) => {
+    if (version !== this.remoteUrlLoadVersion) return; // stale
+    this.remoteUrlMap = urlMap;
+    this.remoteUrlsLoaded = true;
+    if (this.getViewMode() === ViewMode.ByRemote) {
+      this.rootItems = this.buildRemoteTree();
+      this.rebuildParentMap();
+      this._onDidChangeTreeData.fire();
+    }
+  });
+}
+```
+
+**Key points**:
+- Increment `loadVersion` before each fetch; check version when result arrives.
+- Clear cache (`loaded = false`, `map.clear()`) in `refresh()`.
+- Guard the rebuild with a view-mode check — user may have switched while data was loading.
+
+This is the same pattern used for `loadGitStatuses` (debounce + version), extended to data that affects tree structure.
+
+---
+
+## Performance: Direct .git/config Reading
+
+When you only need static git config data (e.g. remote URLs), read `.git/config` directly instead of spawning a `git` child process. This avoids process creation overhead and is ~10-50x faster for batch operations.
+
+```ts
+async function readRemoteUrlFast(repoPath: string, remote = 'origin'): Promise<string | null> {
+  const configPath = path.join(repoPath, '.git', 'config');
+  const content = await fs.readFile(configPath, 'utf-8');
+  const sectionRe = new RegExp(`\\[remote\\s+"${remote}"\\][\\s\\S]*?(?=\\n\\[|$)`);
+  const match = content.match(sectionRe);
+  if (!match) return null;
+  const urlMatch = match[0].match(/\n\s*url\s*=\s*(.+)/);
+  if (!urlMatch) return null;
+  return gitUrlParse(urlMatch[1].trim()).toString('https').replace(/\.git$/, '');
+}
+```
+
+**When to use**: Batch reads of config-only data (remotes, user info, etc.) — no working-tree state needed.
+**When NOT to use**: Operations that need working-tree state (branch, dirty status, diff) — use `simple-git` for those.
+
+---
+
 ## Performance: picomatch over minimatch
 
 When matching glob patterns against folder names during scanning, use `picomatch` instead of `minimatch`. `picomatch` pre-compiles patterns into a reusable matcher function, while `minimatch` recompiles on every call:
@@ -313,3 +401,5 @@ return (name: string) => globMatcher !== null && globMatcher(name);
 - **Missing `id` on TreeItem**: Without a stable `id`, VS Code can't restore expand/collapse state across restarts, and items with the same label will conflict.
 - **Using `reveal()` without `getParent()`**: `treeView.reveal()` only expands parent nodes if the TreeDataProvider implements `getParent()`. Without it, nested items can't be revealed.
 - **Duplicating constants across modules**: Shared constants like cache file IDs (`CACHE_CONFIG_ID`, `CACHE_CONFIG_FILE`) belong in `@/config`, not duplicated locally in each consumer.
+- **Spawning git for config-only reads**: Use direct `.git/config` file reading (see "Direct .git/config Reading") instead of `simpleGit().getRemotes()` when batch-reading static config for many repos. Spawning one process per repo creates significant overhead at scale.
+- **Forgetting to update `switchViewMode` modeMap**: When adding a new ViewMode, updating the QuickPick items list but forgetting the `modeMap` record means the selection silently does nothing.
