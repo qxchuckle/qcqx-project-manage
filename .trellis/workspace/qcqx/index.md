@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 17
+- **Total Sessions**: 18
 - **Last Active**: 2026-04-07
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~869 | Active |
+| `journal-1.md` | ~920 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits |
 |---|------|-------|---------|
+| 18 | 2026-04-07 | Git视图增加按远程仓库URL分组布局 | `ef95970` |
 | 17 | 2026-04-07 | 项目路径有效性检测 + 清理无效项目命令 | `5bd4c6c` |
 | 16 | 2026-04-07 | Git 状态展示 & 远程仓库跳转 | `55532a6` |
 | 15 | 2026-04-07 | 修复 pnpm monorepo 下 vsce 发布问题 | `c9c2731`, `b4edfa0` |

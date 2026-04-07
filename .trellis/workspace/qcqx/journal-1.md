@@ -867,3 +867,54 @@ packages/core/src/
 ### Next Steps
 
 - None - task complete
+
+
+## Session 18: Git视图增加按远程仓库URL分组布局
+
+**Date**: 2026-04-07
+**Task**: Git视图增加按远程仓库URL分组布局
+
+### Summary
+
+(Add summary)
+
+### Main Changes
+
+## Summary
+
+新增第四种 Git 项目视图模式——按远程仓库 URL 路径结构分组。切换视图后，项目按 `host / group / repo` 层级展示，如 `gitlab.cfuture.shop / hbos-fe-section / doctor-order-editor`。
+
+| Feature | Description |
+|---------|-------------|
+| `getRemoteUrlBatch` | 批量获取远程 URL，直接读取 `.git/config` 避免 spawn 子进程 |
+| `ViewMode.ByRemote` | 新增视图模式枚举值 |
+| `buildRemoteTree` | 按 URL 路径结构构建树，支持路径压缩（合并单子目录） |
+| 懒加载 + 缓存 | 远程 URL 仅在切换到该视图时加载，带版本控制防竞态 |
+| QuickPick 选项 | 切换视图菜单新增"按远程仓库"选项 |
+
+**Updated Files**:
+- `packages/core/src/git/status.ts` — 新增 `readRemoteUrlFast` 和 `getRemoteUrlBatch`
+- `packages/core/src/git/index.ts` — 导出新函数
+- `packages/core/src/index.ts` — 导出新函数
+- `packages/vscode/src/localGitProjects/types.ts` — 新增 `ViewMode.ByRemote`
+- `packages/vscode/src/localGitProjects/treeView/treeDataProvider.ts` — 核心实现：远程 URL 加载、树构建、路径压缩
+- `packages/vscode/src/localGitProjects/commands/config/switchViewMode.ts` — 新增菜单选项
+
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `ef95970` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
