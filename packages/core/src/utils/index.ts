@@ -1,5 +1,7 @@
 import * as path from 'node:path';
 
+export { asyncPool } from './concurrency.js';
+
 /** 判断值是否为 null 或 undefined */
 export const isNil = (value: unknown): value is null | undefined =>
   value === null || value === undefined;

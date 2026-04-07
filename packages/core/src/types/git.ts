@@ -8,6 +8,12 @@ export interface ScanFolderConfig {
 /** 扫描文件夹入口，可以是路径字符串或详细配置 */
 export type ScanFolderEntry = string | ScanFolderConfig;
 
+/** Git 仓库状态信息 */
+export interface GitStatusInfo {
+  branch: string;
+  dirty: boolean;
+}
+
 /** 扫描到的 Git 项目信息 */
 export interface GitProjectInfo {
   name: string;

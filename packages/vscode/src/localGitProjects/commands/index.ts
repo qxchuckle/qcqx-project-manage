@@ -12,6 +12,7 @@ import { createOpenInFileExplorer } from './node/openInFileExplorer';
 import { createCopyPath } from './node/copyPath';
 import { createSearch } from './node/search';
 import { createLocateProject } from './node/locateProject';
+import { createOpenRemote } from './node/openRemote';
 
 export function initCommands(
   context: vscode.ExtensionContext,
@@ -30,6 +31,7 @@ export function initCommands(
     ...createCopyPath(),
     ...createSearch(treeDataProvider),
     ...createLocateProject(treeDataProvider, treeView),
+    ...createOpenRemote(),
   ];
   context.subscriptions.push(...commands);
 }

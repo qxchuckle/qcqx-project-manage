@@ -9,4 +9,6 @@ export interface AppConfig {
   gitProjectScanNestedProjects?: boolean;
   /** 最大递归深度，-1 为无限制，默认 -1 */
   gitProjectMaxDepth?: number;
+  /** 批量获取 Git 状态时的并发数，小于等于 0 表示不限制，默认 -1 */
+  gitStatusConcurrency?: number;
 }

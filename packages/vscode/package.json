@@ -292,6 +292,11 @@
           "command": "qcqx-project-manage.local-git-projects.copy-path",
           "when": "view == local-git-projects && viewItem =~ /^local-git-project$|^local-git-path-folder$/",
           "group": "1_actions@3"
+        },
+        {
+          "command": "qcqx-project-manage.local-git-projects.open-remote",
+          "when": "view == local-git-projects && viewItem == local-git-project",
+          "group": "1_actions@4"
         }
       ],
       "qcqx-project-manage.project-list-more-actions": [
@@ -577,6 +582,11 @@
         "command": "qcqx-project-manage.local-git-projects.copy-path",
         "title": "复制路径",
         "icon": "$(copy)"
+      },
+      {
+        "command": "qcqx-project-manage.local-git-projects.open-remote",
+        "title": "打开远程仓库",
+        "icon": "$(globe)"
       }
     ],
     "configuration": {

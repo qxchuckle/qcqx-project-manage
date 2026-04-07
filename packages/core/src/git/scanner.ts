@@ -2,6 +2,7 @@ import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
 import picomatch from 'picomatch';
+import simpleGit from 'simple-git';
 import type { ScanFolderConfig, ScanFolderEntry, GitProjectInfo, ScanOptions } from '../types/index.js';
 
 const BUILTIN_IGNORED_FOLDERS: string[] = [
@@ -64,11 +65,10 @@ function buildIgnoreMatcher(
   };
 }
 
-/** 判断指定目录是否为 Git 仓库（检测 .git 目录） */
+/** 判断指定目录是否为 Git 仓库 */
 export async function isGitRepo(dirPath: string): Promise<boolean> {
   try {
-    await fs.promises.access(path.join(dirPath, '.git'));
-    return true;
+    return await simpleGit(dirPath).checkIsRepo();
   } catch {
     return false;
   }

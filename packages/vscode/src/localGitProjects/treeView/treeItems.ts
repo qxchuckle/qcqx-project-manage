@@ -1,11 +1,12 @@
 import * as vscode from 'vscode';
 import * as os from 'os';
 import * as path from 'path';
-import type { GitProjectInfo } from '@qcqx/project-manage-core';
+import type { GitProjectInfo, GitStatusInfo } from '@qcqx/project-manage-core';
 
 /** Git 项目树节点 */
 export class GitProjectTreeItem extends vscode.TreeItem {
   readonly fsPath: string;
+  private gitStatus: GitStatusInfo | null = null;
 
   constructor(public readonly project: GitProjectInfo) {
     super(project.name, vscode.TreeItemCollapsibleState.None);
@@ -15,12 +16,49 @@ export class GitProjectTreeItem extends vscode.TreeItem {
     this.iconPath = new vscode.ThemeIcon('repo');
     this.tooltip = project.fsPath;
     this.resourceUri = vscode.Uri.file(project.fsPath);
+    this.applyDescription();
+  }
 
+  updateGitStatus(status: GitStatusInfo | null): void {
+    this.gitStatus = status;
+    this.applyDescription();
+    this.applyIcon();
+    this.applyTooltip();
+  }
+
+  private applyDescription(): void {
     const homedir = os.homedir();
-    const dir = path.dirname(project.fsPath);
-    this.description = dir.startsWith(homedir)
+    const dir = path.dirname(this.project.fsPath);
+    const dirLabel = dir.startsWith(homedir)
       ? '~' + dir.slice(homedir.length)
       : dir;
+
+    if (this.gitStatus) {
+      const dirty = this.gitStatus.dirty ? ' ✱' : '';
+      this.description = `[${this.gitStatus.branch}${dirty}]  ${dirLabel}`;
+    } else {
+      this.description = dirLabel;
+    }
+  }
+
+  private applyIcon(): void {
+    if (this.gitStatus?.dirty) {
+      this.iconPath = new vscode.ThemeIcon(
+        'repo-push',
+        new vscode.ThemeColor('gitDecoration.modifiedResourceForeground'),
+      );
+    } else {
+      this.iconPath = new vscode.ThemeIcon('repo');
+    }
+  }
+
+  private applyTooltip(): void {
+    const lines = [this.project.fsPath];
+    if (this.gitStatus) {
+      lines.push(`分支: ${this.gitStatus.branch}`);
+      lines.push(`状态: ${this.gitStatus.dirty ? '有未提交更改' : '干净'}`);
+    }
+    this.tooltip = lines.join('\n');
   }
 }
 

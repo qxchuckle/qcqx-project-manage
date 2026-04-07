@@ -50,12 +50,15 @@
     "dist"
   ],
   "devDependencies": {
+    "@types/git-url-parse": "^16.0.2",
     "@types/node": "^16.18.0",
     "@types/picomatch": "^4.0.3",
     "tsup": "^8.5.1",
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "picomatch": "^4.0.4"
+    "git-url-parse": "^16.1.0",
+    "picomatch": "^4.0.4",
+    "simple-git": "^3.35.2"
   }
 }

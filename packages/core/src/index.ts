@@ -8,6 +8,7 @@ export type {
   ScanFolderConfig,
   ScanFolderEntry,
   GitProjectInfo,
+  GitStatusInfo,
   ScanOptions,
   CachedScanOptions,
   CachedScanResult,
@@ -46,6 +47,7 @@ export {
   generateId,
   isWorkspaceFile,
   getProjectTitle,
+  asyncPool,
 } from './utils/index.js';
 
 // Git
@@ -54,7 +56,12 @@ export {
   isGitRepo,
   expandHome,
   scanForGitProjectsCached,
+  getGitStatus,
+  getGitStatusBatch,
+  getRemoteUrl,
+  getRemoteUrls,
 } from './git/index.js';
+export type { GitRemoteInfo } from './git/index.js';
 
 // Config
 export { AppConfigManager } from './config/index.js';

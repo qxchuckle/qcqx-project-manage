@@ -8,6 +8,7 @@ export type {
   ScanFolderConfig,
   ScanFolderEntry,
   GitProjectInfo,
+  GitStatusInfo,
   ScanOptions,
   CachedScanOptions,
   CachedScanResult,

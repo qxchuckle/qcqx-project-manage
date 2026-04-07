@@ -31,6 +31,7 @@ export const DEFAULT_APP_CONFIG: AppConfig = {
   gitProjectIgnoredFolders: [],
   gitProjectScanNestedProjects: false,
   gitProjectMaxDepth: -1,
+  gitStatusConcurrency: -1,
 };
 
 // ── Project List ──

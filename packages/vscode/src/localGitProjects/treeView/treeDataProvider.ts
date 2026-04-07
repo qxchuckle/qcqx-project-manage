@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as os from 'os';
 import * as path from 'path';
-import { scanForGitProjectsCached, DEFAULT_APP_CONFIG } from '@qcqx/project-manage-core';
+import { scanForGitProjectsCached, getGitStatusBatch, DEFAULT_APP_CONFIG } from '@qcqx/project-manage-core';
 import type { GitProjectInfo, AppConfig } from '@qcqx/project-manage-core';
 import { ViewMode } from '../types';
 import { LocalCache } from '@/utils/localCache';
@@ -35,7 +35,6 @@ export class LocalGitProjectsTreeDataProvider
   private localCache: LocalCache;
   private initPromise: Promise<void> | null = null;
   private debounceTimer: ReturnType<typeof setTimeout> | undefined;
-
   constructor(private context: vscode.ExtensionContext) {
     this.localCache = LocalCache.getInstance();
 
@@ -220,6 +219,57 @@ export class LocalGitProjectsTreeDataProvider
         break;
     }
     this.rebuildParentMap();
+    this.loadGitStatuses();
+  }
+
+  private statusLoadVersion = 0;
+  private statusDebounceTimer: ReturnType<typeof setTimeout> | undefined;
+
+  /**
+   * 延迟 100ms 触发，快速连续 buildTree 时只执行最后一次。
+   * statusLoadVersion 进一步确保异步返回结果不会被旧请求覆盖。
+   */
+  private loadGitStatuses(): void {
+    if (this.statusDebounceTimer) {
+      clearTimeout(this.statusDebounceTimer);
+    }
+    this.statusDebounceTimer = setTimeout(() => {
+      this.doLoadGitStatuses();
+    }, 100);
+  }
+
+  private doLoadGitStatuses(): void {
+    const items = this.collectGitItems(this.rootItems || []);
+    if (items.length === 0) {
+      return;
+    }
+    const version = ++this.statusLoadVersion;
+    const paths = items.map((item) => item.fsPath);
+
+    void getGitStatusBatch(paths).then((statusMap) => {
+      if (version !== this.statusLoadVersion) {
+        return;
+      }
+      for (const item of items) {
+        const status = statusMap.get(item.fsPath) ?? null;
+        item.updateGitStatus(status);
+      }
+      this._onDidChangeTreeData.fire();
+    });
+  }
+
+  private collectGitItems(
+    items: LocalGitTreeItem[],
+  ): GitProjectTreeItem[] {
+    const result: GitProjectTreeItem[] = [];
+    for (const item of items) {
+      if (item instanceof GitProjectTreeItem) {
+        result.push(item);
+      } else if (item instanceof FolderTreeItem) {
+        result.push(...this.collectGitItems(item.childItems));
+      }
+    }
+    return result;
   }
 
   private rebuildParentMap(): void {
