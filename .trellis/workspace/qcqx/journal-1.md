@@ -762,3 +762,59 @@ packages/core/src/
 ### Next Steps
 
 - None - task complete
+
+
+## Session 16: Git 状态展示 & 远程仓库跳转
+
+**Date**: 2026-04-07
+**Task**: Git 状态展示 & 远程仓库跳转
+
+### Summary
+
+(Add summary)
+
+### Main Changes
+
+## 完成内容
+
+| 功能 | 说明 |
+|------|------|
+| Git 状态展示 | 树视图中每个 Git 项目异步显示当前分支名和 dirty 状态（✱ 标记 + 图标变色） |
+| 并发控制 | 封装 `asyncPool` 工具函数，`getGitStatusBatch` 支持可配置并发数（默认不限制） |
+| simple-git 迁移 | Git 操作统一使用 `simple-git` 替代原始 `execFile`（status、branch、isRepo、getRemotes） |
+| 打开远程仓库 | 右键菜单一键跳转远程仓库，多个 remote 时弹出 QuickPick 选择 |
+| git-url-parse | 使用 `git-url-parse` 库规范化 SSH/HTTPS/git:// 等各种远程 URL 格式 |
+
+## 关键改动文件
+
+- `packages/core/src/git/status.ts` — getGitStatus / getGitStatusBatch / getRemoteUrl / getRemoteUrls
+- `packages/core/src/utils/concurrency.ts` — asyncPool 并发控制工具
+- `packages/core/src/config/manager.ts` — 新增 readConfig 静态方法
+- `packages/core/src/git/scanner.ts` — isGitRepo 改用 simpleGit
+- `packages/vscode/src/localGitProjects/treeView/treeItems.ts` — 展示分支 + dirty 状态
+- `packages/vscode/src/localGitProjects/treeView/treeDataProvider.ts` — 异步加载 Git 状态（含防抖 + 版本竞态处理）
+- `packages/vscode/src/localGitProjects/commands/node/openRemote.ts` — 打开远程仓库命令（多 remote 选择）
+
+## 新增依赖
+
+- `simple-git` — Git 操作封装库
+- `git-url-parse` — Git URL 解析与格式化
+
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `55532a6` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
