@@ -23,6 +23,7 @@ These guides help you **ask the right questions before coding**.
 |-------|---------|-------------|
 | [Code Reuse Thinking Guide](./code-reuse-thinking-guide.md) | Identify patterns and reduce duplication | When you notice repeated patterns |
 | [Cross-Layer Thinking Guide](./cross-layer-thinking-guide.md) | Think through data flow across layers | Features spanning multiple layers |
+| [Monorepo Build Guide](./monorepo-build-guide.md) | pnpm monorepo 构建/发布约定 | 修改构建配置、添加依赖、发布扩展 |
 
 ---
 
@@ -46,6 +47,15 @@ These guides help you **ask the right questions before coding**.
 - [ ] **You're creating a new utility/helper function** ← Search first!
 
 → Read [Code Reuse Thinking Guide](./code-reuse-thinking-guide.md)
+
+### When to Think About Monorepo Build Issues
+
+- [ ] 添加新的 npm 依赖（尤其含 native/WASM 的包）
+- [ ] 修改 esbuild/tsconfig 配置
+- [ ] 发布 VS Code 扩展
+- [ ] 修改 workspace 包之间的引用关系
+
+→ Read [Monorepo Build Guide](./monorepo-build-guide.md)
 
 ---
 
