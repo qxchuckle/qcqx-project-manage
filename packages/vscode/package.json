@@ -17,8 +17,8 @@
     "check-types": "tsc --noEmit",
     "lint": "eslint src",
     "test": "vscode-test",
-    "publish": "vsce publish && ovsx publish",
-    "package-vsix": "vsce package"
+    "publish": "vsce publish --no-dependencies && ovsx publish --no-dependencies",
+    "package-vsix": "vsce package --no-dependencies"
   },
   "engines": {
     "vscode": "^1.70.0"
