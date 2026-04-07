@@ -591,3 +591,51 @@ packages/core/src/
 ### Next Steps
 
 - None - task complete
+
+
+## Session 13: 使用 tsup 构建 core 包
+
+**Date**: 2026-04-07
+**Task**: 使用 tsup 构建 core 包
+
+### Summary
+
+(Add summary)
+
+### Main Changes
+
+将 `packages/core/` 的构建工具从 `tsc` 切换为 `tsup`，实现更快的构建和双格式输出。
+
+| 变更 | 说明 |
+|------|------|
+| 新增 tsup 配置 | `packages/core/tsup.config.ts`，ESM + CJS 双格式，含 dts 和 sourcemap |
+| 更新构建脚本 | `build: tsc` → `build: tsup` |
+| 添加 exports 字段 | 条件导出，区分 import/require 的类型和入口 |
+| 新增 module 字段 | 指向 ESM 入口 `./dist/index.mjs` |
+
+**构建产物对比**:
+- 旧（tsc）：多个 `.js` + `.d.ts` 文件
+- 新（tsup）：单文件 bundle，CJS `index.js` (17.6KB) + ESM `index.mjs` (14.8KB) + 类型声明
+
+**验证通过**:
+- core 类型检查 ✓
+- vscode 扩展完整编译（check-types + lint + esbuild）✓
+
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `f3bf4fe` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
