@@ -147,14 +147,19 @@
           "group": "navigation@3"
         },
         {
-          "command": "qcqx-project-manage.local-git-projects.search",
+          "command": "qcqx-project-manage.local-git-projects.open-cache",
           "when": "view == local-git-projects",
           "group": "navigation@4"
         },
         {
-          "command": "qcqx-project-manage.local-git-projects.locate-current-project",
+          "command": "qcqx-project-manage.local-git-projects.search",
           "when": "view == local-git-projects",
           "group": "navigation@5"
+        },
+        {
+          "command": "qcqx-project-manage.local-git-projects.locate-current-project",
+          "when": "view == local-git-projects",
+          "group": "navigation@6"
         }
       ],
       "view/item/context": [
@@ -537,6 +542,11 @@
         "command": "qcqx-project-manage.local-git-projects.open-config",
         "title": "打开配置文件",
         "icon": "$(gear)"
+      },
+      {
+        "command": "qcqx-project-manage.local-git-projects.open-cache",
+        "title": "打开缓存文件",
+        "icon": "$(database)"
       },
       {
         "command": "qcqx-project-manage.local-git-projects.open-in-current-window",

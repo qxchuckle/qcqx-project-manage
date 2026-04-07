@@ -162,6 +162,17 @@ export class LocalGitProjectsTreeDataProvider
     await vscode.window.showTextDocument(uri);
   }
 
+  async openCacheFile(): Promise<void> {
+    const cachePath = path.join(this.localCache.cacheDir, 'git-projects-cache.json');
+    const uri = vscode.Uri.file(cachePath);
+    try {
+      await vscode.workspace.fs.stat(uri);
+      await vscode.window.showTextDocument(uri);
+    } catch {
+      vscode.window.showInformationMessage('缓存文件不存在，请先执行一次扫描');
+    }
+  }
+
   private async readConfig(): Promise<AppConfig> {
     try {
       const content = await this.localCache.readCacheFile(CONFIG_CACHE_ID);

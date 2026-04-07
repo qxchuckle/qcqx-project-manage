@@ -3,6 +3,7 @@ import { LocalGitProjectsTreeDataProvider } from '../treeView/treeDataProvider';
 import { LocalGitTreeItem } from '../treeView/treeItems';
 import { createRefresh } from './config/refresh';
 import { createOpenConfig } from './config/openConfig';
+import { createOpenCache } from './config/openCache';
 import { createSwitchViewMode } from './config/switchViewMode';
 import { createOpenProject } from './node/openProject';
 import { createSaveToProjectList } from './node/saveToProjectList';
@@ -20,6 +21,7 @@ export function initCommands(
   const commands: vscode.Disposable[] = [
     ...createRefresh(treeDataProvider),
     ...createOpenConfig(treeDataProvider),
+    ...createOpenCache(treeDataProvider),
     ...createSwitchViewMode(treeDataProvider),
     ...createOpenProject(),
     ...createSaveToProjectList(),
