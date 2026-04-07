@@ -639,3 +639,69 @@ packages/core/src/
 ### Next Steps
 
 - None - task complete
+
+
+## Session 14: Git扫描缓存功能
+
+**Date**: 2026-04-07
+**Task**: Git扫描缓存功能
+
+### Summary
+
+(Add summary)
+
+### Main Changes
+
+## 实现内容
+
+| 功能 | 描述 |
+|------|------|
+| Core: scanForGitProjectsCached | 新增带缓存的 Git 项目扫描函数，stale-while-revalidate 策略 |
+| 缓存格式 | JSON with metadata（version + timestamp + configHash），配置变更自动失效 |
+| skipCache 选项 | 支持跳过缓存直接扫描（用户手动刷新时使用） |
+| 差异检测 | 后台扫描结果与缓存一致时不触发 UI 刷新 |
+| 数据验证 | 缓存读取时校验 version、数组结构、首项 fsPath 类型 |
+| VSCode 集成 | treeDataProvider 使用缓存版本，init 读缓存、refresh 跳过缓存 |
+| 打开缓存文件 | 新增 toolbar 按钮，点击可打开 git-projects-cache.json |
+
+## 架构设计
+
+- 缓存在 core 包实现（`git/scan-cache.ts`），可选功能
+- VSCode 调用时开启缓存，CLI 等场景直接用 `scanForGitProjects`
+- configHash 基于 SHA256(entries + options) 前 16 位，配置变更时缓存自动失效
+- 参考 vscode-project-manager 缓存设计，采纳差异检测和数据结构验证优化
+
+## 变更文件
+
+**Core (新增/修改)**:
+- `packages/core/src/git/scan-cache.ts` — 缓存扫描核心实现
+- `packages/core/src/types/git.ts` — CachedScanOptions、CachedScanResult、ScanCacheData 类型
+- `packages/core/src/git/index.ts` — 导出新函数
+- `packages/core/src/types/index.ts` — 导出新类型
+- `packages/core/src/index.ts` — 对外导出
+
+**VSCode (修改/新增)**:
+- `packages/vscode/src/localGitProjects/treeView/treeDataProvider.ts` — 使用缓存版本
+- `packages/vscode/src/localGitProjects/commands/config/openCache.ts` — 打开缓存文件命令
+- `packages/vscode/src/localGitProjects/commands/index.ts` — 注册新命令
+- `packages/vscode/package.json` — 命令定义和 toolbar 按钮
+
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `d2d4fef` | (see git log) |
+| `20a2f1c` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete

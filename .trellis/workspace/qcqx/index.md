@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 13
+- **Total Sessions**: 14
 - **Last Active**: 2026-04-07
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~641 | Active |
+| `journal-1.md` | ~707 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits |
 |---|------|-------|---------|
+| 14 | 2026-04-07 | Git扫描缓存功能 | `d2d4fef`, `20a2f1c` |
 | 13 | 2026-04-07 | 使用 tsup 构建 core 包 | `f3bf4fe` |
 | 12 | 2026-04-03 | Core 包 Node 16 兼容性适配 | `fb9f230` |
 | 11 | 2026-04-03 | Core模块重构：类型/常量集中化、JSDoc注释、硬编码消除 | `01d9480` |
