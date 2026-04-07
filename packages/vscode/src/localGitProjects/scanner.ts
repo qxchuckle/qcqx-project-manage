@@ -1,2 +1,2 @@
-export { scanForGitProjects } from '@qcqx/project-manage-core';
-export type { ScanOptions } from '@qcqx/project-manage-core';
+export { scanForGitProjects, scanForGitProjectsCached } from '@qcqx/project-manage-core';
+export type { ScanOptions, CachedScanOptions, CachedScanResult } from '@qcqx/project-manage-core';

@@ -9,6 +9,9 @@ export type {
   ScanFolderEntry,
   GitProjectInfo,
   ScanOptions,
+  CachedScanOptions,
+  CachedScanResult,
+  ScanCacheData,
 } from './git.js';
 
 export type { AppConfig } from './config.js';

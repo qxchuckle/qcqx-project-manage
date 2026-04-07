@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as os from 'os';
 import * as path from 'path';
-import { scanForGitProjects, DEFAULT_APP_CONFIG } from '@qcqx/project-manage-core';
+import { scanForGitProjectsCached, DEFAULT_APP_CONFIG } from '@qcqx/project-manage-core';
 import type { GitProjectInfo, AppConfig } from '@qcqx/project-manage-core';
 import { ViewMode } from '../types';
 import { LocalCache } from '@/utils/localCache';
@@ -76,9 +76,9 @@ export class LocalGitProjectsTreeDataProvider
     await this.scan();
   }
 
-  async refresh(): Promise<void> {
+  async refresh(skipCache = true): Promise<void> {
     this.rootItems = null;
-    await this.scan();
+    await this.scan(skipCache);
     this._onDidChangeTreeData.fire();
   }
 
@@ -171,17 +171,28 @@ export class LocalGitProjectsTreeDataProvider
     }
   }
 
-  private async scan(): Promise<void> {
+  private async scan(skipCache = false): Promise<void> {
     const config = await this.readConfig();
     const entries = config.gitProjectScanFolders || [];
-    this.projects =
-      entries.length > 0
-        ? await scanForGitProjects(entries, {
-            extraIgnored: config.gitProjectIgnoredFolders,
-            scanNested: config.gitProjectScanNestedProjects,
-            maxDepth: config.gitProjectMaxDepth,
-          })
-        : [];
+    if (entries.length === 0) {
+      this.projects = [];
+      this.buildTree();
+      return;
+    }
+    const { projects } = await scanForGitProjectsCached(entries, {
+      extraIgnored: config.gitProjectIgnoredFolders,
+      scanNested: config.gitProjectScanNestedProjects,
+      maxDepth: config.gitProjectMaxDepth,
+      cacheDir: this.localCache.cacheDir,
+      skipCache,
+      onUpdate: (freshProjects) => {
+        this.projects = freshProjects;
+        this.rootItems = null;
+        this.buildTree();
+        this._onDidChangeTreeData.fire();
+      },
+    });
+    this.projects = projects;
     this.buildTree();
   }
 

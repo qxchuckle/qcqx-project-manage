@@ -9,6 +9,9 @@ export type {
   ScanFolderEntry,
   GitProjectInfo,
   ScanOptions,
+  CachedScanOptions,
+  CachedScanResult,
+  ScanCacheData,
   AppConfig,
   FindResult,
 } from './types/index.js';
@@ -50,6 +53,7 @@ export {
   scanForGitProjects,
   isGitRepo,
   expandHome,
+  scanForGitProjectsCached,
 } from './git/index.js';
 
 // Config

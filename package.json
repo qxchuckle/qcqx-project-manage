@@ -39,7 +39,7 @@
     "publish:vscode": "pnpm --filter qcqx-project-manage run publish"
   },
   "engines": {
-    "node": ">=18",
+    "node": ">=16",
     "pnpm": ">=9"
   }
 }
