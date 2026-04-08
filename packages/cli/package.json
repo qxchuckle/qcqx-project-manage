@@ -1,7 +1,6 @@
 {
   "name": "@qcqx/project-manage-cli",
   "version": "0.1.0",
-  "private": true,
   "description": "qcqx-project-manage 命令行工具",
   "bin": {
     "pm": "./dist/index.js"

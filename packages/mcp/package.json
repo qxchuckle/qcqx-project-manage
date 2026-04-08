@@ -1,0 +1,55 @@
+{
+  "name": "@qcqx/project-manage-mcp",
+  "version": "0.1.0",
+  "description": "qcqx-project-manage MCP Server",
+  "mcpName": "io.github.qxchuckle/qcqx-project-manage-mcp",
+  "type": "module",
+  "bin": {
+    "qcqx-project-manage-mcp": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "license": "MIT",
+  "author": {
+    "name": "qcqx",
+    "url": "https://github.com/qxchuckle"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qxchuckle/qcqx-project-manage.git",
+    "directory": "packages/mcp"
+  },
+  "homepage": "https://github.com/qxchuckle/qcqx-project-manage/tree/main/packages/mcp#readme",
+  "bugs": {
+    "url": "https://github.com/qxchuckle/qcqx-project-manage/issues"
+  },
+  "keywords": [
+    "qcqx",
+    "project-manage",
+    "mcp",
+    "model-context-protocol"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "prepublishOnly": "pnpm run build",
+    "check-types": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "@qcqx/project-manage-core": "workspace:*",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}

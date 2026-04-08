@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "qcqx-project-manage": {
+      "command": "npx",
+      "args": ["tsx", "./packages/mcp/src/index.ts"]
+    }
+  }
+}

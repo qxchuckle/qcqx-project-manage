@@ -1,0 +1,37 @@
+{
+  "name": "@qcqx/project-manage-skill",
+  "version": "0.1.0",
+  "description": "AI agent skill for qcqx-project-manage — search, discover, and manage local projects via MCP",
+  "license": "MIT",
+  "author": {
+    "name": "qcqx",
+    "url": "https://github.com/qxchuckle"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qxchuckle/qcqx-project-manage.git",
+    "directory": "packages/skill"
+  },
+  "homepage": "https://github.com/qxchuckle/qcqx-project-manage/tree/main/packages/skill#readme",
+  "bugs": {
+    "url": "https://github.com/qxchuckle/qcqx-project-manage/issues"
+  },
+  "keywords": [
+    "ai-agent-skill",
+    "skill",
+    "mcp",
+    "project-manage",
+    "qcqx",
+    "cursor",
+    "claude-code",
+    "model-context-protocol",
+    "agent-skills"
+  ],
+  "files": [
+    "SKILL.md",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,7 +1,6 @@
 {
   "name": "@qcqx/project-manage-core",
   "version": "0.1.0",
-  "private": true,
   "description": "qcqx-project-manage 共享核心库",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -43,6 +42,7 @@
   ],
   "scripts": {
     "build": "tsup",
+    "prepublishOnly": "pnpm run build",
     "check-types": "tsc --noEmit",
     "clean": "rm -rf dist"
   },

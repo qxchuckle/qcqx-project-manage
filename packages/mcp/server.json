@@ -1,0 +1,21 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
+  "name": "io.github.qxchuckle/qcqx-project-manage-mcp",
+  "description": "qcqx-project-manage MCP Server — 将项目管理能力暴露给 AI Agent（Cursor、Claude Desktop 等）",
+  "repository": {
+    "url": "https://github.com/qxchuckle/qcqx-project-manage",
+    "source": "github",
+    "subfolder": "packages/mcp"
+  },
+  "version": "0.1.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@qcqx/project-manage-mcp",
+      "version": "0.1.0",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}

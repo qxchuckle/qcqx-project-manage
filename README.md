@@ -17,7 +17,9 @@
 packages/
 ├── core/     # 共享核心库 — Git 扫描、配置管理、项目树数据结构
 ├── vscode/   # VS Code / Cursor 插件
-└── cli/      # 命令行工具
+├── cli/      # 命令行工具
+├── mcp/      # MCP Server — 通过 Model Context Protocol 暴露项目管理能力
+└── skill/    # AI Agent Skill — 可发布到 skill 市场的能力包
 ```
 
 | 包 | 说明 | 详情 |
@@ -25,6 +27,8 @@ packages/
 | [`@qcqx/project-manage-core`](./packages/core/) | 共享核心逻辑：Git 项目扫描、状态检测、配置与缓存管理、项目树操作 | [README](./packages/core/README.md) |
 | [`qcqx-project-manage`](./packages/vscode/) | VS Code 插件，提供项目列表、最近文件夹、本地 Git 项目三个视图 | [README](./packages/vscode/README.md) |
 | [`@qcqx/project-manage-cli`](./packages/cli/) | 命令行工具，在终端中管理项目 | — |
+| [`@qcqx/project-manage-mcp`](./packages/mcp/) | MCP Server，让 AI agent 通过标准协议使用项目管理功能 | [README](./packages/mcp/README.md) |
+| [`@qcqx/project-manage-skill`](./packages/skill/) | AI Agent Skill，适配 Cursor / Claude Code 等平台 | [README](./packages/skill/README.md) |
 
 ## 开发
 
