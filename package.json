@@ -36,7 +36,8 @@
     "lint": "pnpm -r run lint",
     "check-types": "pnpm -r run check-types",
     "package": "pnpm --filter qcqx-project-manage run package",
-    "publish:vscode": "pnpm --filter qcqx-project-manage run publish"
+    "publish:vscode": "pnpm --filter qcqx-project-manage run publish",
+    "package:vsix": "pnpm --filter qcqx-project-manage run package-vsix"
   },
   "engines": {
     "node": ">=16",

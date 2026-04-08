@@ -48,7 +48,10 @@ pnpm watch
 pnpm check-types
 
 # 打包 VS Code 插件为 .vsix
-pnpm package-vsix
+pnpm package:vsix
+
+# 发布 VS Code 插件
+pnpm publish:vscode
 ```
 
 ## 环境要求
