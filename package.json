@@ -41,6 +41,7 @@
     "format": "prettier --write .",
     "format:fix": "prettier --write . --fix",
     "format:check": "prettier --check .",
+    "lint-staged": "lint-staged",
     "check-types": "pnpm -r run check-types",
     "package": "pnpm --filter qcqx-project-manage run package",
     "publish:vscode": "pnpm --filter qcqx-project-manage run publish",
