@@ -2,10 +2,12 @@
   "name": "@qcqx/project-manage-cli",
   "version": "0.1.0",
   "description": "qcqx-project-manage 命令行工具",
+  "type": "module",
   "bin": {
     "pm": "./dist/index.js"
   },
   "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "license": "MIT",
   "author": {
     "name": "qcqx",
@@ -27,14 +29,21 @@
     "vscode"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsup",
     "check-types": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
   "dependencies": {
     "@qcqx/project-manage-core": "workspace:*"
   },
+  "devDependencies": {
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.2"
+  },
   "files": [
     "dist"
-  ]
+  ],
+  "engines": {
+    "node": ">=18"
+  }
 }
