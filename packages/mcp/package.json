@@ -1,6 +1,6 @@
 {
   "name": "@qcqx/project-manage-mcp",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "qcqx-project-manage MCP Server",
   "mcpName": "io.github.qxchuckle/qcqx-project-manage-mcp",
   "type": "module",
@@ -51,5 +51,8 @@
   ],
   "engines": {
     "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

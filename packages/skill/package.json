@@ -1,6 +1,6 @@
 {
   "name": "@qcqx/project-manage-skill",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "AI agent skill for qcqx-project-manage — search, discover, and manage local projects via MCP",
   "license": "MIT",
   "author": {

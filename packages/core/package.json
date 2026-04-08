@@ -1,6 +1,6 @@
 {
   "name": "@qcqx/project-manage-core",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "qcqx-project-manage 共享核心库",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -60,5 +60,8 @@
     "git-url-parse": "^16.1.0",
     "picomatch": "^4.0.4",
     "simple-git": "^3.35.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

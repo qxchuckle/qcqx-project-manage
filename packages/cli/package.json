@@ -1,6 +1,6 @@
 {
   "name": "@qcqx/project-manage-cli",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "qcqx-project-manage 命令行工具",
   "type": "module",
   "bin": {
@@ -47,5 +47,8 @@
   ],
   "engines": {
     "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
