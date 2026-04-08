@@ -1,77 +1,74 @@
 {
-	"version": "2.0.0",
-	"tasks": [
-		{
-			"label": "compile",
-			"type": "shell",
-			"command": "npm run compile",
-			"group": "build",
-			"problemMatcher": "$tsc",
-			"presentation": {
-				"reveal": "silent"
-			},
-			"options": {
-				"cwd": "${workspaceFolder}/packages/vscode"
-			}
-		},
-		{
-			"label": "watch",
-			"dependsOn": [
-				"watch:esbuild",
-				"watch:tsc"
-			],
-			"presentation": {
-				"reveal": "never"
-			},
-			"group": {
-				"kind": "build",
-				"isDefault": true
-			}
-		},
-		{
-			"label": "watch:esbuild",
-			"type": "shell",
-			"command": "node esbuild.js --watch",
-			"group": "build",
-			"problemMatcher": "$esbuild-watch",
-			"isBackground": true,
-			"presentation": {
-				"group": "watch",
-				"reveal": "never"
-			},
-			"options": {
-				"cwd": "${workspaceFolder}/packages/vscode"
-			}
-		},
-		{
-			"label": "watch:tsc",
-			"type": "shell",
-			"command": "tsc --noEmit --watch --project tsconfig.json",
-			"group": "build",
-			"problemMatcher": "$tsc-watch",
-			"isBackground": true,
-			"presentation": {
-				"group": "watch",
-				"reveal": "never"
-			},
-			"options": {
-				"cwd": "${workspaceFolder}/packages/vscode"
-			}
-		},
-		{
-			"label": "watch-tests",
-			"type": "shell",
-			"command": "tsc -p . -w --outDir out",
-			"problemMatcher": "$tsc-watch",
-			"isBackground": true,
-			"presentation": {
-				"reveal": "never",
-				"group": "watchers"
-			},
-			"group": "build",
-			"options": {
-				"cwd": "${workspaceFolder}/packages/vscode"
-			}
-		}
-	]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "compile",
+      "type": "shell",
+      "command": "npm run compile",
+      "group": "build",
+      "problemMatcher": "$tsc",
+      "presentation": {
+        "reveal": "silent"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}/packages/vscode"
+      }
+    },
+    {
+      "label": "watch",
+      "dependsOn": ["watch:esbuild", "watch:tsc"],
+      "presentation": {
+        "reveal": "never"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "watch:esbuild",
+      "type": "shell",
+      "command": "node esbuild.js --watch",
+      "group": "build",
+      "problemMatcher": "$esbuild-watch",
+      "isBackground": true,
+      "presentation": {
+        "group": "watch",
+        "reveal": "never"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}/packages/vscode"
+      }
+    },
+    {
+      "label": "watch:tsc",
+      "type": "shell",
+      "command": "tsc --noEmit --watch --project tsconfig.json",
+      "group": "build",
+      "problemMatcher": "$tsc-watch",
+      "isBackground": true,
+      "presentation": {
+        "group": "watch",
+        "reveal": "never"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}/packages/vscode"
+      }
+    },
+    {
+      "label": "watch-tests",
+      "type": "shell",
+      "command": "tsc -p . -w --outDir out",
+      "problemMatcher": "$tsc-watch",
+      "isBackground": true,
+      "presentation": {
+        "reveal": "never",
+        "group": "watchers"
+      },
+      "group": "build",
+      "options": {
+        "cwd": "${workspaceFolder}/packages/vscode"
+      }
+    }
+  ]
 }

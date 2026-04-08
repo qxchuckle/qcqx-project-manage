@@ -18,8 +18,10 @@
     "**/*.d.ts",
     "**/dist/**",
     "**/node_modules/**",
-    "**/.trellis/**",
     "**/test/**",
-    "**/out/**"
+    "**/out/**",
+    ".cursor/**",
+    ".claude/**",
+    ".trellis/**"
   ]
 }
