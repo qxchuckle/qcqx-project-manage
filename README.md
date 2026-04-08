@@ -1,40 +1,67 @@
-# VSCode插件-项目管理
-一个VSCode插件，用于管理项目
+# qcqx-project-manage
 
-> 之前在用 [Project Manager](https://github.com/alefragnani/vscode-project-manager) 管理项目，但只能用标签进行分类，也不能拖拽移动，司内项目很多，分各种业务域、层级，树形结构才符合需求  
-> 在插件市场并没有找到合适的，那就自己写个吧，聚焦实际开发痛点，解决项目管理难题  
+[![VS Marketplace](https://img.shields.io/visual-studio-marketplace/v/qcqx.qcqx-project-manage?label=VS%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=qcqx.qcqx-project-manage)
+[![Open VSX](https://img.shields.io/open-vsx/v/qcqx/qcqx-project-manage?label=Open%20VSX)](https://open-vsx.org/extension/qcqx/qcqx-project-manage)
 
-[市场](https://marketplace.visualstudio.com/items?itemName=qcqx.qcqx-project-manage) [open vsx](https://open-vsx.org/extension/qcqx/qcqx-project-manage)
+一个更可靠、方便的项目管理工具，以**树形结构**组织项目，支持拖拽排序、关联链接、多窗口同步，还能自动扫描本地 Git 仓库。
 
-功能：
-1. 树结构管理项目，支持拖拽移动  
-2. 支持单个或批量保存文件夹、工作区、文件，并快速打开  
-3. 支持打开 project-list.json 配置文件快速编辑  
-4. 多窗口、类VSCode应用同步状态，配置文件改动后自动更新面板  
-5. 项目可以关联链接，以快速打开，如发布页、git仓库、项目测试环境页面等等  
+![项目列表](https://raw.githubusercontent.com/qxchuckle/qcqx-project-manage/refs/heads/master/img/1.png)
 
-未来的功能：
-1. 可切换平铺、树状
-2. 支持保存项目组，点击后快速打开多个窗口（可选择的）。开发往往得打开多个工程，这些工程项目是有关联的，但我并不想用工作区，只在一个窗口打开多个项目并不方便。  
-3. 和 Project Manager 一样支持自动扫描文件夹识别Git项目  
-4. 还有更多  
+![本地Git项目](https://raw.githubusercontent.com/qxchuckle/qcqx-project-manage/refs/heads/master/img/2.png)
 
-![image](https://raw.githubusercontent.com/qxchuckle/qcqx-project-manage/refs/heads/master/img/1.png)
+## 项目结构
 
-![image](https://raw.githubusercontent.com/qxchuckle/qcqx-project-manage/refs/heads/master/img/2.png)
+本项目为 pnpm monorepo，包含以下子包：
 
+```
+packages/
+├── core/     # 共享核心库 — Git 扫描、配置管理、项目树数据结构
+├── vscode/   # VS Code / Cursor 插件
+└── cli/      # 命令行工具
+```
 
-# QA
-1、为什么支持文件保存？
+| 包 | 说明 | 详情 |
+|----|------|------|
+| [`@qcqx/project-manage-core`](./packages/core/) | 共享核心逻辑：Git 项目扫描、状态检测、配置与缓存管理、项目树操作 | [README](./packages/core/README.md) |
+| [`qcqx-project-manage`](./packages/vscode/) | VS Code 插件，提供项目列表、最近文件夹、本地 Git 项目三个视图 | [README](./packages/vscode/README.md) |
+| [`@qcqx/project-manage-cli`](./packages/cli/) | 命令行工具，在终端中管理项目 | — |
 
-有很多配置类的文件分散在各处，比如ssh、claude的配置，保存起来，快速打开。
+## 开发
 
+```bash
+# 安装依赖
+pnpm install
 
+# 构建所有包
+pnpm build
 
+# 仅构建 core
+pnpm build:core
 
+# 仅构建 VS Code 插件
+pnpm build:vscode
 
+# 开发模式（watch）
+pnpm watch
 
+# 类型检查
+pnpm check-types
 
+# 打包 VS Code 插件为 .vsix
+pnpm package-vsix
+```
 
+## 环境要求
 
+- Node.js ≥ 16
+- pnpm ≥ 9
 
+## QA
+
+**为什么支持文件保存？**
+
+有很多配置类的文件分散在各处，比如 ssh、claude 的配置，保存起来，快速打开。
+
+## 许可
+
+[MIT](./LICENSE)
