@@ -30,6 +30,7 @@
   ],
   "scripts": {
     "build": "tsup",
+    "prepublishOnly": "pnpm run build",
     "check-types": "tsc --noEmit",
     "clean": "rm -rf dist"
   },

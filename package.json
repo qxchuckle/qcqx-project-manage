@@ -34,6 +34,8 @@
     "build:cli": "pnpm --filter @qcqx/project-manage-cli run build",
     "build:mcp": "pnpm --filter @qcqx/project-manage-mcp run build",
     "publish:mcp": "pnpm --filter @qcqx/project-manage-mcp publish --no-git-checks",
+    "publish:cli": "pnpm --filter @qcqx/project-manage-cli publish --no-git-checks",
+    "publish:core": "pnpm --filter @qcqx/project-manage-core publish --no-git-checks",
     "publish:skill": "pnpm --filter @qcqx/project-manage-skill publish",
     "watch": "pnpm --filter qcqx-project-manage run watch",
     "lint": "eslint .",
