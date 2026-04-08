@@ -25,9 +25,7 @@ export class FsFileTreeItem extends BaseTreeItem {
     treeProps.iconPath = new vscode.ThemeIcon('file');
     let pathLine = '';
     if (this.projectPath) {
-      const encodedArgs = encodeURIComponent(
-        JSON.stringify([this.projectPath]),
-      );
+      const encodedArgs = encodeURIComponent(JSON.stringify([this.projectPath]));
       pathLine = `[${this.projectPath}](command:${CMD_PREFIX_PROJECT_LIST}.open-path-in-file-explorer?${encodedArgs})`;
     }
     treeProps.tooltip = new vscode.MarkdownString(`${pathLine}`);

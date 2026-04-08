@@ -1,11 +1,7 @@
 import * as vscode from 'vscode';
 import { CMD_PREFIX_PROJECT_LIST } from '@/config';
 import { TreeViewController } from '../../treeView/treeViewController';
-import {
-  getCurrentWorkspace,
-  getProjectTitle,
-  saveProjectByUriQuickPick,
-} from '@/utils';
+import { getCurrentWorkspace, getProjectTitle, saveProjectByUriQuickPick } from '@/utils';
 import { TreeNodeType } from '../../treeView/type';
 import { BaseTreeItem } from '../../treeView/treeItems/base';
 import { Tree } from '../../treeView/tree';
@@ -26,10 +22,7 @@ export function createFileCommand(treeViewController: TreeViewController) {
       if (!projectPath) {
         return;
       }
-      vscode.commands.executeCommand(
-        'vscode.open',
-        vscode.Uri.file(projectPath),
-      );
+      vscode.commands.executeCommand('vscode.open', vscode.Uri.file(projectPath));
     },
   );
 

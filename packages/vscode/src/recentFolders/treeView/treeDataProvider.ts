@@ -5,12 +5,9 @@ import { RecentFolderTreeItem } from './treeItems';
 
 /** 最近打开的文件夹树数据提供者 */
 export class RecentFoldersTreeDataProvider implements vscode.TreeDataProvider<RecentFolderTreeItem> {
-  private _onDidChangeTreeData = new vscode.EventEmitter<
-    RecentFolderTreeItem | undefined | void
-  >();
-  readonly onDidChangeTreeData: vscode.Event<
-    RecentFolderTreeItem | undefined | void
-  > = this._onDidChangeTreeData.event;
+  private _onDidChangeTreeData = new vscode.EventEmitter<RecentFolderTreeItem | undefined | void>();
+  readonly onDidChangeTreeData: vscode.Event<RecentFolderTreeItem | undefined | void> =
+    this._onDidChangeTreeData.event;
 
   constructor(
     private context: vscode.ExtensionContext,

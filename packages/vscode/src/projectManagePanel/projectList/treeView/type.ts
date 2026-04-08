@@ -11,8 +11,7 @@ export interface TreeItem extends vscode.TreeItem {
   type: TreeNodeType;
 }
 /** 创建树节点时的属性参数 */
-export type TreeItemProps = Omit<Partial<TreeItem>, 'type'> &
-  Pick<JsonTreeNodeType, 'links'>;
+export type TreeItemProps = Omit<Partial<TreeItem>, 'type'> & Pick<JsonTreeNodeType, 'links'>;
 
 /**
  * json树节点（与 core ProjectNode 兼容，扩展 vscode 特定类型）

@@ -4,9 +4,7 @@ import { ViewMode } from '../../types';
 import { LocalGitProjectsTreeDataProvider } from '../../treeView/treeDataProvider';
 
 /** 注册切换视图模式命令 */
-export function createSwitchViewMode(
-  treeDataProvider: LocalGitProjectsTreeDataProvider,
-) {
+export function createSwitchViewMode(treeDataProvider: LocalGitProjectsTreeDataProvider) {
   const switchViewMode = vscode.commands.registerCommand(
     `${CMD_PREFIX_LOCAL_GIT}.switch-view-mode`,
     async () => {
@@ -19,20 +17,17 @@ export function createSwitchViewMode(
         },
         {
           label: '按分类',
-          description:
-            currentMode === ViewMode.ByCategory ? '(当前)' : undefined,
+          description: currentMode === ViewMode.ByCategory ? '(当前)' : undefined,
           detail: '按配置中的分类分组展示',
         },
         {
           label: '按路径',
-          description:
-            currentMode === ViewMode.ByPath ? '(当前)' : undefined,
+          description: currentMode === ViewMode.ByPath ? '(当前)' : undefined,
           detail: '按文件路径层级展示，自动合并单子目录',
         },
         {
           label: '按远程仓库',
-          description:
-            currentMode === ViewMode.ByRemote ? '(当前)' : undefined,
+          description: currentMode === ViewMode.ByRemote ? '(当前)' : undefined,
           detail: '按 Git 远程仓库 URL 路径结构分组展示',
         },
       ];

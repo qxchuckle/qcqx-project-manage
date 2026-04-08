@@ -3,7 +3,12 @@ import * as os from 'node:os';
 import * as path from 'node:path';
 import picomatch from 'picomatch';
 import simpleGit from 'simple-git';
-import type { ScanFolderConfig, ScanFolderEntry, GitProjectInfo, ScanOptions } from '../types/index.js';
+import type {
+  ScanFolderConfig,
+  ScanFolderEntry,
+  GitProjectInfo,
+  ScanOptions,
+} from '../types/index.js';
 
 const BUILTIN_IGNORED_FOLDERS: string[] = [
   'node_modules',
@@ -35,9 +40,7 @@ export function expandHome(p: string): string {
   return p;
 }
 
-function buildIgnoreMatcher(
-  extraPatterns: string[],
-): (folderName: string) => boolean {
+function buildIgnoreMatcher(extraPatterns: string[]): (folderName: string) => boolean {
   const allPatterns = [...BUILTIN_IGNORED_FOLDERS, ...extraPatterns];
 
   const exactSet = new Set<string>();
@@ -51,8 +54,7 @@ function buildIgnoreMatcher(
     }
   }
 
-  const globMatcher =
-    globPatterns.length > 0 ? picomatch(globPatterns) : null;
+  const globMatcher = globPatterns.length > 0 ? picomatch(globPatterns) : null;
 
   return (folderName: string) => {
     if (folderName.startsWith('.')) {

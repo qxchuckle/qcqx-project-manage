@@ -12,15 +12,10 @@ export interface GitStatusInfo {
  * 获取单个 Git 仓库的状态信息（分支名 + 是否有未提交更改）。
  * 失败时返回 null 而非抛异常，调用方无需额外 catch。
  */
-export async function getGitStatus(
-  repoPath: string,
-): Promise<GitStatusInfo | null> {
+export async function getGitStatus(repoPath: string): Promise<GitStatusInfo | null> {
   try {
     const git = simpleGit(repoPath);
-    const [branchSummary, statusSummary] = await Promise.all([
-      git.branchLocal(),
-      git.status(),
-    ]);
+    const [branchSummary, statusSummary] = await Promise.all([git.branchLocal(), git.status()]);
     return {
       branch: branchSummary.current,
       dirty: !statusSummary.isClean(),
@@ -41,9 +36,7 @@ export interface GitRemoteInfo {
  * 获取仓库所有远程仓库的浏览器 URL 列表。
  * 通过 git-url-parse 统一处理 SSH / HTTPS / git:// 等各种协议格式。
  */
-export async function getRemoteUrls(
-  repoPath: string,
-): Promise<GitRemoteInfo[]> {
+export async function getRemoteUrls(repoPath: string): Promise<GitRemoteInfo[]> {
   try {
     const git = simpleGit(repoPath);
     const remotes = await git.getRemotes(true);
@@ -69,10 +62,7 @@ export async function getRemoteUrls(
  * 获取仓库指定远程仓库的浏览器 URL，默认读取 origin。
  * 失败时返回 null。
  */
-export async function getRemoteUrl(
-  repoPath: string,
-  remote = 'origin',
-): Promise<string | null> {
+export async function getRemoteUrl(repoPath: string, remote = 'origin'): Promise<string | null> {
   const remotes = await getRemoteUrls(repoPath);
   return remotes.find((r) => r.name === remote)?.url ?? null;
 }

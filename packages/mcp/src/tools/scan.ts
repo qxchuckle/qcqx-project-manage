@@ -1,10 +1,6 @@
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import {
-  scanForGitProjects,
-  expandHome,
-  type ScanFolderEntry,
-} from '@qcqx/project-manage-core';
+import { scanForGitProjects, expandHome, type ScanFolderEntry } from '@qcqx/project-manage-core';
 import type { ServerContext } from '../types.js';
 
 export function registerScanTool(server: McpServer, ctx: ServerContext): void {
@@ -34,7 +30,8 @@ export function registerScanTool(server: McpServer, ctx: ServerContext): void {
             {
               type: 'text' as const,
               text: JSON.stringify({
-                error: '没有指定扫描目录，也没有配置默认扫描目录。请传入 directories 参数或通过 update_scan_folders 配置。',
+                error:
+                  '没有指定扫描目录，也没有配置默认扫描目录。请传入 directories 参数或通过 update_scan_folders 配置。',
               }),
             },
           ],

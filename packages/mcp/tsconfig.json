@@ -1,18 +1,10 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "dist",
-    "baseUrl": "./",
     "paths": {
-      "@/*": [
-        "src/*"
-      ],
-      "@qcqx/project-manage-core": [
-        "../core/src/index.ts"
-      ]
+      "@/*": ["./src/*"],
+      "@qcqx/project-manage-core": ["../core/src/index.ts"]
     }
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }

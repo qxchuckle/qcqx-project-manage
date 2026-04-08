@@ -13,10 +13,7 @@ export function createOpenInFileExplorer() {
         if (!item?.fsPath) {
           return;
         }
-        await vscode.commands.executeCommand(
-          'revealFileInOS',
-          vscode.Uri.file(item.fsPath),
-        );
+        await vscode.commands.executeCommand('revealFileInOS', vscode.Uri.file(item.fsPath));
       },
     ),
   ];

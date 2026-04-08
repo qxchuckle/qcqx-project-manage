@@ -39,7 +39,7 @@ export class AppConfigManager {
   async read(): Promise<AppConfig> {
     try {
       const content = await this.cache.read(CONFIG_CACHE_ID);
-      return content ? JSON.parse(content) as AppConfig : DEFAULT_APP_CONFIG;
+      return content ? (JSON.parse(content) as AppConfig) : DEFAULT_APP_CONFIG;
     } catch {
       return DEFAULT_APP_CONFIG;
     }

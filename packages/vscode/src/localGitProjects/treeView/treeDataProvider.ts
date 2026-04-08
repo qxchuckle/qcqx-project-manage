@@ -1,17 +1,17 @@
 import * as vscode from 'vscode';
 import * as os from 'os';
 import * as path from 'path';
-import { scanForGitProjectsCached, getGitStatusBatch, getRemoteUrlBatch, DEFAULT_APP_CONFIG } from '@qcqx/project-manage-core';
+import {
+  scanForGitProjectsCached,
+  getGitStatusBatch,
+  getRemoteUrlBatch,
+  DEFAULT_APP_CONFIG,
+} from '@qcqx/project-manage-core';
 import type { GitProjectInfo, AppConfig } from '@qcqx/project-manage-core';
 import { ViewMode } from '../types';
 import { LocalCache } from '@/utils/localCache';
 import { APP_NAME, vscodeConfigKeys, CONFIG_CACHE_ID, CONFIG_FILE_NAME } from '@/config';
-import {
-  GitProjectTreeItem,
-  FolderTreeItem,
-  SummaryTreeItem,
-  LocalGitTreeItem,
-} from './treeItems';
+import { GitProjectTreeItem, FolderTreeItem, SummaryTreeItem, LocalGitTreeItem } from './treeItems';
 
 interface PathNode {
   name: string;
@@ -21,12 +21,8 @@ interface PathNode {
 }
 
 /** 本地 Git 项目树数据提供者，支持平铺/分类/路径三种视图 */
-export class LocalGitProjectsTreeDataProvider
-  implements vscode.TreeDataProvider<LocalGitTreeItem>
-{
-  private _onDidChangeTreeData = new vscode.EventEmitter<
-    LocalGitTreeItem | undefined | void
-  >();
+export class LocalGitProjectsTreeDataProvider implements vscode.TreeDataProvider<LocalGitTreeItem> {
+  private _onDidChangeTreeData = new vscode.EventEmitter<LocalGitTreeItem | undefined | void>();
   readonly onDidChangeTreeData = this._onDidChangeTreeData.event;
 
   private projects: GitProjectInfo[] = [];
@@ -42,11 +38,7 @@ export class LocalGitProjectsTreeDataProvider
 
     context.subscriptions.push(
       vscode.workspace.onDidChangeConfiguration((e) => {
-        if (
-          e.affectsConfiguration(
-            `${APP_NAME}.${vscodeConfigKeys.localGitViewMode}`,
-          )
-        ) {
+        if (e.affectsConfiguration(`${APP_NAME}.${vscodeConfigKeys.localGitViewMode}`)) {
           this.rootItems = null;
           this.buildTree();
           this._onDidChangeTreeData.fire();
@@ -90,19 +82,12 @@ export class LocalGitProjectsTreeDataProvider
       return;
     }
     const config = vscode.workspace.getConfiguration(APP_NAME);
-    config.update(
-      vscodeConfigKeys.localGitViewMode,
-      mode,
-      vscode.ConfigurationTarget.Global,
-    );
+    config.update(vscodeConfigKeys.localGitViewMode, mode, vscode.ConfigurationTarget.Global);
   }
 
   getViewMode(): ViewMode {
     const config = vscode.workspace.getConfiguration(APP_NAME);
-    return config.get<ViewMode>(
-      vscodeConfigKeys.localGitViewMode,
-      ViewMode.Flat,
-    );
+    return config.get<ViewMode>(vscodeConfigKeys.localGitViewMode, ViewMode.Flat);
   }
 
   getTreeItem(element: LocalGitTreeItem): vscode.TreeItem {
@@ -114,9 +99,7 @@ export class LocalGitProjectsTreeDataProvider
   }
 
   findItemByPath(fsPath: string): GitProjectTreeItem | undefined {
-    const search = (
-      items: LocalGitTreeItem[],
-    ): GitProjectTreeItem | undefined => {
+    const search = (items: LocalGitTreeItem[]): GitProjectTreeItem | undefined => {
       for (const item of items) {
         if (item instanceof GitProjectTreeItem && item.fsPath === fsPath) {
           return item;
@@ -133,9 +116,7 @@ export class LocalGitProjectsTreeDataProvider
     return search(this.rootItems || []);
   }
 
-  async getChildren(
-    element?: LocalGitTreeItem,
-  ): Promise<LocalGitTreeItem[]> {
+  async getChildren(element?: LocalGitTreeItem): Promise<LocalGitTreeItem[]> {
     if (element instanceof FolderTreeItem) {
       return element.childItems;
     }
@@ -266,9 +247,7 @@ export class LocalGitProjectsTreeDataProvider
     });
   }
 
-  private collectGitItems(
-    items: LocalGitTreeItem[],
-  ): GitProjectTreeItem[] {
+  private collectGitItems(items: LocalGitTreeItem[]): GitProjectTreeItem[] {
     const result: GitProjectTreeItem[] = [];
     for (const item of items) {
       if (item instanceof GitProjectTreeItem) {
@@ -282,10 +261,7 @@ export class LocalGitProjectsTreeDataProvider
 
   private rebuildParentMap(): void {
     this.parentMap.clear();
-    const walk = (
-      items: LocalGitTreeItem[],
-      parent: LocalGitTreeItem | undefined,
-    ) => {
+    const walk = (items: LocalGitTreeItem[], parent: LocalGitTreeItem | undefined) => {
       for (const item of items) {
         this.parentMap.set(item, parent);
         if (item instanceof FolderTreeItem) {
@@ -375,15 +351,10 @@ export class LocalGitProjectsTreeDataProvider
       result.push(folder);
     }
 
-    return result.sort((a, b) =>
-      (a.label as string).localeCompare(b.label as string),
-    );
+    return result.sort((a, b) => (a.label as string).localeCompare(b.label as string));
   }
 
-  private buildDirTree(
-    projects: GitProjectInfo[],
-    scanFolder: string,
-  ): PathNode {
+  private buildDirTree(projects: GitProjectInfo[], scanFolder: string): PathNode {
     const root: PathNode = {
       name: path.basename(scanFolder),
       fullPath: scanFolder,
@@ -466,12 +437,8 @@ export class LocalGitProjectsTreeDataProvider
       }
     }
 
-    folders.sort((a, b) =>
-      (a.label as string).localeCompare(b.label as string),
-    );
-    projects.sort((a, b) =>
-      (a.label as string).localeCompare(b.label as string),
-    );
+    folders.sort((a, b) => (a.label as string).localeCompare(b.label as string));
+    projects.sort((a, b) => (a.label as string).localeCompare(b.label as string));
 
     return [...folders, ...projects];
   }
@@ -574,12 +541,8 @@ export class LocalGitProjectsTreeDataProvider
         }
       }
 
-      folders.sort((a, b) =>
-        (a.label as string).localeCompare(b.label as string),
-      );
-      projects.sort((a, b) =>
-        (a.label as string).localeCompare(b.label as string),
-      );
+      folders.sort((a, b) => (a.label as string).localeCompare(b.label as string));
+      projects.sort((a, b) => (a.label as string).localeCompare(b.label as string));
 
       return [...folders, ...projects];
     };

@@ -5,9 +5,7 @@ import * as os from 'os';
 import initSqlJs from 'sql.js';
 import { vscodeConfigKeys, APP_NAME } from '@/config';
 
-type SqlJsDatabase = InstanceType<
-  Awaited<ReturnType<typeof initSqlJs>>['Database']
->;
+type SqlJsDatabase = InstanceType<Awaited<ReturnType<typeof initSqlJs>>['Database']>;
 
 const HISTORY_KEY = 'history.recentlyOpenedPathsList';
 

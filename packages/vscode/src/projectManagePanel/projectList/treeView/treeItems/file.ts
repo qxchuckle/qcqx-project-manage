@@ -22,11 +22,9 @@ export class FileTreeItem extends BaseTreeItem {
       ...this,
       ...props,
     });
-    let showPathInTooltip = '';
+    let showPathInTooltip;
     if (this.projectPath) {
-      const encodedArgs = encodeURIComponent(
-        JSON.stringify([this.projectPath]),
-      );
+      const encodedArgs = encodeURIComponent(JSON.stringify([this.projectPath]));
       showPathInTooltip = `[${this.projectPath}](command:${CMD_PREFIX_PROJECT_LIST}.open-path-in-file-explorer?${encodedArgs})`;
     } else {
       showPathInTooltip = '无路径';
@@ -47,11 +45,7 @@ export class FileTreeItem extends BaseTreeItem {
 ${props.description || '无描述'}  
 ${showPathInTooltip}  
 🔗关联链接:  
-${
-  treeProps.links
-    ?.map((link, index) => `${index + 1}. [${link}](${link})`)
-    .join('\n') || ' '
-}`);
+${treeProps.links?.map((link, index) => `${index + 1}. [${link}](${link})`).join('\n') || ' '}`);
       treeProps.tooltip.isTrusted = true;
     }
 

@@ -1,7 +1,4 @@
-export {
-  TreeNodeType,
-  CollapsibleState,
-} from './tree.js';
+export { TreeNodeType, CollapsibleState } from './tree.js';
 export type { ProjectNode } from './tree.js';
 
 export type {

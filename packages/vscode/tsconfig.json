@@ -1,15 +1,11 @@
 {
-	"extends": "../../tsconfig.base.json",
-	"compilerOptions": {
-		"baseUrl": "./",
-		"paths": {
-			"@/*": [
-				"src/*"
-			],
-			"@qcqx/project-manage-core": [
-				"../core/src/index.ts"
-			]
-		}
-	},
-	"include": ["src"]
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["node", "mocha"],
+    "paths": {
+      "@/*": ["./src/*"],
+      "@qcqx/project-manage-core": ["../core/src/index.ts"]
+    }
+  },
+  "include": ["src"]
 }

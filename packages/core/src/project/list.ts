@@ -60,10 +60,7 @@ export class ProjectList {
   }
 
   async init(): Promise<string> {
-    const filePath = await this.cache.createFile(
-      PROJECT_LIST_CACHE_ID,
-      PROJECT_LIST_FILE_NAME,
-    );
+    const filePath = await this.cache.createFile(PROJECT_LIST_CACHE_ID, PROJECT_LIST_FILE_NAME);
     await this.load();
     return filePath;
   }
@@ -71,7 +68,7 @@ export class ProjectList {
   async load(): Promise<ProjectNode[]> {
     try {
       const content = await this.cache.read(PROJECT_LIST_CACHE_ID);
-      this.data = content ? JSON.parse(content) as ProjectNode[] : [];
+      this.data = content ? (JSON.parse(content) as ProjectNode[]) : [];
     } catch {
       this.data = [];
     }
@@ -146,7 +143,12 @@ export class ProjectList {
     return removeNode(this.data, id);
   }
 
-  updateNode(id: string, updates: Partial<Pick<ProjectNode, 'title' | 'description' | 'fsPath' | 'links' | 'collapsibleState'>>): boolean {
+  updateNode(
+    id: string,
+    updates: Partial<
+      Pick<ProjectNode, 'title' | 'description' | 'fsPath' | 'links' | 'collapsibleState'>
+    >,
+  ): boolean {
     const found = findNode(this.data, id);
     if (!found) return false;
     Object.assign(found.node, updates);

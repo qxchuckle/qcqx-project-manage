@@ -66,9 +66,7 @@ export function createLink(treeViewController: TreeViewController) {
         return;
       }
       tree.deleteLinks(item, selectedLinks);
-      vscode.window.showInformationMessage(
-        `删除 ${selectedLinks.join(', ')} 成功`,
-      );
+      vscode.window.showInformationMessage(`删除 ${selectedLinks.join(', ')} 成功`);
     },
   );
 
@@ -78,10 +76,7 @@ export function createLink(treeViewController: TreeViewController) {
 /**
  * 打开关联链接弹窗
  */
-function openLinkDialog(
-  links: string[] | undefined,
-  options: vscode.QuickPickOptions,
-) {
+function openLinkDialog(links: string[] | undefined, options: vscode.QuickPickOptions) {
   if (!links?.length) {
     vscode.window.showInformationMessage('当前项目没有关联链接');
     return;

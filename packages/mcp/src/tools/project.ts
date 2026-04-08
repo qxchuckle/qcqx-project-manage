@@ -1,11 +1,6 @@
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import {
-  TreeNodeType,
-  getGitStatus,
-  getRemoteUrls,
-  isGitRepo,
-} from '@qcqx/project-manage-core';
+import { TreeNodeType, getGitStatus, getRemoteUrls, isGitRepo } from '@qcqx/project-manage-core';
 import type { ServerContext } from '../types.js';
 
 export function registerProjectTools(server: McpServer, ctx: ServerContext): void {
@@ -20,7 +15,9 @@ export function registerProjectTools(server: McpServer, ctx: ServerContext): voi
       const node = ctx.projectList.find(id);
       if (!node) {
         return {
-          content: [{ type: 'text' as const, text: JSON.stringify({ error: `未找到节点: ${id}` }) }],
+          content: [
+            { type: 'text' as const, text: JSON.stringify({ error: `未找到节点: ${id}` }) },
+          ],
         };
       }
 

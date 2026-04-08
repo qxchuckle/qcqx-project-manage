@@ -29,9 +29,7 @@ export class GitProjectTreeItem extends vscode.TreeItem {
   private applyDescription(): void {
     const homedir = os.homedir();
     const dir = path.dirname(this.project.fsPath);
-    const dirLabel = dir.startsWith(homedir)
-      ? '~' + dir.slice(homedir.length)
-      : dir;
+    const dirLabel = dir.startsWith(homedir) ? '~' + dir.slice(homedir.length) : dir;
 
     if (this.gitStatus) {
       const dirty = this.gitStatus.dirty ? ' ✱' : '';
@@ -78,9 +76,7 @@ export class FolderTreeItem extends vscode.TreeItem {
     }
     this.childItems = childItems;
     this.fsPath = options?.fsPath;
-    this.contextValue = this.fsPath
-      ? 'local-git-path-folder'
-      : 'local-git-folder';
+    this.contextValue = this.fsPath ? 'local-git-path-folder' : 'local-git-folder';
     this.iconPath = vscode.ThemeIcon.Folder;
   }
 }
@@ -96,7 +92,4 @@ export class SummaryTreeItem extends vscode.TreeItem {
 }
 
 /** 本地 Git 树节点联合类型 */
-export type LocalGitTreeItem =
-  | GitProjectTreeItem
-  | FolderTreeItem
-  | SummaryTreeItem;
+export type LocalGitTreeItem = GitProjectTreeItem | FolderTreeItem | SummaryTreeItem;

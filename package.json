@@ -36,7 +36,8 @@
     "publish:mcp": "pnpm --filter @qcqx/project-manage-mcp publish --no-git-checks",
     "publish:skill": "pnpm --filter @qcqx/project-manage-skill publish",
     "watch": "pnpm --filter qcqx-project-manage run watch",
-    "lint": "pnpm -r run lint",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "check-types": "pnpm -r run check-types",
     "package": "pnpm --filter qcqx-project-manage run package",
     "publish:vscode": "pnpm --filter qcqx-project-manage run publish",
@@ -45,5 +46,22 @@
   "engines": {
     "node": ">=16",
     "pnpm": ">=9"
+  },
+  "devDependencies": {
+    "@archoleat/prettier-define-config": "^1.2.1",
+    "@commitlint/cli": "^20.5.0",
+    "@commitlint/config-conventional": "^20.5.0",
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^25.5.2",
+    "eslint": "^9.39.4",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "globals": "^17.4.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.8.1",
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.2",
+    "typescript-eslint": "^8.58.1"
   }
 }

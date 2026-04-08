@@ -48,10 +48,7 @@ export abstract class TreeDragAndDropController implements vscode.TreeDragAndDro
       return;
     }
     // 禁止拖放到文件夹/文件系统文件上，保持被拖拽项原样（否则 project 会被误删）
-    if (
-      target?.type === TreeNodeType.Folder ||
-      target?.type === TreeNodeType.FsFile
-    ) {
+    if (target?.type === TreeNodeType.Folder || target?.type === TreeNodeType.FsFile) {
       return;
     }
     // 放置前的安全检查
@@ -91,9 +88,7 @@ export abstract class TreeDragAndDropController implements vscode.TreeDragAndDro
       .map((id) => this.allTreeNodesMap[id])
       .filter(
         (node): node is BaseTreeItem =>
-          !isNil(node) &&
-          !isNil(node.parent) &&
-          !dragData.nodeIds.includes(node.parent.id),
+          !isNil(node) && !isNil(node.parent) && !dragData.nodeIds.includes(node.parent.id),
       );
     return {
       dragNodeIds,
@@ -109,7 +104,7 @@ export abstract class TreeDragAndDropController implements vscode.TreeDragAndDro
     _token: vscode.CancellationToken;
   }): void {
     const { dragNodes, sources, _token } = props;
-    let target = props.target || this.root;
+    const target = props.target || this.root;
 
     // 如果目标节点是tip节点或根节点，则添加到根节点
     if (target.type === TreeNodeType.Tip || target.type === TreeNodeType.Root) {
@@ -132,9 +127,7 @@ export abstract class TreeDragAndDropController implements vscode.TreeDragAndDro
     }
 
     // 对于收起的组、其他项目，则放置到该节点之后
-    const index = target.parent!.children.findIndex(
-      (node) => node.id === target.id,
-    );
+    const index = target.parent!.children.findIndex((node) => node.id === target.id);
     for (const node of dragNodes) {
       target.parent!.addChild(node, index);
     }
@@ -158,10 +151,7 @@ export abstract class TreeDragAndDropController implements vscode.TreeDragAndDro
   }
 
   // 放置前的安全检查
-  private checkSafeToDrop(
-    target: BaseTreeItem | undefined,
-    dragNodeIds: Set<string>,
-  ): boolean {
+  private checkSafeToDrop(target: BaseTreeItem | undefined, dragNodeIds: Set<string>): boolean {
     // 没有拖被拽节点，则不进行放置
     if (dragNodeIds.size === 0) {
       return false;

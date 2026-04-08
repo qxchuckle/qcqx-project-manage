@@ -7,9 +7,7 @@ interface InvalidItem extends vscode.QuickPickItem {
   nodeId: string;
 }
 
-export function createCleanInvalidProjects(
-  treeViewController: TreeViewController,
-) {
+export function createCleanInvalidProjects(treeViewController: TreeViewController) {
   const cmd = vscode.commands.registerCommand(
     `${CMD_PREFIX_PROJECT_LIST}.clean-invalid-projects`,
     async () => {
@@ -61,9 +59,7 @@ export function createCleanInvalidProjects(
       }
 
       tree.refresh();
-      vscode.window.showInformationMessage(
-        `已清理 ${selected.length} 个无效项目`,
-      );
+      vscode.window.showInformationMessage(`已清理 ${selected.length} 个无效项目`);
     },
   );
 

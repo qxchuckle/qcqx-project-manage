@@ -8,9 +8,7 @@ interface RecentFolderSearchItem extends vscode.QuickPickItem {
 }
 
 /** 注册搜索最近文件夹命令 */
-export function createSearch(
-  treeDataProvider: RecentFoldersTreeDataProvider,
-) {
+export function createSearch(treeDataProvider: RecentFoldersTreeDataProvider) {
   const search = vscode.commands.registerCommand(
     `${CMD_PREFIX_RECENT_FOLDERS}.search`,
     async () => {
@@ -35,11 +33,9 @@ export function createSearch(
       quickPick.onDidAccept(() => {
         const selected = quickPick.selectedItems[0];
         if (selected) {
-          vscode.commands.executeCommand(
-            'vscode.openFolder',
-            vscode.Uri.file(selected.fsPath),
-            { forceNewWindow: false },
-          );
+          vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(selected.fsPath), {
+            forceNewWindow: false,
+          });
         }
         quickPick.hide();
       });

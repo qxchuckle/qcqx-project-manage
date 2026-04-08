@@ -12,11 +12,9 @@ export function createOpenProject() {
       if (!item?.fsPath) {
         return;
       }
-      await vscode.commands.executeCommand(
-        'vscode.openFolder',
-        vscode.Uri.file(item.fsPath),
-        { forceNewWindow: false },
-      );
+      await vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(item.fsPath), {
+        forceNewWindow: false,
+      });
     },
   );
 
@@ -26,11 +24,9 @@ export function createOpenProject() {
       if (!item?.fsPath) {
         return;
       }
-      await vscode.commands.executeCommand(
-        'vscode.openFolder',
-        vscode.Uri.file(item.fsPath),
-        { forceNewWindow: true },
-      );
+      await vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(item.fsPath), {
+        forceNewWindow: true,
+      });
     },
   );
 

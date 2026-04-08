@@ -1,10 +1,5 @@
 import * as vscode from 'vscode';
-import {
-  JsonTreeNodeType,
-  TreeItem,
-  TreeItemProps,
-  TreeNodeType,
-} from '../type';
+import { JsonTreeNodeType, TreeItem, TreeItemProps, TreeNodeType } from '../type';
 import { BaseTreeItem } from './base';
 
 /**
@@ -16,8 +11,7 @@ export class GroupTreeItem extends BaseTreeItem {
   constructor(props: TreeItemProps) {
     props.contextValue = TreeNodeType.Group;
     props.iconPath = undefined;
-    props.collapsibleState =
-      props.collapsibleState || vscode.TreeItemCollapsibleState.Collapsed;
+    props.collapsibleState = props.collapsibleState || vscode.TreeItemCollapsibleState.Collapsed;
     super(props);
     this.update(props);
   }
@@ -30,11 +24,7 @@ export class GroupTreeItem extends BaseTreeItem {
     const tooltip = new vscode.MarkdownString(`${treeProps.label}  
 ${props.description || '无描述'}  
 🔗关联链接:  
-${
-  treeProps.links
-    ?.map((link, index) => `${index + 1}. [${link}](${link})`)
-    .join('\n') || ' '
-}`);
+${treeProps.links?.map((link, index) => `${index + 1}. [${link}](${link})`).join('\n') || ' '}`);
     treeProps.tooltip = tooltip;
     Object.assign(this, treeProps);
   }

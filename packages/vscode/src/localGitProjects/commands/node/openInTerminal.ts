@@ -15,9 +15,7 @@ export function createOpenInTerminal() {
           return;
         }
         const name =
-          item instanceof GitProjectTreeItem
-            ? item.project.name
-            : path.basename(item.fsPath);
+          item instanceof GitProjectTreeItem ? item.project.name : path.basename(item.fsPath);
         const terminal = vscode.window.createTerminal({
           cwd: item.fsPath,
           name,

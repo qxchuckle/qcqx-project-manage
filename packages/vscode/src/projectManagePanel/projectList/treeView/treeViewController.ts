@@ -21,11 +21,7 @@ export class TreeViewController {
   init() {
     this.createView();
     vscode.workspace.onDidChangeConfiguration((e) => {
-      if (
-        e.affectsConfiguration(
-          `${APP_NAME}.${vscodeConfigKeys.projectListLock}`,
-        )
-      ) {
+      if (e.affectsConfiguration(`${APP_NAME}.${vscodeConfigKeys.projectListLock}`)) {
         this.createView();
       }
     });
@@ -38,11 +34,9 @@ export class TreeViewController {
 
   updateConfig(key: string, value: any) {
     const config = vscode.workspace.getConfiguration(APP_NAME);
-    config
-      .update(key, value, vscode.ConfigurationTarget.Global)
-      .then(undefined, () => {
-        config.update(key, value, vscode.ConfigurationTarget.Global);
-      });
+    config.update(key, value, vscode.ConfigurationTarget.Global).then(undefined, () => {
+      config.update(key, value, vscode.ConfigurationTarget.Global);
+    });
   }
 
   createView(): vscode.TreeView<BaseTreeItem> {
@@ -54,15 +48,11 @@ export class TreeViewController {
     };
     this.view = vscode.window.createTreeView(this.viewId, options);
     this.view.onDidCollapseElement((e) => {
-      e.element.changeCollapsibleState(
-        vscode.TreeItemCollapsibleState.Collapsed,
-      );
+      e.element.changeCollapsibleState(vscode.TreeItemCollapsibleState.Collapsed);
       this.tree.syncToLocalConfig();
     });
     this.view.onDidExpandElement((e) => {
-      e.element.changeCollapsibleState(
-        vscode.TreeItemCollapsibleState.Expanded,
-      );
+      e.element.changeCollapsibleState(vscode.TreeItemCollapsibleState.Expanded);
       this.tree.syncToLocalConfig();
     });
     this.tree.refresh();

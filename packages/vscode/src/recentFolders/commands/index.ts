@@ -10,12 +10,9 @@ export function initCommands(
   treeDataProvider: RecentFoldersTreeDataProvider,
 ) {
   const commands: vscode.Disposable[] = [
-    vscode.commands.registerCommand(
-      `${CMD_PREFIX_RECENT_FOLDERS}.refresh`,
-      () => {
-        treeDataProvider.refresh();
-      },
-    ),
+    vscode.commands.registerCommand(`${CMD_PREFIX_RECENT_FOLDERS}.refresh`, () => {
+      treeDataProvider.refresh();
+    }),
     ...createOpenFolder(),
     ...createSaveToProjectList(),
     ...createSearch(treeDataProvider),

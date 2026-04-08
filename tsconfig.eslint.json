@@ -1,0 +1,25 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "composite": true,
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "types": ["node"]
+  },
+  "include": ["**/*", "**/.*.*"],
+  "exclude": [
+    "**/dist",
+    "**/node_modules",
+    "**/out",
+    "**/test",
+    "**/test-*",
+    "**/coverage",
+    "**/coverage-*",
+    "**/*.d.ts",
+    "**/dist/**",
+    "**/node_modules/**",
+    "**/.trellis/**",
+    "**/test/**",
+    "**/out/**"
+  ]
+}

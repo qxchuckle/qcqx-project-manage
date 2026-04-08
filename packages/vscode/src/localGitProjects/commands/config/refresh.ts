@@ -3,9 +3,7 @@ import { CMD_PREFIX_LOCAL_GIT } from '@/config';
 import { LocalGitProjectsTreeDataProvider } from '../../treeView/treeDataProvider';
 
 /** 注册刷新命令 */
-export function createRefresh(
-  treeDataProvider: LocalGitProjectsTreeDataProvider,
-) {
+export function createRefresh(treeDataProvider: LocalGitProjectsTreeDataProvider) {
   return [
     vscode.commands.registerCommand(`${CMD_PREFIX_LOCAL_GIT}.refresh`, () => {
       treeDataProvider.refresh();

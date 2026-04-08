@@ -1,6 +1,1 @@
-export {
-  ProjectList,
-  findNode,
-  traverseNodes,
-  removeNode,
-} from './list.js';
+export { ProjectList, findNode, traverseNodes, removeNode } from './list.js';

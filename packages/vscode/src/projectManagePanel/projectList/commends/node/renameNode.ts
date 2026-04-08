@@ -31,8 +31,7 @@ export function createRenameNode(treeViewController: TreeViewController) {
       if (!target) {
         return;
       }
-      const description =
-        typeof target.description === 'string' ? target.description : '';
+      const description = typeof target.description === 'string' ? target.description : '';
       const newDescription = await vscode.window.showInputBox({
         value: description,
         prompt: '请输入新的描述',

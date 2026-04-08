@@ -1,8 +1,5 @@
 // Types & enums
-export {
-  TreeNodeType,
-  CollapsibleState,
-} from './types/index.js';
+export { TreeNodeType, CollapsibleState } from './types/index.js';
 export type {
   ProjectNode,
   ScanFolderConfig,
@@ -42,13 +39,7 @@ export {
 } from './storage/index.js';
 
 // Utils
-export {
-  isNil,
-  generateId,
-  isWorkspaceFile,
-  getProjectTitle,
-  asyncPool,
-} from './utils/index.js';
+export { isNil, generateId, isWorkspaceFile, getProjectTitle, asyncPool } from './utils/index.js';
 
 // Git
 export {
@@ -68,9 +59,4 @@ export type { GitRemoteInfo } from './git/index.js';
 export { AppConfigManager } from './config/index.js';
 
 // Project
-export {
-  ProjectList,
-  findNode,
-  traverseNodes,
-  removeNode,
-} from './project/index.js';
+export { ProjectList, findNode, traverseNodes, removeNode } from './project/index.js';

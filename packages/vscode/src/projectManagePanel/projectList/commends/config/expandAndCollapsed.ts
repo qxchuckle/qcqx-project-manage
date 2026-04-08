@@ -6,9 +6,7 @@ import { TreeNodeType } from '../../treeView/type';
 /**
  * fix: 无法成功更新视图
  */
-export function createExpandAndCollapsed(
-  treeViewController: TreeViewController,
-) {
+export function createExpandAndCollapsed(treeViewController: TreeViewController) {
   const expandAll = vscode.commands.registerCommand(
     `${CMD_PREFIX_PROJECT_LIST}.expand-all`,
     async () => {
@@ -28,9 +26,7 @@ export function createExpandAndCollapsed(
       const { tree, context, view } = treeViewController;
       tree.root.traverseChildren((node) => {
         if (node.type === TreeNodeType.Group) {
-          node.changeCollapsibleState(
-            vscode.TreeItemCollapsibleState.Collapsed,
-          );
+          node.changeCollapsibleState(vscode.TreeItemCollapsibleState.Collapsed);
         }
       });
       tree.refresh();

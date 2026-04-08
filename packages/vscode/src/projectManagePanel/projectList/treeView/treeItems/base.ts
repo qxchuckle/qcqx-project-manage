@@ -1,10 +1,5 @@
 import * as vscode from 'vscode';
-import {
-  JsonTreeNodeType,
-  TreeItem,
-  TreeItemProps,
-  TreeNodeType,
-} from '../type';
+import { JsonTreeNodeType, TreeItem, TreeItemProps, TreeNodeType } from '../type';
 import { generateId } from '@/utils';
 
 /**
@@ -31,10 +26,7 @@ export abstract class BaseTreeItem extends vscode.TreeItem implements TreeItem {
 
   constructor(props: TreeItemProps) {
     const label = props.title || `【未命名-${props.id}】`;
-    super(
-      label,
-      props.collapsibleState ?? vscode.TreeItemCollapsibleState.None,
-    );
+    super(label, props.collapsibleState ?? vscode.TreeItemCollapsibleState.None);
     this._init(props);
   }
 
@@ -49,9 +41,7 @@ export abstract class BaseTreeItem extends vscode.TreeItem implements TreeItem {
       title: this.title || '',
       description: this.description || '',
       collapsibleState:
-        this.type === TreeNodeType.Group
-          ? this.collapsibleState || undefined
-          : undefined,
+        this.type === TreeNodeType.Group ? this.collapsibleState || undefined : undefined,
       fsPath: this.projectPath,
       links: this.links,
       children: children.length > 0 ? children : undefined,
@@ -98,8 +88,7 @@ export abstract class BaseTreeItem extends vscode.TreeItem implements TreeItem {
       id: node.id,
       title: node.title,
       description: node.description,
-      collapsibleState:
-        node.type === TreeNodeType.Group ? node.collapsibleState : undefined,
+      collapsibleState: node.type === TreeNodeType.Group ? node.collapsibleState : undefined,
       resourceUri: node.fsPath ? vscode.Uri.file(node.fsPath) : undefined,
       links: node.links,
     };
@@ -131,8 +120,7 @@ export abstract class BaseTreeItem extends vscode.TreeItem implements TreeItem {
    * 改变可折叠状态
    */
   changeCollapsibleState(collapsibleState?: vscode.TreeItemCollapsibleState) {
-    this.collapsibleState =
-      collapsibleState ?? vscode.TreeItemCollapsibleState.None;
+    this.collapsibleState = collapsibleState ?? vscode.TreeItemCollapsibleState.None;
   }
 
   /**

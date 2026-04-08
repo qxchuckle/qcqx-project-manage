@@ -17,10 +17,7 @@ const DEFAULT_CACHE_FILE_NAME = 'git-projects-cache.json';
  * 根据扫描入口和选项计算一个稳定的配置指纹。
  * 配置变更时缓存自动失效。
  */
-function computeConfigHash(
-  entries: ScanFolderEntry[],
-  options: CachedScanOptions,
-): string {
+function computeConfigHash(entries: ScanFolderEntry[], options: CachedScanOptions): string {
   const payload = JSON.stringify({
     entries,
     extraIgnored: options.extraIgnored ?? [],
@@ -31,10 +28,7 @@ function computeConfigHash(
 }
 
 function getCachePath(options: CachedScanOptions): string {
-  return path.join(
-    options.cacheDir,
-    options.cacheFileName ?? DEFAULT_CACHE_FILE_NAME,
-  );
+  return path.join(options.cacheDir, options.cacheFileName ?? DEFAULT_CACHE_FILE_NAME);
 }
 
 async function readCache(cachePath: string): Promise<ScanCacheData | null> {
@@ -54,10 +48,7 @@ async function readCache(cachePath: string): Promise<ScanCacheData | null> {
  * 比较两个项目列表是否等价（按 fsPath 集合判断）。
  * 仅在后台扫描完成后使用，避免结果相同时触发无意义的 UI 刷新。
  */
-function projectListsEqual(
-  a: GitProjectInfo[],
-  b: GitProjectInfo[],
-): boolean {
+function projectListsEqual(a: GitProjectInfo[], b: GitProjectInfo[]): boolean {
   if (a.length !== b.length) return false;
   const setA = new Set(a.map((p) => p.fsPath));
   for (const p of b) {

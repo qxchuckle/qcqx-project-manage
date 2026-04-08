@@ -1,10 +1,5 @@
 import * as vscode from 'vscode';
-import {
-  JsonTreeNodeType,
-  TreeItem,
-  TreeItemProps,
-  TreeNodeType,
-} from '../type';
+import { JsonTreeNodeType, TreeItem, TreeItemProps, TreeNodeType } from '../type';
 import { BaseTreeItem } from './base';
 
 /**

@@ -25,11 +25,7 @@ export class LocalCache {
       // 用这个的话，配置就没法在各种类vscode上同步了
       this.cacheUri = context.globalStorageUri;
     } else {
-      this.cacheUri = vscode.Uri.joinPath(
-        vscode.Uri.file(homeDir),
-        CACHE_DIR_NAME,
-        APP_NAME,
-      );
+      this.cacheUri = vscode.Uri.joinPath(vscode.Uri.file(homeDir), CACHE_DIR_NAME, APP_NAME);
     }
     console.log('cacheUri', this.cacheUri);
   }
@@ -169,10 +165,7 @@ export class LocalCache {
   /**
    * 监听文件变动
    */
-  public watchCacheFile(
-    id: string,
-    callback: (uri: vscode.Uri) => Promise<void>,
-  ) {
+  public watchCacheFile(id: string, callback: (uri: vscode.Uri) => Promise<void>) {
     const fileUri = this.getCacheFile(id);
     if (!fileUri) {
       console.error(`缓存文件不存在: ${id}`, fileUri);

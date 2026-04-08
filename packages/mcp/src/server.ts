@@ -1,9 +1,5 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import {
-  CacheManager,
-  AppConfigManager,
-  ProjectList,
-} from '@qcqx/project-manage-core';
+import { CacheManager, AppConfigManager, ProjectList } from '@qcqx/project-manage-core';
 
 import { registerSearchTool } from './tools/search.js';
 import { registerScanTool } from './tools/scan.js';

@@ -3,31 +3,27 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { ServerContext } from '../types.js';
 
 export function registerConfigTools(server: McpServer, ctx: ServerContext): void {
-  server.tool(
-    'list_scan_folders',
-    '列出配置的 Git 项目扫描目录',
-    async () => {
-      const config = await ctx.configManager.read();
+  server.tool('list_scan_folders', '列出配置的 Git 项目扫描目录', async () => {
+    const config = await ctx.configManager.read();
 
-      return {
-        content: [
-          {
-            type: 'text' as const,
-            text: JSON.stringify(
-              {
-                scanFolders: config.gitProjectScanFolders ?? [],
-                ignoredFolders: config.gitProjectIgnoredFolders ?? [],
-                scanNested: config.gitProjectScanNestedProjects ?? false,
-                maxDepth: config.gitProjectMaxDepth ?? -1,
-              },
-              null,
-              2,
-            ),
-          },
-        ],
-      };
-    },
-  );
+    return {
+      content: [
+        {
+          type: 'text' as const,
+          text: JSON.stringify(
+            {
+              scanFolders: config.gitProjectScanFolders ?? [],
+              ignoredFolders: config.gitProjectIgnoredFolders ?? [],
+              scanNested: config.gitProjectScanNestedProjects ?? false,
+              maxDepth: config.gitProjectMaxDepth ?? -1,
+            },
+            null,
+            2,
+          ),
+        },
+      ],
+    };
+  });
 
   server.tool(
     'update_scan_folders',
@@ -46,18 +42,9 @@ export function registerConfigTools(server: McpServer, ctx: ServerContext): void
         )
         .optional()
         .describe('扫描目录列表'),
-      ignoredFolders: z
-        .array(z.string())
-        .optional()
-        .describe('要忽略的文件夹名/glob 模式'),
-      scanNested: z
-        .boolean()
-        .optional()
-        .describe('是否扫描嵌套 Git 项目'),
-      maxDepth: z
-        .number()
-        .optional()
-        .describe('最大递归深度，-1 为无限制'),
+      ignoredFolders: z.array(z.string()).optional().describe('要忽略的文件夹名/glob 模式'),
+      scanNested: z.boolean().optional().describe('是否扫描嵌套 Git 项目'),
+      maxDepth: z.number().optional().describe('最大递归深度，-1 为无限制'),
     },
     async ({ scanFolders, ignoredFolders, scanNested, maxDepth }) => {
       const partial: Record<string, unknown> = {};

@@ -16,8 +16,7 @@ export function createSearch(treeViewController: TreeViewController) {
     async () => {
       const { tree, context, view } = treeViewController;
       const allProjectNodes = Object.values(tree.allTreeNodesMap).filter(
-        (node) =>
-          node.type === TreeNodeType.Project || node.type === TreeNodeType.File,
+        (node) => node.type === TreeNodeType.Project || node.type === TreeNodeType.File,
       );
       const quickPick = vscode.window.createQuickPick<ProjectSearchItem>();
       quickPick.ignoreFocusOut = true;
@@ -26,12 +25,9 @@ export function createSearch(treeViewController: TreeViewController) {
       quickPick.matchOnDetail = true;
       quickPick.canSelectMany = false;
       quickPick.items = allProjectNodes.map((node) => {
-        const description =
-          typeof node.description === 'string' ? node.description : '';
+        const description = typeof node.description === 'string' ? node.description : '';
         const iconPath =
-          typeof node.iconPath === 'string'
-            ? new vscode.ThemeIcon(node.iconPath)
-            : node.iconPath;
+          typeof node.iconPath === 'string' ? new vscode.ThemeIcon(node.iconPath) : node.iconPath;
         // const encodedArgs = encodeURIComponent(JSON.stringify([node.id]));
         return {
           label: node.title,

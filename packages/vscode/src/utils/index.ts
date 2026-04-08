@@ -1,23 +1,14 @@
 import * as vscode from 'vscode';
 import { spawn } from 'child_process';
 import * as path from 'path';
-import {
-  TreeNodeType,
-  isWorkspaceFile,
-  getProjectTitle,
-} from '@qcqx/project-manage-core';
+import { TreeNodeType, isWorkspaceFile, getProjectTitle } from '@qcqx/project-manage-core';
 import { Tree } from '@/projectManagePanel/projectList/treeView/tree';
 import { BaseTreeItem } from '@/projectManagePanel/projectList/treeView/treeItems/base';
 export * from './localCache';
 export * from './workspace';
 export * from './doc';
 
-export {
-  isNil,
-  generateId,
-  isWorkspaceFile,
-  getProjectTitle,
-} from '@qcqx/project-manage-core';
+export { isNil, generateId, isWorkspaceFile, getProjectTitle } from '@qcqx/project-manage-core';
 
 export async function explorer(folderPath: string) {
   if (!folderPath) {
@@ -51,9 +42,7 @@ function containsNonAscii(str: string) {
   return /[^\x00-\x7F]/.test(str);
 }
 
-export async function getFileType(
-  filePath: string | undefined,
-): Promise<vscode.FileType> {
+export async function getFileType(filePath: string | undefined): Promise<vscode.FileType> {
   if (!filePath) {
     return vscode.FileType.Unknown;
   }

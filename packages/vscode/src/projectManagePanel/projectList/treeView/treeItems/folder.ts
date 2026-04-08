@@ -11,8 +11,7 @@ export class FolderTreeItem extends BaseTreeItem {
 
   constructor(props: TreeItemProps) {
     props.contextValue = TreeNodeType.Folder;
-    props.collapsibleState =
-      props.collapsibleState ?? vscode.TreeItemCollapsibleState.Collapsed;
+    props.collapsibleState = props.collapsibleState ?? vscode.TreeItemCollapsibleState.Collapsed;
     super(props);
     this.update(props);
   }
@@ -25,9 +24,7 @@ export class FolderTreeItem extends BaseTreeItem {
     treeProps.iconPath = new vscode.ThemeIcon('folder');
     let pathLine = '';
     if (this.projectPath) {
-      const encodedArgs = encodeURIComponent(
-        JSON.stringify([this.projectPath]),
-      );
+      const encodedArgs = encodeURIComponent(JSON.stringify([this.projectPath]));
       pathLine = `[${this.projectPath}](command:${CMD_PREFIX_PROJECT_LIST}.open-path-in-file-explorer?${encodedArgs})`;
     }
     treeProps.tooltip = new vscode.MarkdownString(`${pathLine}`);

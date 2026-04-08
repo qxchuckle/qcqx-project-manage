@@ -26,9 +26,7 @@ export function createLocateProject(
         }
       }
 
-      vscode.window.showInformationMessage(
-        '当前项目未在本地 Git 项目列表中',
-      );
+      vscode.window.showInformationMessage('当前项目未在本地 Git 项目列表中');
     },
   );
 

@@ -23,14 +23,11 @@ interface TreeProps {
 /** 项目列表树，集成数据提供、拖放与持久化 */
 export class Tree
   extends TreeDragAndDropController
-  implements
-    vscode.TreeDataProvider<BaseTreeItem>,
-    vscode.TreeDragAndDropController<BaseTreeItem>
+  implements vscode.TreeDataProvider<BaseTreeItem>, vscode.TreeDragAndDropController<BaseTreeItem>
 {
   /** 树数据变化事件 */
-  protected _onDidChangeTreeData: vscode.EventEmitter<
-    BaseTreeItem | undefined | void
-  > = new vscode.EventEmitter<BaseTreeItem | undefined | void>();
+  protected _onDidChangeTreeData: vscode.EventEmitter<BaseTreeItem | undefined | void> =
+    new vscode.EventEmitter<BaseTreeItem | undefined | void>();
   readonly onDidChangeTreeData: vscode.Event<BaseTreeItem | undefined | void> =
     this._onDidChangeTreeData.event;
   context: vscode.ExtensionContext;
@@ -59,10 +56,7 @@ export class Tree
   }
 
   async init() {
-    await this.localCache.createCacheFile(
-      PROJECT_LIST_CACHE_ID,
-      PROJECT_LIST_FILE_NAME,
-    );
+    await this.localCache.createCacheFile(PROJECT_LIST_CACHE_ID, PROJECT_LIST_FILE_NAME);
     await this.parseJsonNodeToTree();
     this.watchLocalConfig();
   }
@@ -91,8 +85,7 @@ export class Tree
     // 项目或文件夹节点：从文件系统加载子项（不持久化）
     if (
       element?.resourceUri &&
-      (element.type === TreeNodeType.Project ||
-        element.type === TreeNodeType.Folder)
+      (element.type === TreeNodeType.Project || element.type === TreeNodeType.Folder)
     ) {
       return this.loadDirContents(element.resourceUri, element);
     }
@@ -126,10 +119,7 @@ export class Tree
   /**
    * 读取目录内容并返回子节点（仅用于展示，不写入 model）
    */
-  private async loadDirContents(
-    uri: vscode.Uri,
-    parent: BaseTreeItem,
-  ): Promise<BaseTreeItem[]> {
+  private async loadDirContents(uri: vscode.Uri, parent: BaseTreeItem): Promise<BaseTreeItem[]> {
     const entries = await vscode.workspace.fs.readDirectory(uri);
     const items: BaseTreeItem[] = [];
     for (const [name, fileType] of entries) {
@@ -143,9 +133,7 @@ export class Tree
         resourceUri: childUri,
         contextValue: isDir ? TreeNodeType.Folder : TreeNodeType.FsFile,
       };
-      const node = isDir
-        ? new FolderTreeItem(props)
-        : new FsFileTreeItem(props);
+      const node = isDir ? new FolderTreeItem(props) : new FsFileTreeItem(props);
       node.parent = parent;
       items.push(node);
     }
@@ -236,10 +224,7 @@ export class Tree
   async syncToLocalConfig() {
     this._isSyncLocalConfigChange = true;
     const json = this.parseToJson();
-    return this.localCache.updateCacheFile(
-      PROJECT_LIST_CACHE_ID,
-      JSON.stringify(json, null, 2),
-    );
+    return this.localCache.updateCacheFile(PROJECT_LIST_CACHE_ID, JSON.stringify(json, null, 2));
   }
 
   /**
@@ -270,9 +255,7 @@ export class Tree
     console.log('parseJsonNodeToTree');
     const jsonObj = _jsonObj
       ? _jsonObj
-      : JSON.parse(
-          (await this.localCache.readCacheFile(PROJECT_LIST_CACHE_ID)) || '[]',
-        );
+      : JSON.parse((await this.localCache.readCacheFile(PROJECT_LIST_CACHE_ID)) || '[]');
     // 如果和当前树相同，则不更新
     const currentJson = this.parseToJson();
     if (JSON.stringify(currentJson) === JSON.stringify(jsonObj)) {
@@ -475,10 +458,7 @@ export class Tree
   /**
    * 根据type创建节点
    */
-  static createNodeByType(
-    type: TreeNodeType,
-    props: TreeItemProps,
-  ): BaseTreeItem {
+  static createNodeByType(type: TreeNodeType, props: TreeItemProps): BaseTreeItem {
     switch (type) {
       case TreeNodeType.Group:
         return new GroupTreeItem(props);
