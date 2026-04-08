@@ -918,3 +918,54 @@ packages/core/src/
 ### Next Steps
 
 - None - task complete
+
+
+## Session 19: 梳理项目发布流程文档
+
+**Date**: 2026-04-08
+**Task**: 梳理项目发布流程文档
+
+### Summary
+
+(Add summary)
+
+### Main Changes
+
+梳理并记录了整个 monorepo 的发布流程到 `publish.md`。
+
+**主要内容**：
+- 5 个子包的发布目标和当前版本总览
+- 依赖关系图（core → mcp/vscode/cli，skill 独立）
+- 发布顺序：core → mcp → vscode → skill
+- 各包的具体发布命令和注意事项
+- 典型发布场景（仅改 UI、改 core 影响多包、仅改文档等）
+- 前置条件（Token 认证、环境要求）
+- 根目录快捷脚本速查表
+
+**关键发现**：
+- mcp 的 `server.json` 版本号需与 `package.json` 手动同步
+- vscode 通过 esbuild bundle core，发布用 `--no-dependencies`
+- cli 为 private 包，不发布
+- 当前无 CI/CD 自动化
+
+**更新文件**：
+- `publish.md`
+
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `df472cf` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
