@@ -25,6 +25,8 @@ These guides help you **ask the right questions before coding**.
 | [Cross-Layer Thinking Guide](./cross-layer-thinking-guide.md) | Think through data flow across layers | Features spanning multiple layers |
 | [Monorepo Build Guide](./monorepo-build-guide.md) | pnpm monorepo 构建/发布约定 | 修改构建配置、添加依赖、发布扩展 |
 
+> **See also**: [Backend Guidelines](../backend/index.md) for core/CLI/MCP package architecture and code-specs.
+
 ---
 
 ## Quick Reference: Thinking Triggers
@@ -51,11 +53,21 @@ These guides help you **ask the right questions before coding**.
 ### When to Think About Monorepo Build Issues
 
 - [ ] 添加新的 npm 依赖（尤其含 native/WASM 的包）
-- [ ] 修改 esbuild/tsconfig 配置
-- [ ] 发布 VS Code 扩展
+- [ ] 修改 esbuild/tsconfig/tsup 配置
+- [ ] 发布 VS Code 扩展或 npm 包
 - [ ] 修改 workspace 包之间的引用关系
+- [ ] 修改 core 后需要验证所有消费包
 
 → Read [Monorepo Build Guide](./monorepo-build-guide.md)
+
+### When to Think About Core/Backend Architecture
+
+- [ ] 新增或修改 core 包的类型定义或常量
+- [ ] 添加新的 Git 操作或缓存策略
+- [ ] 修改存储层或数据目录结构
+- [ ] 新增 CLI 命令或 MCP tool
+
+→ Read [Backend Guidelines](../backend/index.md)
 
 ---
 

@@ -98,9 +98,110 @@ vscode 包仅用 `tsc --noEmit` 做类型检查（esbuild 负责构建），`roo
 - [ ] 打包后 VSIX 体积是否合理？
 - [ ] 不要将 npm 依赖加入 esbuild `external`（除非宿主环境提供）
 
+## tsup 构建约定（core / cli / mcp）
+
+除 VS Code 扩展（使用 esbuild）外，其他包均使用 `tsup` 构建。
+
+### Core 包：双格式输出
+
+```ts
+// packages/core/tsup.config.ts
+export default defineConfig({
+  entry: ['src/index.ts'],
+  format: ['esm', 'cjs'],   // 同时输出 ESM + CJS
+  dts: true,                 // 生成类型声明
+  sourcemap: true,
+  clean: true,
+});
+```
+
+**产物**：`index.mjs` (ESM) + `index.js` (CJS) + `index.d.ts` / `index.d.mts`
+
+`package.json` 需配合 `exports` 条件导出：
+
+```json
+{
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "exports": {
+    ".": {
+      "import": { "types": "./dist/index.d.mts", "default": "./dist/index.mjs" },
+      "require": { "types": "./dist/index.d.ts", "default": "./dist/index.js" }
+    }
+  }
+}
+```
+
+### CLI / MCP 包：ESM + createRequire
+
+CLI 和 MCP 只输出 ESM，但因 `noExternal` 内联 core（core 的 CJS 依赖如 `simple-git` 会以 `require()` 形式出现），需要注入 `createRequire` shim：
+
+```ts
+// packages/cli/tsup.config.ts & packages/mcp/tsup.config.ts
+export default defineConfig({
+  entry: ['src/index.ts'],
+  format: ['esm'],
+  target: 'node18',
+  shims: true,
+  noExternal: ['@qcqx/project-manage-core'],
+  banner: {
+    js: [
+      '#!/usr/bin/env node',
+      'import { createRequire as __createRequire } from "module";',
+      'const require = __createRequire(import.meta.url);',
+    ].join('\n'),
+  },
+});
+```
+
+> **禁止**：在不带 `createRequire` banner 的情况下使用 `noExternal` 内联含 CJS 依赖的包。运行时会报 `require is not defined`。
+
+---
+
+## 版本管理与发布
+
+### 依赖关系
+
+```
+core ← vscode (via esbuild alias)
+core ← cli (via noExternal bundle)
+core ← mcp (via noExternal bundle)
+skill (independent)
+```
+
+### 发布顺序
+
+改动 core 后影响多个包时：`core` → `mcp` → `vscode` → `skill`
+
+### 版本同步注意事项
+
+- `packages/mcp/server.json` 的 `version` 必须与 `packages/mcp/package.json` 手动同步
+- VS Code 扩展版本在 `packages/vscode/package.json` 中，与 npm 版本体系独立
+- CLI 为 `private: true`，不发布到 npm
+
+### 发布命令
+
+```bash
+# Core
+cd packages/core && pnpm publish --access public
+
+# MCP
+cd packages/mcp && pnpm publish --access public
+
+# VS Code 扩展
+cd packages/vscode && vsce publish --no-dependencies
+
+# Skill
+cd packages/skill && pnpm publish --access public
+```
+
+---
+
 ## Checklist：发布前
 
 - [ ] `packages/vscode/LICENSE` 存在
 - [ ] `vsce package --no-dependencies` 成功
 - [ ] 检查 VSIX 内容：`dist/extension.js` 包含所有依赖
 - [ ] 本地安装 VSIX 测试功能正常
+- [ ] MCP `server.json` 版本与 `package.json` 一致
+- [ ] 如改了 core，所有消费包（cli/mcp/vscode）构建通过

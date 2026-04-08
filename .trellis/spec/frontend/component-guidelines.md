@@ -393,6 +393,64 @@ return (name: string) => globMatcher !== null && globMatcher(name);
 
 ---
 
+## Async Path Validation with Debounce + Version Control
+
+For detecting invalid file paths in tree items (e.g. deleted projects), use async validation with debounce and version stamping to avoid stale results:
+
+```ts
+private _validateVersion = 0;
+
+async scheduleValidatePaths(): Promise<void> {
+  // Debounce: wait before starting validation
+  const version = ++this._validateVersion;
+  await new Promise((r) => setTimeout(r, 300));
+  if (version !== this._validateVersion) return; // superseded
+
+  await this.validatePaths(version);
+}
+
+private async validatePaths(version: number): Promise<void> {
+  const nodes = this.getPathNodes();
+  await Promise.all(nodes.map(async (node) => {
+    if (version !== this._validateVersion) return;
+    const exists = await fs.access(node.fsPath).then(() => true, () => false);
+    node.setPathInvalid(!exists);
+  }));
+  if (version !== this._validateVersion) return;
+  this._onDidChangeTreeData.fire();
+}
+```
+
+**Key points**:
+- Increment version before each validation pass; check version at each await point.
+- Invalid path nodes show warning icon + modified tooltip.
+- Call `scheduleValidatePaths()` after tree data refresh.
+
+---
+
+## Batch Cleanup Command Pattern
+
+When providing a "clean invalid items" command, use multi-select QuickPick + confirmation:
+
+```ts
+const selected = await vscode.window.showQuickPick(invalidItems, {
+  canPickMany: true,
+  placeHolder: 'Select items to remove',
+});
+if (!selected?.length) return;
+
+const confirmed = await vscode.window.showWarningMessage(
+  `Remove ${selected.length} items?`,
+  { modal: true },
+  'Confirm'
+);
+if (confirmed !== 'Confirm') return;
+
+// Perform batch removal
+```
+
+---
+
 ## Common Mistakes
 
 - **Registering commands outside init**: Always register in a `create*` and push to `context.subscriptions` so they are disposed on deactivate.
@@ -403,3 +461,4 @@ return (name: string) => globMatcher !== null && globMatcher(name);
 - **Duplicating constants across modules**: Shared constants like cache file IDs (`CACHE_CONFIG_ID`, `CACHE_CONFIG_FILE`) belong in `@/config`, not duplicated locally in each consumer.
 - **Spawning git for config-only reads**: Use direct `.git/config` file reading (see "Direct .git/config Reading") instead of `simpleGit().getRemotes()` when batch-reading static config for many repos. Spawning one process per repo creates significant overhead at scale.
 - **Forgetting to update `switchViewMode` modeMap**: When adding a new ViewMode, updating the QuickPick items list but forgetting the `modeMap` record means the selection silently does nothing.
+- **Blocking tree rendering for async data**: Never `await` expensive operations (git status, remote URLs, path validation) in `getChildren()`. Use fire-and-forget async fetch → rebuild tree → fire change event.
