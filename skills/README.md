@@ -8,25 +8,11 @@ Agent Skill 是 AI 编程助手（Cursor、Claude Code、Copilot 等）的可复
 
 ## 安装
 
-### 通过 agent-skills-cli
+### 通过 npx skills add
 
 ```bash
-npm install -g agent-skills-cli
-skills install @qcqx/project-manage-skill -a cursor,claude
+npx skills add qxchuckle/qcqx-project-manage
 ```
-
-### 通过 npm 手动安装
-
-```bash
-npm install @qcqx/project-manage-skill
-```
-
-然后将 `node_modules/@qcqx/project-manage-skill/SKILL.md` 复制到对应平台的 skills 目录：
-
-| 平台 | 目录 |
-|------|------|
-| Cursor | `.cursor/skills/project-manager/` |
-| Claude Code | `.claude/skills/project-manager/` |
 
 ### 手动安装
 
