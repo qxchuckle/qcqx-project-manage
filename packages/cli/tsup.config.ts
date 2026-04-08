@@ -7,8 +7,13 @@ export default defineConfig({
   sourcemap: true,
   clean: true,
   target: 'node18',
+  shims: true,
   banner: {
-    js: '#!/usr/bin/env node',
+    js: [
+      '#!/usr/bin/env node',
+      'import { createRequire as __createRequire } from "module";',
+      'const require = __createRequire(import.meta.url);',
+    ].join('\n'),
   },
   noExternal: ['@qcqx/project-manage-core'],
 });
