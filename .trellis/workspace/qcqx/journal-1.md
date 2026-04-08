@@ -1033,3 +1033,72 @@ packages/core/src/
 ### Next Steps
 
 - None - task complete
+
+
+## Session 21: 版本升级 1.0.0 + 后端文档 + 发布脚本 + Skill 迁移 + 文档更新
+
+**Date**: 2026-04-08
+**Task**: 版本升级 1.0.0、后端开发规范、发布脚本完善、Skill 迁移、文档同步更新
+
+### Summary
+
+将所有包版本升级到 1.0.0 并完成首次发布准备：新增后端开发规范文档、补齐发布脚本、将 skill 从 npm 包迁移为纯文档、全面更新项目文档使其与当前状态一致。
+
+### Main Changes
+
+## 版本与发布
+
+| 变更 | 说明 |
+|------|------|
+| 版本升级 | core / cli / mcp 统一升级到 1.0.0 |
+| publishConfig | 所有包添加 `"access": "public"` |
+| 发布脚本 | 根 package.json 新增 `publish:core`、`publish:cli`、`registry:mcp` 脚本 |
+| prepublishOnly | cli 添加 `prepublishOnly: pnpm run build` |
+
+## Skill 迁移
+
+| 变更 | 说明 |
+|------|------|
+| 目录迁移 | `packages/skill/` → 根目录 `skills/` |
+| 移除 package.json | skill 不再作为 npm 包发布 |
+| 纯文档 | 仅保留 SKILL.md 和 README.md |
+
+## 后端开发规范
+
+| 新增文档 | 内容 |
+|----------|------|
+| `.trellis/spec/backend/index.md` | 后端文档索引 |
+| `.trellis/spec/backend/core-architecture.md` | Core 包架构：目录结构、设计决策、存储层、Git 操作 |
+| `.trellis/spec/backend/cli-mcp-conventions.md` | CLI 命令结构规范、MCP Server 开发约定 |
+| `.trellis/spec/guides/monorepo-build-guide.md` | Monorepo 构建指南 |
+
+## 文档更新（本次会话补充）
+
+| 文件 | 变更 |
+|------|------|
+| `README.md` | 项目结构更新：skill 从 packages/ 移到根 skills/，表格链接修正 |
+| `publish.md` + `docs/publish.md` | 版本号更新(→1.0.0)、移除 skill npm 发布、新增 CLI/core/registry 脚本 |
+| `skills/README.md` | 分支名 main → master |
+| `packages/{core,cli,mcp}/package.json` | homepage 分支名 main → master |
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `f919860` | chore: update package versions to 1.0.0 and set publish configuration |
+| `0cf6e8d` | docs: add backend development guidelines and architecture documentation |
+| `b5b26c0` | chore: add publish scripts for CLI and core packages |
+| `403658c` | chore: add MCP registry publish script to package.json |
+| `600fc1a` | chore: remove package.json for skill and add documentation files |
+
+### Testing
+
+- [OK] 文档链接和引用一致性检查通过
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete

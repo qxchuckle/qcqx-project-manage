@@ -18,7 +18,7 @@
     "url": "https://github.com/qxchuckle/qcqx-project-manage.git",
     "directory": "packages/cli"
   },
-  "homepage": "https://github.com/qxchuckle/qcqx-project-manage/tree/main/packages/cli#readme",
+  "homepage": "https://github.com/qxchuckle/qcqx-project-manage/tree/master/packages/cli#readme",
   "bugs": {
     "url": "https://github.com/qxchuckle/qcqx-project-manage/issues"
   },

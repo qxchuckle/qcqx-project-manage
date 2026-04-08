@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 20
+- **Total Sessions**: 21
 - **Last Active**: 2026-04-08
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~1035 | Active |
+| `journal-1.md` | ~1108 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits |
 |---|------|-------|---------|
+| 21 | 2026-04-08 | 版本升级 1.0.0 + 后端文档 + 发布脚本 + Skill 迁移 + 文档更新 | `f919860`, `0cf6e8d`, `b5b26c0`, `403658c`, `600fc1a` |
 | 20 | 2026-04-08 | 完善 CLI 工具 (qpm)，添加必要功能 | `a72d2cf` |
 | 19 | 2026-04-08 | 梳理项目发布流程文档 | `df472cf` |
 | 18 | 2026-04-07 | Git视图增加按远程仓库URL分组布局 | `ef95970` |

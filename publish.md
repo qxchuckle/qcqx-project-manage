@@ -2,15 +2,15 @@
 
 ## 项目总览
 
-本项目是 pnpm monorepo，包含 5 个子包，其中 3 个需要发布到公共仓库：
+本项目是 pnpm monorepo，包含 4 个代码包 + 1 个纯文档 skill：
 
 | 包 | 发布目标 | 当前版本 | 说明 |
 |----|----------|----------|------|
-| `@qcqx/project-manage-core` | npm | 0.1.0 | 共享核心库 |
+| `@qcqx/project-manage-core` | npm | 1.0.0 | 共享核心库 |
 | `qcqx-project-manage` | VS Marketplace + Open VSX | 1.8.0 | VS Code 插件 |
-| `@qcqx/project-manage-cli` | npm | 0.1.0 | CLI 工具 |
-| `@qcqx/project-manage-mcp` | npm + MCP Registry | 0.1.0 | MCP Server |
-| `@qcqx/project-manage-skill` | npm | 0.1.0 | AI Agent Skill |
+| `@qcqx/project-manage-cli` | npm | 1.0.0 | CLI 工具 (qpm) |
+| `@qcqx/project-manage-mcp` | npm + MCP Registry | 1.0.0 | MCP Server |
+| AI Agent Skill | 不发布到 npm（纯文档，位于 `skills/`） | — | SKILL.md + README.md |
 
 ## 依赖关系
 
@@ -69,8 +69,8 @@ pnpm check-types
 | 包 | 需要更新的文件 |
 |----|----------------|
 | core | `packages/core/package.json` |
+| cli | `packages/cli/package.json` |
 | mcp | `packages/mcp/package.json`、`packages/mcp/server.json`（两处 version） |
-| skill | `packages/skill/package.json` |
 | vscode | `packages/vscode/package.json` |
 
 **版本号规范**：遵循 [Semantic Versioning](https://semver.org/)
@@ -86,8 +86,9 @@ core 是其他包的基础依赖，必须最先发布。
 
 ```bash
 pnpm build:core
-cd packages/core
-pnpm publish --no-git-checks
+# 根目录快捷命令：
+pnpm publish:core
+# 等价于：pnpm --filter @qcqx/project-manage-core publish --no-git-checks
 ```
 
 #### 3b. 发布 MCP Server（如有变更）
@@ -101,9 +102,25 @@ pnpm publish:mcp
 # 等价于：pnpm --filter @qcqx/project-manage-mcp publish --no-git-checks
 ```
 
-发布后，如需更新 MCP Registry 注册信息，确认 `packages/mcp/server.json` 版本号已同步。
+发布后，如需更新 MCP Registry 注册信息：
 
-#### 3c. 发布 VS Code 插件（如有变更）
+```bash
+# 确认 packages/mcp/server.json 版本号已同步
+pnpm registry:mcp
+# 等价于：cd packages/mcp && mcp-publisher publish
+```
+
+#### 3c. 发布 CLI（如有变更）
+
+cli 依赖 core，需要在 core 发布之后。
+
+```bash
+pnpm build:cli
+pnpm publish:cli
+# 等价于：pnpm --filter @qcqx/project-manage-cli publish --no-git-checks
+```
+
+#### 3d. 发布 VS Code 插件（如有变更）
 
 ```bash
 # 方式一：直接发布到 VS Marketplace + Open VSX
@@ -115,15 +132,6 @@ pnpm package:vsix
 ```
 
 `--no-dependencies` 标志说明：因为 core 已被 esbuild 打包进产物，无需安装 npm 依赖。
-
-#### 3d. 发布 Skill（如有变更）
-
-skill 包只包含 `SKILL.md` 和 `README.md`，无代码构建步骤。
-
-```bash
-pnpm publish:skill
-# 等价于：pnpm --filter @qcqx/project-manage-skill publish
-```
 
 ### 4. 提交版本更新
 
@@ -147,10 +155,13 @@ git push origin vX.Y.Z
 | `pnpm build` | 构建所有包 |
 | `pnpm build:core` | 仅构建 core |
 | `pnpm build:vscode` | 仅构建 VS Code 插件 |
+| `pnpm build:cli` | 仅构建 CLI |
 | `pnpm build:mcp` | 仅构建 MCP Server |
-| `pnpm publish:vscode` | 发布 VS Code 插件（Marketplace + Open VSX） |
+| `pnpm publish:core` | 发布 core 到 npm |
+| `pnpm publish:cli` | 发布 CLI 到 npm |
 | `pnpm publish:mcp` | 发布 MCP Server 到 npm |
-| `pnpm publish:skill` | 发布 Skill 到 npm |
+| `pnpm publish:vscode` | 发布 VS Code 插件（Marketplace + Open VSX） |
+| `pnpm registry:mcp` | 注册/更新 MCP Registry |
 | `pnpm package:vsix` | 打包 VS Code 插件为 .vsix |
 | `pnpm check-types` | 所有包类型检查 |
 | `pnpm lint` | 所有包 lint 检查 |
@@ -175,14 +186,7 @@ pnpm publish:mcp      # core 会在 prepublishOnly 中自动构建
 pnpm publish:vscode
 ```
 
-### 场景 C：仅更新 Skill 文档
-
-```bash
-# 更新 packages/skill/package.json 版本号
-pnpm publish:skill
-```
-
-### 场景 D：首次发布新包
+### 场景 C：首次发布新包
 
 首次发布 scoped 包（`@qcqx/*`）到 npm 时，需要确保 `publishConfig.access` 为 `"public"`，或在命令行加 `--access public`：
 
@@ -192,7 +196,7 @@ pnpm publish --access public --no-git-checks
 
 ## 注意事项
 
-1. **发布顺序**：core → mcp → vscode → skill，遵循依赖链
+1. **发布顺序**：core → mcp / cli → vscode，遵循依赖链
 2. **workspace 协议**：pnpm publish 会自动将 `workspace:*` 转换为实际版本号
 3. **`--no-git-checks`**：monorepo 中各包独立发布，跳过 git 状态检查
 4. **MCP Registry**：`packages/mcp/server.json` 中的版本号需与 `package.json` 手动同步

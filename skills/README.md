@@ -49,9 +49,9 @@ npx skills add qxchuckle/qcqx-project-manage
 
 | 包 | 说明 |
 |----|------|
-| [`@qcqx/project-manage-mcp`](https://github.com/qxchuckle/qcqx-project-manage/tree/main/packages/mcp) | MCP Server |
-| [`@qcqx/project-manage-core`](https://github.com/qxchuckle/qcqx-project-manage/tree/main/packages/core) | 核心库 |
-| [`@qcqx/project-manage-cli`](https://github.com/qxchuckle/qcqx-project-manage/tree/main/packages/cli) | CLI 工具 |
+| [`@qcqx/project-manage-mcp`](https://github.com/qxchuckle/qcqx-project-manage/tree/master/packages/mcp) | MCP Server |
+| [`@qcqx/project-manage-core`](https://github.com/qxchuckle/qcqx-project-manage/tree/master/packages/core) | 核心库 |
+| [`@qcqx/project-manage-cli`](https://github.com/qxchuckle/qcqx-project-manage/tree/master/packages/cli) | CLI 工具 |
 | [`qcqx-project-manage`](https://marketplace.visualstudio.com/items?itemName=qcqx.qcqx-project-manage) | VS Code 扩展 |
 
 ## License
