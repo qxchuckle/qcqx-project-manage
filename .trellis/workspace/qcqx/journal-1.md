@@ -969,3 +969,67 @@ packages/core/src/
 ### Next Steps
 
 - None - task complete
+
+
+## Session 20: 完善 CLI 工具 (qpm)，添加必要功能
+
+**Date**: 2026-04-08
+**Task**: 完善 CLI 工具 (qpm)，添加必要功能
+
+### Summary
+
+(Add summary)
+
+### Main Changes
+
+## 完成内容
+
+将 `@qcqx/project-manage-cli` 从占位符升级为功能完整的 CLI 工具（命令名 `qpm`）。
+
+| 命令 | 说明 |
+|------|------|
+| `qpm list / ls` | 树形展示项目列表（支持 `--json`、`--flat`） |
+| `qpm search <query>` | 按标题/描述/路径模糊搜索 |
+| `qpm scan [dirs...]` | 扫描 Git 仓库 |
+| `qpm add <path>` | 添加项目 |
+| `qpm add-group <name>` | 创建分组 |
+| `qpm remove <id>` | 移除节点 |
+| `qpm open <name>` | 用编辑器打开项目 |
+| `qpm config show/get/set` | 管理配置 |
+| `qpm config add-folder/remove-folder` | 管理扫描目录 |
+
+## 技术要点
+
+- 依赖 `commander` + `chalk`，基于 `@qcqx/project-manage-core` 构建
+- 修复 ESM 打包中 CJS 依赖兼容问题：`noExternal` 内联 core 后，core 的 CJS 依赖（simple-git）在 ESM 产物中 `require()` 失败，通过 banner 注入 `createRequire` 解决
+- MCP 包也存在同样问题，一并修复
+- CLI 和 MCP 各自维护独立 tsup 配置
+
+## 变更文件
+
+- `packages/cli/src/index.ts` — 主入口 + commander 程序定义
+- `packages/cli/src/context.ts` — 共享上下文
+- `packages/cli/src/format.ts` — 输出格式化
+- `packages/cli/src/commands/` — 7 个命令模块（list, search, scan, add, remove, open, config）
+- `packages/cli/package.json` — bin 改为 qpm，新增 commander/chalk
+- `packages/cli/tsup.config.ts` — noExternal + createRequire banner
+- `packages/mcp/tsup.config.ts` — 同步修复 createRequire
+
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `a72d2cf` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
